@@ -523,7 +523,7 @@ void menuMainView(event_t event)
             drawSwitch(x[i], y[i], sw, 0, false);
           }
         }
-#elif defined(PCBTARANIS)
+#else
         uint8_t switches = min(NUM_SWITCHES- NUM_FUNCTIONS_SWITCHES, 6);
         for (int i = 0; i < switches; ++i) {
           if (SWITCH_EXISTS(i)) {
@@ -536,17 +536,6 @@ void menuMainView(event_t event)
             getvalue_t sw = ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
             drawSwitch(x, y, sw, 0, false);
           }
-        }
-#else
-        // The ID0 3-POS switch is merged with the TRN switch
-        for (uint8_t i = SWSRC_THR; i <= SWSRC_TRN; i++) {
-          int8_t sw = (i == SWSRC_TRN ? (switchState(SW_ID0) ? SWSRC_ID0 : (switchState(SW_ID1) ? SWSRC_ID1 : SWSRC_ID2)) : i);
-          uint8_t x = 2 * FW - 2, y = i * FH + 1;
-          if (i >= SWSRC_AIL) {
-            x = 17 * FW - 1;
-            y -= 3 * FH;
-          }
-          drawSwitch(x, y, sw, getSwitch(i) ? INVERS : 0, false);
         }
 #endif
       }
