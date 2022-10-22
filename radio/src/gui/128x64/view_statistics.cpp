@@ -22,6 +22,8 @@
 #include "opentx.h"
 #include "tasks.h"
 
+#include "hal/adc_driver.h"
+
 #if defined(BLUETOOTH)
   #include "bluetooth_driver.h"
 #endif
