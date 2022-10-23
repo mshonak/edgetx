@@ -35,9 +35,12 @@
 
 #include <string.h>
 
+// common ADC driver
+extern const etx_hal_adc_driver_t _adc_driver;
+
 #if !defined(PCBX12S)
   #include "stm32_hal_adc.h"
-  #define ADC_DRIVER stm32_hal_adc_driver
+  #define ADC_DRIVER _adc_driver
 #else
   #include "x12s_adc_driver.h"
   #define ADC_DRIVER x12s_adc_driver
