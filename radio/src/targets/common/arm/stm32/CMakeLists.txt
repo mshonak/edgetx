@@ -41,6 +41,7 @@ set(FIRMWARE_TARGET_SRC ${FIRMWARE_TARGET_SRC}
   ../common/arm/stm32/stm32_serial_driver.cpp
   ../common/arm/stm32/stm32_softserial_driver.cpp
   ../common/arm/stm32/module_timer_driver.cpp
+  ../common/arm/stm32/switch_driver.cpp
   ../common/arm/stm32/stm32_switch_driver.cpp
   ../common/arm/stm32/adc_driver.cpp
   ../common/arm/stm32/stm32_hal_adc.cpp
