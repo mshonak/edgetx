@@ -49,6 +49,9 @@ extern "C" {
 }
 #endif
 
+// common ADC driver
+extern const etx_hal_adc_driver_t _adc_driver;
+
 HardwareOptions hardwareOptions;
 
 void watchdogInit(unsigned int duration)
@@ -234,7 +237,7 @@ void boardInit()
   // and this section is un-initialized
   memset(&g_FATFS_Obj, 0, sizeof(g_FATFS_Obj));
   monitorInit();
-  adcInit(&stm32_hal_adc_driver);
+  adcInit(&_adc_driver);
   hapticInit();
 
 
