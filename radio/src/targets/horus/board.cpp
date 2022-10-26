@@ -25,6 +25,7 @@
 
 #include "hal/adc_driver.h"
 #include "hal/trainer_driver.h"
+#include "hal/switch_driver.h"
 
 #include "timers_driver.h"
 #include "dataconstants.h"
@@ -151,6 +152,7 @@ void boardInit()
   audioInit();
 
   keysInit();
+  switchInit();
   rotaryEncoderInit();
 
 #if NUM_PWMSTICKS > 0

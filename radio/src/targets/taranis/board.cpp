@@ -20,6 +20,7 @@
  */
 
 #include "stm32_hal_adc.h"
+#include "hal/switch_driver.h"
 
 #include "board.h"
 #include "boards/generic_stm32/module_ports.h"
@@ -202,6 +203,7 @@ void boardInit()
 #endif
 
   keysInit();
+  switchInit();
 
 #if defined(ROTARY_ENCODER_NAVIGATION)
   rotaryEncoderInit();
