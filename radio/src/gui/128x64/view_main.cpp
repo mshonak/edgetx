@@ -20,6 +20,7 @@
  */
 
 #include "opentx.h"
+#include "hal/adc_driver.h"
 
 #define BIGSIZE       DBLSIZE
 #if defined (PCBTARANIS)
@@ -77,9 +78,12 @@ void drawExternalAntennaAndRSSI()
 void drawPotsBars()
 {
   // Optimization by Mike Blandford
-  for (uint8_t x = LCD_W / 2 - (NUM_POTS + NUM_SLIDERS - 1) * 5 / 2 - 1, i = NUM_STICKS; i < NUM_STICKS + NUM_POTS + NUM_SLIDERS; x += 5, i++) {
+  uint8_t max_pots = adcGetMaxPots();
+  for (uint8_t x = LCD_W / 2 - (max_pots - 1) * 5 / 2 - 1, i = 0; i < max_pots; x += 5, i++) {
     if (IS_POT_SLIDER_AVAILABLE(i)) {
-      uint8_t len = ((calibratedAnalogs[i] + RESX) * BAR_HEIGHT / (RESX * 2)) + 1l;  // calculate once per loop
+      // calculate once per loop
+      auto v = calibratedAnalogs[MAX_STICKS + i] + RESX;
+      uint8_t len = (v * BAR_HEIGHT / (RESX * 2)) + 1l;
       V_BAR(x, LCD_H - 8, len);
     }
   }
@@ -96,9 +100,8 @@ void doMainScreenGraphics()
   if (g_model.throttleReversed && CONVERT_MODE(2) == THR_STICK)
     calibStickVert = -calibStickVert;
   drawStick(RBOX_CENTERX, calibratedAnalogs[CONVERT_MODE(3)], calibStickVert);
-#if defined(HARDWARE_POT1)
+
   drawPotsBars();
-#endif
 }
 
 void displayTrims(uint8_t phase)

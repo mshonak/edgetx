@@ -32,7 +32,9 @@
 #include "opentx.h"
 #include <time.h>
 #include <ctype.h>
+
 #include "targets/simu/simulcd.h"
+#include "hal/adc_driver.h"
 
 #if LCD_W > 212
   #define LCD_ZOOM 1
@@ -77,8 +79,8 @@ class OpenTxSim: public FXMainWindow
     FXImageFrame * bmf;
 
   public:
-    FXSlider * sliders[NUM_STICKS];
-    FXKnob * knobs[NUM_POTS+NUM_SLIDERS];
+    FXSlider * sliders[MAX_STICKS];
+    FXKnob * knobs[MAX_POTS];
 };
 
 // Message Map
@@ -131,7 +133,7 @@ OpenTxSim::OpenTxSim(FXApp* a):
     sliders[i]->setValue(0);
   }
 
-  for (int i = 0; i < NUM_POTS + NUM_SLIDERS; i++) {
+  for (int i = 0; i < MAX_POTS; i++) {
     knobs[i]= new FXKnob(hf11, nullptr, 0, KNOB_TICKS|LAYOUT_LEFT);
     knobs[i]->setValue(0);
 
@@ -173,7 +175,7 @@ OpenTxSim::~OpenTxSim()
   delete sliders[2];
   delete sliders[3];
 
-  for (int i = 0; i < NUM_POTS + NUM_SLIDERS; i++) {
+  for (int i = 0; i < MAX_POTS; i++) {
     delete knobs[i];
   }
 
@@ -659,10 +661,10 @@ int main(int argc, char ** argv)
 
 uint16_t anaIn(uint8_t chan)
 {
-  if (chan < NUM_STICKS)
+  if (chan < MAX_STICKS)
     return opentxSim->sliders[chan]->getValue();
-  else if (chan < NUM_STICKS + NUM_POTS + NUM_SLIDERS)
-    return opentxSim->knobs[chan - NUM_STICKS]->getValue();
+  else if (chan < MAX_STICKS + adcGetMaxPots())
+    return opentxSim->knobs[chan - MAX_STICKS]->getValue();
 #if defined(PCBTARANIS)
   else if (chan == TX_RTC_VOLTAGE)
     return 800; // 2.34V

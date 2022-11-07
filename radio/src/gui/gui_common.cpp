@@ -21,6 +21,8 @@
 
 #include "opentx.h"
 #include "hal/module_port.h"
+#include "switches.h"
+
 
 #if defined(PCBFRSKY) || defined(PCBFLYSKY)
 uint8_t switchToMix(uint8_t source)
@@ -210,7 +212,7 @@ bool isSourceAvailable(int source)
   }
 
 #if !defined(HELI)
-  if (source >= MIXSRC_CYC1 && source <= MIXSRC_CYC3)
+  if (source >= MIXSRC_FIRST_HELI && source <= MIXSRC_LAST_HELI)
     return false;
 #endif
 
@@ -227,9 +229,6 @@ bool isSourceAvailable(int source)
   if (source >= MIXSRC_GVAR1 && source <= MIXSRC_LAST_GVAR)
     return false;
 #endif
-
-  if (source >= MIXSRC_FIRST_RESERVE && source <= MIXSRC_LAST_RESERVE)
-    return false;
 
   if (source >= MIXSRC_FIRST_TRAINER && source <= MIXSRC_LAST_TRAINER)
     return g_model.trainerData.mode > 0;
@@ -275,7 +274,7 @@ bool isSourceAvailableInInputs(int source)
     return false;
 #endif
 
-  if (source >= MIXSRC_Rud && source <= MIXSRC_MAX)
+  if (source >= MIXSRC_FIRST_STICK && source <= MIXSRC_MAX)
     return true;
 
   if (source >= MIXSRC_FIRST_TRIM && source <= MIXSRC_LAST_TRIM)
@@ -288,7 +287,7 @@ bool isSourceAvailableInInputs(int source)
     return true;
 
   if (source >= MIXSRC_FIRST_LOGICAL_SWITCH && source <= MIXSRC_LAST_LOGICAL_SWITCH) {
-    LogicalSwitchData * cs = lswAddress(source - MIXSRC_SW1);
+    LogicalSwitchData * cs = lswAddress(source - MIXSRC_FIRST_LOGICAL_SWITCH);
     return (cs->func != LS_FUNC_NONE);
   }
 
@@ -343,8 +342,8 @@ bool isSwitchAvailable(int swtch, SwitchContext context)
 
 #if NUM_XPOTS > 0
   if (swtch >= SWSRC_FIRST_MULTIPOS_SWITCH && swtch <= SWSRC_LAST_MULTIPOS_SWITCH) {
-    int index __attribute__((unused)) = (swtch - SWSRC_FIRST_MULTIPOS_SWITCH) / XPOTS_MULTIPOS_COUNT;
-    return IS_POT_MULTIPOS(POT1+index);
+    int index = (swtch - SWSRC_FIRST_MULTIPOS_SWITCH) / XPOTS_MULTIPOS_COUNT;
+    return IS_POT_MULTIPOS(index);
   }
 #endif
 
