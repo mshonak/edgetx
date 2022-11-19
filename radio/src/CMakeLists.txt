@@ -402,6 +402,7 @@ set(SRC
   serial.cpp
   sbus.cpp
   hal/module_port.cpp
+  hal/adc_driver.cpp
   tasks/mixer_task.cpp
   )
 
