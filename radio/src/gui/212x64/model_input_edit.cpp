@@ -141,7 +141,7 @@ void menuModelExpoOne(event_t event)
         break;
 
       case EXPO_FIELD_TRIM:
-        uint8_t not_stick = (ed->srcRaw > MIXSRC_Ail);
+        uint8_t not_stick = (ed->srcRaw > MIXSRC_LAST_STICK);
         int8_t trimSource = -ed->trimSource;
         lcdDrawTextAlignedLeft(y, STR_TRIM);
         lcdDrawTextAtIndex(EXPO_ONE_2ND_COLUMN, y, STR_VMIXTRIMS, (not_stick && trimSource == 0) ? 0 : trimSource + 1, menuHorizontalPosition==0 ? attr : 0);
