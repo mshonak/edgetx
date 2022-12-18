@@ -18,6 +18,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+ 
+#include "stm32_hal_adc.h"
 
 #include "board.h"
 #include "boards/generic_stm32/module_ports.h"
@@ -31,7 +33,6 @@
 #include "touch.h"
 #include "debug.h"
 
-#include "stm32_hal_adc.h"
 #include "flysky_gimbal_driver.h"
 #include "timers_driver.h"
 
