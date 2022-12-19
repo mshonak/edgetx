@@ -306,14 +306,8 @@ void rotaryEncoderCheck();
 
 #if defined(PCBX10)
   #define NUM_SLIDERS                  2
-  #if defined(RADIO_TX16S) || defined(RADIO_T18) || defined(RADIO_T16)
-    #define NUM_PWMSTICKS              0
-  #else
-    #define NUM_PWMSTICKS              4
-  #endif
 #else
   #define NUM_SLIDERS                  4
-  #define NUM_PWMSTICKS                0
 #endif
 
 #define STORAGE_NUM_SLIDERS            4
@@ -419,13 +413,10 @@ extern uint16_t adcValues[NUM_ANALOGS];
 #endif
 #define STORAGE_NUM_MOUSE_ANALOGS      2
 
-#if NUM_PWMSTICKS > 0
-#define STICKS_PWM_ENABLED()          (!hardwareOptions.sticksPwmDisabled)
-void sticksPwmInit();
-void sticksPwmRead(uint16_t * values);
-extern volatile uint32_t pwm_interrupt_count;
+#if defined(STICKS_PWM)
+  #define STICKS_PWM_ENABLED()         (!hardwareOptions.sticksPwmDisabled)
 #else
-#define STICKS_PWM_ENABLED()          (false)
+  #define STICKS_PWM_ENABLED()         (false)
 #endif
 
 // Battery driver
