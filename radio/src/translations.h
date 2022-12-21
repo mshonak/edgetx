@@ -147,6 +147,17 @@ extern const char* const STR_RETA123[];
 
 extern const char* const STR_TIMER_DIR[];
 
+extern const char* STR_VKEYS[];
+extern const char* STR_VSWITCHES[];
+#if defined(IMU)
+extern const char* STR_IMU_VSRCRAW[];
+#endif
+#if defined(PCBHORUS)
+extern const char* STR_SM_VSRCRAW[];
+#endif
+extern const char* STR_CYC_VSRCRAW[];
+extern const char* STR_TRIMS_VSRCRAW[];
+
 extern const char* const STR_VBLMODE[];
 extern const char* const STR_VCURVETYPE[];
 extern const char* const STR_VCURVEFUNC[];

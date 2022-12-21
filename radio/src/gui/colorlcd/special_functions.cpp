@@ -564,7 +564,7 @@ class SpecialFunctionButton : public Button
         else if (value == NUM_STICKS + 1)
           strcat(s, STR_CHANS);
         else
-          strcat(s, STR_VSRCRAW[value]);
+          strcat(s, getStickName(value - 1));
         break;
       }
 
