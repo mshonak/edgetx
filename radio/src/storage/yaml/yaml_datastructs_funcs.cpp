@@ -28,6 +28,8 @@
 #include "analogs.h"
 #include "stamp.h"
 
+#include "hal/switch_driver.h"
+
 //
 // WARNING:
 // ========
@@ -890,7 +892,7 @@ static bool w_swtchWarn(void* user, uint8_t* data, uint32_t bitoffs,
   swarnstate_t states;
   memcpy(&states, data, sizeof(states));
 
-  for (int i = 0; i < NUM_SWITCHES; i++) {
+  for (uint8_t i = 0; i < switchGetMaxSwitches(); i++) {
     // TODO: SWITCH_EXISTS() uses the g_eeGeneral stucture, which might not be
     // avail
     if (SWITCH_EXISTS(i)) {

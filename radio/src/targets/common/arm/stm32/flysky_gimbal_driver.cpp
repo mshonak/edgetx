@@ -22,6 +22,7 @@
 #include "flysky_gimbal_driver.h"
 #include "stm32_serial_driver.h"
 #include "delays_driver.h"
+#include "hal/adc_driver.h"
 
 #include "hal.h"
 #include "crc.h"
@@ -133,6 +134,7 @@ static void flysky_gimbal_loop()
           if (HallProtocol.hallID.hall_Id.packetID ==
               FLYSKY_HALL_RESP_TYPE_VALUES) {
             int16_t* p_values = (int16_t*)HallProtocol.data;
+            uint16_t* adcValues = getAnalogValues();
             for (uint8_t i = 0; i < 4; i++) {
               adcValues[i] = FLYSKY_OFFSET_VALUE - p_values[i];
             }
