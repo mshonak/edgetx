@@ -62,7 +62,8 @@ void RadioTrainerPage::build(FormWindow * form)
   form->padRight(8);
 #endif
 
-  for (uint8_t i = 0; i < adcGetMaxSticks(); i++) {
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  for (uint8_t i = 0; i < max_sticks; i++) {
     uint8_t chan = channelOrder(i + 1);
     TrainerMix* td = &g_eeGeneral.trainer.mix[chan - 1];
 
