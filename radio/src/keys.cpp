@@ -20,6 +20,7 @@
  */
 
 #include "keys.h"
+#include "board.h"
 #include "timers_driver.h"
 #include "opentx_helpers.h"
 

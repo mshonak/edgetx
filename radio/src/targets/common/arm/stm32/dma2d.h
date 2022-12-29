@@ -21,22 +21,9 @@
 
 #pragma once
 
-extern "C" {
-  #if defined(STM32F4)
-    #include "CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
-    #include "stm32f4xx_hal.h"
-    #include "stm32f4xx_hal_rcc.h"
-    #include "stm32f4xx_hal_rcc_ex.h"
-    #include "stm32f4xx_hal_rtc.h"
-    #include "stm32f4xx_hal_pwr.h"
-    #if defined(COLORLCD)
-      #include "stm32f4xx_hal_ltdc.h"
-    #endif
-  #elif defined(STM32F2)
-    #include "CMSIS/Device/ST/STM32F2xx/Include/stm32f2xx.h"
-    #include "stm32f2xx_hal.h"
-    #include "stm32f2xx_hal_rcc.h"
-    #include "stm32f2xx_hal_rtc.h"
-    #include "stm32f2xx_hal_pwr.h"
-  #endif
-}
+#include "opentx_types.h"
+
+void DMAFillRect(uint16_t * dest, uint16_t destw, uint16_t desth, uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
+void DMACopyBitmap(uint16_t * dest, uint16_t destw, uint16_t desth, uint16_t x, uint16_t y, const uint16_t * src, uint16_t srcw, uint16_t srch, uint16_t srcx, uint16_t srcy, uint16_t w, uint16_t h);
+void DMACopyAlphaBitmap(uint16_t * dest, uint16_t destw, uint16_t desth, uint16_t x, uint16_t y, const uint16_t * src, uint16_t srcw, uint16_t srch, uint16_t srcx, uint16_t srcy, uint16_t w, uint16_t h);
+void DMABitmapConvert(uint16_t * dest, const uint8_t * src, uint16_t w, uint16_t h, uint32_t format);

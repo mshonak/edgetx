@@ -241,6 +241,10 @@ void boardInit()
 #if defined(RTCLOCK) && !defined(COPROCESSOR)
   rtcInit(); // RTC must be initialized before rambackupRestore() is called
 #endif
+
+#if !defined(LCD_VERTICAL_INVERT)
+  lcdSetInitalFrameBuffer(lcdFront->getData());
+#endif
 }
 
 void boardOff()

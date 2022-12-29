@@ -26,11 +26,13 @@ extern "C" {
   #if defined(STM32F4)
     #include "CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
     #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_bus.h"
+    #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma2d.h"
     #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h"
     #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
     #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
     #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usart.h"
     #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_exti.h"
+    #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rcc.h"
     #include "STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_system.h"
   #elif defined(STM32F2)
 
