@@ -48,7 +48,6 @@ option(DEBUG_SEGGER_RTT "Debug output to Segger RTT" OFF)
 option(DEBUG_WINDOWS "Turn on windows traces" OFF)
 option(DEBUG_YAML "Turn on YAML traces" OFF)
 option(DEBUG_LABELS "Turn on Labels traces" OFF)
-option(FRSKY_STICKS "Reverse sticks for FrSky sticks" OFF)
 option(NANO "Use nano newlib and binalloc")
 option(TEST_BUILD_WARNING "Warn this is a test build" OFF)
 option(MODULE_PROTOCOL_FCC "Add support for FCC modules" ON)
@@ -310,10 +309,6 @@ endif()
 
 if(DEBUG_LABELS)
   add_definitions(-DDEBUG_LABELS)
-endif()
-
-if(FRSKY_STICKS)
-  add_definitions(-DFRSKY_STICKS)
 endif()
 
 if(IMU_LSM6DS33)
