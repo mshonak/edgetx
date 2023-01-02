@@ -743,18 +743,21 @@ void drawSource(coord_t x, coord_t y, uint32_t idx, LcdFlags att)
   else if (idx >= MIXSRC_FIRST_SWITCH && idx <= MIXSRC_LAST_SWITCH) {
     lcdDrawText(x, y, getSourceString(idx), att);
   }
-  else if (idx <= MIXSRC_LAST_LOGICAL_SWITCH)
-    drawSwitch(x, y, SWSRC_SW1 + idx - MIXSRC_FIRST_LOGICAL_SWITCH, att);
-  else if (idx < MIXSRC_FIRST_CH)
-    drawStringWithIndex(x, y, STR_PPM_TRAINER, idx - MIXSRC_FIRST_TRAINER + 1, att);
-  else if (idx <= MIXSRC_LAST_CH) {
-    if (ZEXIST(g_model.limitData[idx-MIXSRC_FIRST_CH].name) && (att & STREXPANDED)) {
+  else if (idx <= MIXSRC_LAST_LOGICAL_SWITCH) {
+    idx -= MIXSRC_FIRST_LOGICAL_SWITCH;
+    drawSwitch(x, y, SWSRC_SW1 + idx, att);
+  } else if (idx < MIXSRC_FIRST_CH) {
+    idx -= MIXSRC_FIRST_TRAINER;
+    drawStringWithIndex(x, y, STR_PPM_TRAINER, idx + 1, att);
+  } else if (idx <= MIXSRC_LAST_CH) {
+    idx -= MIXSRC_FIRST_CH;
+    if (ZEXIST(g_model.limitData[idx].name) && (att & STREXPANDED)) {
       char s[LEN_CHANNEL_NAME + 3];
       strcpy(s, STR_CHAR_CHANNEL);
-      strcat(s, g_model.limitData[idx-MIXSRC_FIRST_CH].name);
+      strcat(s, g_model.limitData[idx].name);
       lcdDrawSizedText(x, y, s, LEN_CHANNEL_NAME+2, att);
     } else {
-      drawStringWithIndex(x, y, STR_CH, idx-MIXSRC_FIRST_CH+1, att);
+      drawStringWithIndex(x, y, STR_CH, idx+1, att);
     }
   }
   else if (idx <= MIXSRC_LAST_GVAR) {
