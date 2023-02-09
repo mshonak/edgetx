@@ -198,6 +198,8 @@ void boardInit()
 }
 #endif
 
+extern void rtcDisableBackupReg();
+
 void boardOff()
 {
   backlightEnable(0);
@@ -223,11 +225,7 @@ void boardOff()
   // Shutdown the Haptic
   hapticDone();
 
-#if defined(RTC_BACKUP_RAM)
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_BKPSRAM, DISABLE);
-  PWR_BackupRegulatorCmd(DISABLE);
-#endif
-
+  rtcDisableBackupReg();
   RTC->BKP0R = SHUTDOWN_REQUEST;
 
   pwrOff();

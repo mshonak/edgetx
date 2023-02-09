@@ -258,6 +258,8 @@ void boardInit()
 #endif
 }
 
+extern void rtcDisableBackupReg();
+
 void boardOff()
 {
   lcdOff();
@@ -281,10 +283,7 @@ void boardOff()
   // Shutdown the Haptic
   hapticDone();
 
-#if defined(RTC_BACKUP_RAM)
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_BKPSRAM, DISABLE);
-  PWR_BackupRegulatorCmd(DISABLE);
-#endif
+  rtcDisableBackupReg();
 
   if (usbPlugged())
   {
