@@ -19,22 +19,9 @@
  * GNU General Public License for more details.
  */
 
-#include "board.h"
-#include "boards/generic_stm32/module_ports.h"
-#include "boards/generic_stm32/intmodule_heartbeat.h"
-
 #include "hal/adc_driver.h"
 #include "hal/trainer_driver.h"
 #include "hal/switch_driver.h"
-
-#include "timers_driver.h"
-#include "dataconstants.h"
-#include "opentx_types.h"
-#include "globals.h"
-#include "sdcard.h"
-#include "debug.h"
-
-#include <string.h>
 
 // common ADC driver
 extern const etx_hal_adc_driver_t _adc_driver;
@@ -47,7 +34,20 @@ extern const etx_hal_adc_driver_t _adc_driver;
   #define ADC_DRIVER x12s_adc_driver
 #endif
 
-#if defined(FLYSKY_GIMBAL)
+#include "board.h"
+#include "boards/generic_stm32/module_ports.h"
+#include "boards/generic_stm32/intmodule_heartbeat.h"
+
+#include "timers_driver.h"
+#include "dataconstants.h"
+#include "opentx_types.h"
+#include "globals.h"
+#include "sdcard.h"
+#include "debug.h"
+
+#include <string.h>
+
+#if defined(RADIO_FAMILY_T16) || defined(PCBNV14)
   #include "flysky_gimbal_driver.h"
 #endif
 
@@ -79,7 +79,7 @@ void boardInit()
                          AUDIO_RCC_AHB1Periph |
                          KEYS_RCC_AHB1Periph |
                          ADC_RCC_AHB1Periph |
-#if defined(FLYSKY_GIMBAL)
+#if defined(RADIO_FAMILY_T16)
                          FLYSKY_HALL_RCC_AHB1Periph |
 #endif
                          AUX_SERIAL_RCC_AHB1Periph |
@@ -99,7 +99,7 @@ void boardInit()
                          ADC_RCC_APB1Periph |
                          TIMER_2MHz_RCC_APB1Periph |
                          AUDIO_RCC_APB1Periph |
-#if defined(FLYSKY_GIMBAL)
+#if defined(RADIO_FAMILY_T16)
                          FLYSKY_HALL_RCC_APB1Periph |
 #endif
                          TELEMETRY_RCC_APB1Periph |
@@ -159,7 +159,7 @@ void boardInit()
   sticksPwmDetect();
 #endif
 
-#if defined(FLYSKY_GIMBAL)
+#if defined(RADIO_FAMILY_T16) || defined(PCBNV14)
   globalData.flyskygimbals = flysky_gimbal_init();
 #else
   globalData.flyskygimbals = false;

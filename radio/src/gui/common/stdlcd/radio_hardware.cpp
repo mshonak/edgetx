@@ -22,9 +22,12 @@
 #include <opentx.h>
 #include "hal/adc_driver.h"
 #include "hal/switch_driver.h"
-#include "aux_serial_driver.h"
 #include "analogs.h"
 #include "switches.h"
+
+#if defined(BLUETOOTH)
+  #include "bluetooth_driver.h"
+#endif
 
 #if defined(CROSSFIRE)
   #include "telemetry/crossfire.h"

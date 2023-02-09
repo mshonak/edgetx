@@ -553,7 +553,7 @@ class SpecialFunctionButton : public Button
 
     switch (func) {
       case FUNC_OVERRIDE_CHANNEL:
-        sprintf(s+strlen(s), "%s = %s", getSourceString(MIXSRC_CH1 + CFN_CH_INDEX(cfn)), formatNumberAsString(CFN_PARAM(cfn)).c_str());
+        sprintf(s+strlen(s), "%s = %s", getSourceString(MIXSRC_FIRST_CH + CFN_CH_INDEX(cfn)), formatNumberAsString(CFN_PARAM(cfn)).c_str());
         break;
 
       case FUNC_TRAINER: {
