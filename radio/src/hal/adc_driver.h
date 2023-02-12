@@ -94,6 +94,9 @@ uint8_t adcGetInputOffset(uint8_t type);
 uint16_t adcGetInputValue(uint8_t type, uint8_t idx);
 const char* adcGetInputName(uint8_t type, uint8_t idx);
 
+const char* adcGetInputName(uint8_t idx);
+int adcGetInputIdx(const char* input, uint8_t len);
+
 // To be implemented by the target driver
 // int8_t adcGetVRTC();
 // int8_t adcGetVBAT();

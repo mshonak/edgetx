@@ -535,13 +535,12 @@ static uint8_t select_sensor_cfg(void* user, uint8_t* data, uint32_t bitoffs)
   return 5;
 }
 
-// TODO: replace indexes with canonical stick names
 static uint32_t r_calib(void* user, const char* val, uint8_t val_len)
 {
   (void)user;
 
-  uint32_t sw = yaml_parse_enum(enum_MixSources, val, val_len);
-  if (sw >= MIXSRC_FIRST_STICK) return sw - MIXSRC_FIRST_STICK;
+  int idx = adcGetInputIdx(val, val_len);
+  if (idx >= 0) return idx;
 
   // detect invalid values
   if (val_len == 0 || (val[0] < '0') || (val[0] > '9')) {
@@ -556,8 +555,7 @@ static bool w_calib(void* user, yaml_writer_func wf, void* opaque)
   auto tw = reinterpret_cast<YamlTreeWalker*>(user);
   uint16_t idx = tw->getElmts();
 
-  const char* str =
-      yaml_output_enum(idx + MIXSRC_FIRST_STICK, enum_MixSources);
+  const char* str = adcGetInputName(idx);
   return str ? wf(opaque, str, strlen(str)) : true;
 }
 
