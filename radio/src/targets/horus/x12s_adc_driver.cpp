@@ -153,7 +153,9 @@ static uint32_t adcReadNextSPIChannel(uint8_t index, const stm32_adc_input_t* in
     // command is changed to the next index for the last two readings
     // (because the sampled data is lagging behind for two command cycles)
     uint8_t chan_idx = (i > 1 ? index + 1 : index) % nconv;
-    auto spi_chan = inputs[chan_idx].ADC_Channel;
+
+    auto input_idx = chan[chan_idx];
+    auto spi_chan = inputs[input_idx].ADC_Channel;
     
     uint16_t val = (0x0fff & SPIx_ReadWriteByte(MANUAL_MODE_CHANNEL(spi_chan)));
 
