@@ -210,15 +210,7 @@ uint16_t getRTCBatteryVoltage()
 
 uint16_t getAnalogValue(uint8_t index)
 {
-  if (index >= MAX_STICKS) {
-    if (!IS_POT_SLIDER_AVAILABLE(index - MAX_STICKS)) {
-      // Use fixed analog value for non-existing and/or non-connected pots.
-      // Non-connected analog inputs will slightly follow the adjacent connected
-      // analog inputs, which produces ghost readings on these inputs.
-      return 0;
-    }
-  }
-
+  if (index >= MAX_ANALOG_INPUTS) return 0;
   return adcValues[index];
 }
 
