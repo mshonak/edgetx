@@ -112,18 +112,18 @@
 #define ADC_GPIO_PIN_STICK_RV
 #define ADC_GPIO_PIN_STICK_RH
 
-#define ADC_GPIO_PIN_POT1               GPIO_Pin_6      // PA.06 VRA
-#define ADC_GPIO_PIN_POT2               GPIO_Pin_4      // PC.04 VRB
-#define ADC_GPIO_PIN_SWA                GPIO_Pin_1      // PB.01
-#define ADC_GPIO_PIN_SWB                GPIO_Pin_8      // PF.08
-#define ADC_GPIO_PIN_SWC                GPIO_Pin_0      // PB.00
-#define ADC_GPIO_PIN_SWD                GPIO_Pin_10     // PF.10
-#define ADC_GPIO_PIN_SWE                GPIO_Pin_0      // PC.00
-#define ADC_GPIO_PIN_SWF                GPIO_Pin_1      // PC.01
-#define ADC_GPIO_PIN_SWG                GPIO_Pin_2      // PC.02
-#define ADC_GPIO_PIN_SWH                GPIO_Pin_7      // PA.07
+#define ADC_GPIO_PIN_POT1               LL_GPIO_PIN_6      // PA.06 VRA
+#define ADC_GPIO_PIN_POT2               LL_GPIO_PIN_4      // PC.04 VRB
+#define ADC_GPIO_PIN_SWA                LL_GPIO_PIN_1      // PB.01
+#define ADC_GPIO_PIN_SWB                LL_GPIO_PIN_8      // PF.08
+#define ADC_GPIO_PIN_SWC                LL_GPIO_PIN_0      // PB.00
+#define ADC_GPIO_PIN_SWD                LL_GPIO_PIN_10     // PF.10
+#define ADC_GPIO_PIN_SWE                LL_GPIO_PIN_0      // PC.00
+#define ADC_GPIO_PIN_SWF                LL_GPIO_PIN_1      // PC.01
+#define ADC_GPIO_PIN_SWG                LL_GPIO_PIN_2      // PC.02
+#define ADC_GPIO_PIN_SWH                LL_GPIO_PIN_7      // PA.07
 
-#define ADC_GPIO_PIN_BATT               GPIO_Pin_5      // PC.05
+#define ADC_GPIO_PIN_BATT               LL_GPIO_PIN_5      // PC.05
 
 // FLYSKY_HALL_STICKS
 // #define ADC_GPIOA_PINS_FS               (GPIO_Pin_6 | GPIO_Pin_7)

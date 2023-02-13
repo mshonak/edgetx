@@ -21,6 +21,7 @@
 
 #include "analog_inputs.h"
 #include "stm32_hal_adc.h"
+#include "stm32_spi_adc.h"
 
 #include "hal.h"
 
