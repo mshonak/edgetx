@@ -59,7 +59,7 @@ static bool adc_init()
 
 static bool adc_start_read()
 {
-  return stm32_hal_adc_start_read(_ADC_adc, n_ADC);
+  return stm32_hal_adc_start_read(_ADC_adc, n_ADC, _ADC_inputs, n_inputs);
 }
 
 static void adc_wait_completion()

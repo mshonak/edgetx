@@ -23,6 +23,11 @@
 
 #include <stdint.h>
 
+// 12-bit values
+#define ADC_MAX_VALUE 4095
+
+#define ADC_INVERT_VALUE(v) (ADC_MAX_VALUE - (v))
+
 // tune this value, bigger value - more filtering (range: 1-5) (see explanation below)
 #define JITTER_FILTER_STRENGTH  4
 // tune this value, bigger value - more filtering (range: 0-1) (see explanation below)
