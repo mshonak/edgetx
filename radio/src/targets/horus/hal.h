@@ -299,8 +299,8 @@
   #define ADC_SPI_SLIDER1               7
   #define ADC_SPI_SLIDER2               8
   #define ADC_SPI_BATT                  9
-  #define ADC_SPI_SLIDER3               10
-  #define ADC_SPI_SLIDER4               11
+  #define ADC_SPI_SLIDER3               11
+  #define ADC_SPI_SLIDER4               10
 
   #define ADC_MAIN                      ADC3
   #define ADC_GPIO_PIN_MOUSE1           GPIO_Pin_8 // PF.08 ADC3_IN6 J5 MOUSE_X
@@ -395,7 +395,7 @@
 #elif defined(PCBX10)
   #define ADC_DIRECTION                 {1,-1,1,-1,  -1,1,-1,  1,1,1,1,   1,-1 }
 #elif defined(PCBX12S)
-  #define ADC_DIRECTION                 {1,-1,1,-1,  -1,1,-1,  -1,-1,  -1,1, 0,0,0}
+  #define ADC_DIRECTION                 {1,-1,1,-1,  -1,1,-1,  1,-1,  -1,-1, 0,0,0}
 #else
   #error "Missing ADC_DIRECTION array"
 #endif

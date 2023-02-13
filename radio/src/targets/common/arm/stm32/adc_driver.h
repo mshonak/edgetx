@@ -21,6 +21,5 @@
 
 #include "stm32_hal_adc.h"
 
-uint8_t adc_get_n_inputs();
 const stm32_adc_input_t* adc_get_inputs();
 const stm32_spi_adc_t* adc_spi_get();

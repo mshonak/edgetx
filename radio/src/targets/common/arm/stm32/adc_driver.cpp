@@ -75,7 +75,6 @@ const etx_hal_adc_driver_t _adc_driver = {
 };
 
 // Exports for SPI ADC driver
-uint8_t adc_get_n_inputs() { return n_inputs; }
 const stm32_adc_input_t* adc_get_inputs() { return _ADC_inputs; }
 
 const stm32_spi_adc_t* adc_spi_get()

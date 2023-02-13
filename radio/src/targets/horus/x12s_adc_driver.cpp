@@ -27,18 +27,6 @@
 #define ADC_CS_HIGH()                  LL_GPIO_SetOutputPin(ADC_SPI_GPIO, ADC_SPI_PIN_CS)
 #define ADC_CS_LOW()                   LL_GPIO_ResetOutputPin(ADC_SPI_GPIO, ADC_SPI_PIN_CS)
 
-#define SPI_STICK1                     0
-#define SPI_STICK2                     1
-#define SPI_STICK3                     2
-#define SPI_STICK4                     3
-#define SPI_S1                         4
-#define SPI_6POS                       5
-#define SPI_S2                         6
-#define SPI_LS                         7
-#define SPI_RS                         8
-#define SPI_TX_VOLTAGE                 9
-#define SPI_L2                         10
-#define SPI_L1                         11
 #define RESETCMD                       0x4000
 #define MANUAL_MODE                    0x1000 // manual mode channel 0
 #define MANUAL_MODE_CHANNEL(x)         (MANUAL_MODE | ((x) << 7))
@@ -109,11 +97,6 @@ static bool x12s_adc_init()
   // init SPI ADC
   ADS7952_Init();
 
-  // we're going to do it ourselves
-  stm32_hal_adc_disable_oversampling();
-
-  // TODO: fetch internal ADC channel mapping
-
   // init onboard ADC
   return _adc_driver.init();
 }
@@ -175,7 +158,7 @@ static uint32_t adcReadNextSPIChannel(uint8_t index, const stm32_adc_input_t* in
 
 bool x12s_adc_start_read()
 {
-  // onboard ADC
+  // start onboard ADC
   _adc_driver.start_conversion();
 
   adcReadSPIDummy();
@@ -191,13 +174,6 @@ void x12s_adc_wait_completion()
   auto chans = spi_adc->channels;
   auto inputs = adc_get_inputs();
   
-  auto all_channels = adc_get_n_inputs();
-  auto adc_channels = all_channels - spi_channels;
-  
-  uint8_t noInternalReads = 0;
-  uint8_t adc_idx[adc_channels] = { 11, 12, 14 }; // TODO
-  uint16_t temp[adc_channels] = { 0 };
-
   // Fetch buffer from generic ADC driver
   auto adcValues = getAnalogValues();
   
@@ -208,38 +184,17 @@ void x12s_adc_wait_completion()
   for (uint32_t i = 0; i < spi_channels; i++) {
     
     // read SPI channel
-    adcValues[chans[i]] = adcReadNextSPIChannel(i, inputs, chans, spi_channels);
+    auto input_channel = chans[i];
+    auto adc_value = adcReadNextSPIChannel(i, inputs, chans, spi_channels);
 
-    // check if not enough internal ADC samples
-    // or one just finished (TC cleared on new sample started)
-    if (noInternalReads < 4) {
-
-      _adc_driver.wait_completion();
-
-      // for each internal ADC channel
-      for (uint8_t x = 0; x < adc_channels; x++) {
-
-        // do the averaging math
-        // TODO: fetch proper index! (-> from inputs?) (11, 12, 14)
-        temp[x] += adcValues[adc_idx[x]];
-      }
-
-      // restart internal ADC if not yet done
-      if (++noInternalReads < 4) {
-        _adc_driver.start_conversion();
-      }
-    }
+    if (inputs[input_channel].inverted)
+      adcValues[input_channel] = ADC_INVERT_VALUE(adc_value);
+    else
+      adcValues[input_channel] = adc_value;
   }
 
-#if defined(DEBUG)
-  if (noInternalReads != 4) {
-    TRACE("Internal ADC problem: reads: %d", noInternalReads);
-  }
-#endif
-
-  for (uint8_t x = 0; x < adc_channels; x++) {
-    adcValues[adc_idx[x]] = temp[x] >> 2;
-  }
+  // onboard ADC
+  _adc_driver.wait_completion();
 }
 
 const etx_hal_adc_driver_t x12s_adc_driver = {

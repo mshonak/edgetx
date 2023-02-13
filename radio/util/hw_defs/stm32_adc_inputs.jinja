@@ -57,7 +57,7 @@ static const stm32_spi_adc_t _ADC_spi[] = {
 {% endfor %}
 };
 
-{% for adc in adc_inputs.adcs %}
+{% for adc in adc_inputs.adcs | selectattr('name', '!=', 'SPI') %}
   {% if adc.dma %}
 extern "C" void {{ adc.dma_stream_irq_handler }} (void)
 {
