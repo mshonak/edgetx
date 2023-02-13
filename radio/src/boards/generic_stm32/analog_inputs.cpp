@@ -19,18 +19,21 @@
  * GNU General Public License for more details.
  */
 
-#include "adc_driver.h"
-#include "board_common.h"
+#include "analog_inputs.h"
+#include "stm32_hal_adc.h"
 
+#include "hal.h"
+
+#if defined(ADC_SPI)
+  #include "ads79xx.h"
+#endif
+
+// generated files
 #include "stm32_adc_inputs.inc"
 #include "hal_adc_inputs.inc"
 
 #include "definitions.h"
 #include <string.h>
-
-// needed to prevent the compiler to eject this symbol !!!
-// TODO: place this in some header used by board.cpp
-extern const etx_hal_adc_driver_t _adc_driver;
 
 constexpr uint8_t n_ADC = DIM(_ADC_adc);
 constexpr uint8_t n_ADC_spi = DIM(_ADC_spi);
@@ -54,17 +57,32 @@ static bool adc_init()
   _vbat_input = _find_input_name("VBAT");
   _vrtc_input = _find_input_name("RTC_BAT");
 
-  return stm32_hal_adc_init(_ADC_adc, n_ADC, _ADC_inputs, _ADC_GPIOs, n_GPIO);
+  bool success = stm32_hal_adc_init(_ADC_adc, n_ADC, _ADC_inputs, _ADC_GPIOs, n_GPIO);
+#if defined(ADC_SPI)
+  if (n_ADC_spi > 0) ads79xx_init(&_ADC_spi[0]);
+#endif
+  return success;
 }
 
 static bool adc_start_read()
 {
-  return stm32_hal_adc_start_read(_ADC_adc, n_ADC, _ADC_inputs, n_inputs);
+  bool success = stm32_hal_adc_start_read(_ADC_adc, n_ADC, _ADC_inputs, n_inputs);
+#if defined(ADC_SPI)
+  if (n_ADC_spi > 0) {
+    success = success && ads79xx_adc_start_read(&_ADC_spi[0], _ADC_inputs);
+  }
+#endif
+  return success;
 }
 
 static void adc_wait_completion()
 {
-  return stm32_hal_adc_wait_completion(_ADC_adc, n_ADC, _ADC_inputs, n_inputs);
+#if defined(ADC_SPI)
+  // ADS79xx does all the work in the completion function
+  // so it's probably better to poll it first
+  if (n_ADC_spi > 0) ads79xx_adc_wait_completion(&_ADC_spi[0], _ADC_inputs);
+#endif
+  stm32_hal_adc_wait_completion(_ADC_adc, n_ADC, _ADC_inputs, n_inputs);
 }
 
 const etx_hal_adc_driver_t _adc_driver = {
@@ -73,13 +91,4 @@ const etx_hal_adc_driver_t _adc_driver = {
   adc_start_read,
   adc_wait_completion
 };
-
-// Exports for SPI ADC driver
-const stm32_adc_input_t* adc_get_inputs() { return _ADC_inputs; }
-
-const stm32_spi_adc_t* adc_spi_get()
-{
-  if (n_ADC_spi > 0) return &_ADC_spi[0];
-  return nullptr;
-}
 

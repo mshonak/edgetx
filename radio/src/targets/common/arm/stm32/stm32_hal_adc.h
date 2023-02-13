@@ -51,14 +51,6 @@ struct stm32_adc_gpio_t {
   uint8_t         n_pins;
 };
 
-struct stm32_spi_adc_t {
-  SPI_TypeDef*    SPIx;
-  const uint8_t*  channels;
-  uint8_t         n_channels;  
-};
-
-// Driver to be passed to adcInit()
-//extern const etx_hal_adc_driver_t stm32_hal_adc_driver;
 
 bool stm32_hal_adc_init(const stm32_adc_t* ADCs, uint8_t n_ADC,
                         const stm32_adc_input_t* inputs,

@@ -167,7 +167,14 @@ class ADCInputParser:
         adc_spi = self.hw_defs.get('ADC_SPI')
         if adc_spi:
             #eprint('## Found SPI ADC')
-            adcs.append(ADC('SPI', adc_spi))
+            adc = ADC('SPI', adc_spi)
+            adc.gpio = self.hw_defs['ADC_SPI_GPIO']
+            adc.gpio_pin_miso = self.hw_defs['ADC_SPI_GPIO_PIN_MISO']
+            adc.gpio_pin_mosi = self.hw_defs['ADC_SPI_GPIO_PIN_MOSI']
+            adc.gpio_pin_sck = self.hw_defs['ADC_SPI_GPIO_PIN_SCK']
+            adc.gpio_pin_cs = self.hw_defs['ADC_SPI_GPIO_PIN_CS']
+            adc.gpio_af = self.hw_defs['ADC_SPI_GPIO_AF']
+            adcs.append(adc)
         
         adc_main = self._parse_adc('MAIN', 'ADC_MAIN', 'ADC')
         if adc_main:

@@ -147,7 +147,6 @@ elseif (PCB STREQUAL X12S)
   set(FIRMWARE_TARGET_SRC
     ${FIRMWARE_TARGET_SRC}
     audio_spi_driver.cpp
-    x12s_adc_driver.cpp
     )
   set(BITMAPS_TARGET x12s_bitmaps)
   set(FONTS_TARGET x12s_fonts)
@@ -264,6 +263,7 @@ set(FIRMWARE_SRC
   boards/generic_stm32/aux_ports.cpp
   boards/generic_stm32/sport_update.cpp
   boards/generic_stm32/intmodule_heartbeat.cpp
+  boards/generic_stm32/analog_inputs.cpp
   targets/common/arm/stm32/stm32_exti_driver.cpp
   targets/common/arm/stm32/mixer_scheduler_driver.cpp
   targets/common/arm/stm32/timers_driver.cpp
@@ -274,6 +274,7 @@ set(FIRMWARE_SRC
   targets/common/arm/stm32/pwr_driver.cpp
   targets/common/arm/stm32/heartbeat_driver.cpp
   targets/common/arm/stm32/trainer_driver.cpp
+  targets/common/arm/stm32/ads79xx.cpp
   targets/common/arm/stm32/sdio_sd.c
   )
 

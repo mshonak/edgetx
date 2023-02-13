@@ -19,7 +19,10 @@
  * GNU General Public License for more details.
  */
 
+#include "stm32_spi_adc.h"
 #include "stm32_hal_adc.h"
 
-const stm32_adc_input_t* adc_get_inputs();
-const stm32_spi_adc_t* adc_spi_get();
+void ads79xx_init(const stm32_spi_adc_t* adc);
+bool ads79xx_adc_start_read(const stm32_spi_adc_t* adc, const stm32_adc_input_t* inputs);
+void ads79xx_adc_wait_completion(const stm32_spi_adc_t* adc, const stm32_adc_input_t* inputs);
+

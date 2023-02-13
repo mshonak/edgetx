@@ -23,20 +23,10 @@
 #include "hal/trainer_driver.h"
 #include "hal/switch_driver.h"
 
-// common ADC driver
-extern const etx_hal_adc_driver_t _adc_driver;
-
-#if !defined(PCBX12S)
-  #include "stm32_hal_adc.h"
-  #define ADC_DRIVER _adc_driver
-#else
-  #include "x12s_adc_driver.h"
-  #define ADC_DRIVER x12s_adc_driver
-#endif
-
 #include "board.h"
 #include "boards/generic_stm32/module_ports.h"
 #include "boards/generic_stm32/intmodule_heartbeat.h"
+#include "boards/generic_stm32/analog_inputs.h"
 
 #include "timers_driver.h"
 #include "dataconstants.h"
@@ -165,7 +155,7 @@ void boardInit()
   globalData.flyskygimbals = false;
 #endif
 
-  if (!adcInit(&ADC_DRIVER))
+  if (!adcInit(&_adc_driver))
     TRACE("adcInit failed");
 
   init2MhzTimer();

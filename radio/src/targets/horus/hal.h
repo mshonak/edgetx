@@ -279,12 +279,12 @@
   #define ADC_RCC_APB1Periph            0
   #define ADC_RCC_APB2Periph            (RCC_APB2Periph_SPI4)
   #define ADC_SPI                       SPI4
-  #define ADC_GPIO_AF                   LL_GPIO_AF_5
   #define ADC_SPI_GPIO                  GPIOE
-  #define ADC_SPI_PIN_SCK               LL_GPIO_PIN_2 // PE.02
-  #define ADC_SPI_PIN_CS                LL_GPIO_PIN_4 // PE.04
-  #define ADC_SPI_PIN_MOSI              LL_GPIO_PIN_6 // PE.06
-  #define ADC_SPI_PIN_MISO              LL_GPIO_PIN_5 // PE.05
+  #define ADC_SPI_GPIO_AF               LL_GPIO_AF_5
+  #define ADC_SPI_GPIO_PIN_SCK          LL_GPIO_PIN_2 // PE.02
+  #define ADC_SPI_GPIO_PIN_CS           LL_GPIO_PIN_4 // PE.04
+  #define ADC_SPI_GPIO_PIN_MOSI         LL_GPIO_PIN_6 // PE.06
+  #define ADC_SPI_GPIO_PIN_MISO         LL_GPIO_PIN_5 // PE.05
 
   #define ADC_SPI_STICK_LH              0
   #define ADC_SPI_STICK_LV              1
@@ -300,8 +300,8 @@
   #define ADC_SPI_SLIDER4               10
 
   #define ADC_MAIN                      ADC3
-  #define ADC_GPIO_PIN_MOUSE1           GPIO_Pin_8 // PF.08 ADC3_IN6 J5 MOUSE_X
-  #define ADC_GPIO_PIN_MOUSE2           GPIO_Pin_9 // PF.09 ADC3_IN7 J6 MOUSE_Y
+  #define ADC_GPIO_PIN_MOUSE1           LL_GPIO_PIN_8 // PF.08 ADC3_IN6 J5 MOUSE_X
+  #define ADC_GPIO_PIN_MOUSE2           LL_GPIO_PIN_9 // PF.09 ADC3_IN7 J6 MOUSE_Y
   #define ADC_GPIO_MOUSE                GPIOF
   #define ADC_CHANNEL_MOUSE1            6
   #define ADC_CHANNEL_MOUSE2            7
@@ -321,18 +321,18 @@
   #define ADC_RCC_AHB1Periph            (RCC_AHB1Periph_DMA2)
   #define ADC_RCC_APB1Periph            (RCC_APB1Periph_TIM5)
   #define ADC_RCC_APB2Periph            0
-  #define ADC_GPIO_PIN_STICK_LH         GPIO_Pin_0      // PA.00
-  #define ADC_GPIO_PIN_STICK_LV         GPIO_Pin_1      // PA.01
-  #define ADC_GPIO_PIN_STICK_RH         GPIO_Pin_2      // PA.02
-  #define ADC_GPIO_PIN_STICK_RV         GPIO_Pin_3      // PA.03
-  #define ADC_GPIO_PIN_POT1             GPIO_Pin_0      // PC.00
-  #define ADC_GPIO_PIN_POT2             GPIO_Pin_1      // PC.01
-  #define ADC_GPIO_PIN_POT3             GPIO_Pin_2      // PC.02 //
-  #define ADC_GPIO_PIN_SLIDER1          GPIO_Pin_6      // PF.06
-  #define ADC_GPIO_PIN_SLIDER2          GPIO_Pin_3      // PC.03 //
-  #define ADC_GPIO_PIN_BATT             GPIO_Pin_7      // PF.07
-  #define ADC_GPIO_PIN_EXT1             GPIO_Pin_8      // PF.08
-  #define ADC_GPIO_PIN_EXT2             GPIO_Pin_9      // PF.09
+  #define ADC_GPIO_PIN_STICK_LH         LL_GPIO_PIN_0      // PA.00
+  #define ADC_GPIO_PIN_STICK_LV         LL_GPIO_PIN_1      // PA.01
+  #define ADC_GPIO_PIN_STICK_RH         LL_GPIO_PIN_2      // PA.02
+  #define ADC_GPIO_PIN_STICK_RV         LL_GPIO_PIN_3      // PA.03
+  #define ADC_GPIO_PIN_POT1             LL_GPIO_PIN_0      // PC.00
+  #define ADC_GPIO_PIN_POT2             LL_GPIO_PIN_1      // PC.01
+  #define ADC_GPIO_PIN_POT3             LL_GPIO_PIN_2      // PC.02 //
+  #define ADC_GPIO_PIN_SLIDER1          LL_GPIO_PIN_6      // PF.06
+  #define ADC_GPIO_PIN_SLIDER2          LL_GPIO_PIN_3      // PC.03 //
+  #define ADC_GPIO_PIN_BATT             LL_GPIO_PIN_7      // PF.07
+  #define ADC_GPIO_PIN_EXT1             LL_GPIO_PIN_8      // PF.08
+  #define ADC_GPIO_PIN_EXT2             LL_GPIO_PIN_9      // PF.09
   #define ADC_GPIO_PIN_EXT3             ADC_GPIO_PIN_STICK_RH
   #define ADC_GPIO_PIN_EXT4             ADC_GPIO_PIN_STICK_RV
   #if !defined(RADIO_TX16S)
@@ -343,7 +343,7 @@
     #define PWM_IRQn                    TIM5_IRQn
     #define PWM_GPIOA_PINS              (ADC_GPIO_PIN_STICK_LH | ADC_GPIO_PIN_STICK_LV | ADC_GPIO_PIN_STICK_RH | ADC_GPIO_PIN_STICK_RV)
   #endif
-  #define ADC_GPIOA_PINS_FS            (GPIO_Pin_2 | GPIO_Pin_3)
+  #define ADC_GPIOA_PINS_FS            (LL_GPIO_PIN_2 | LL_GPIO_PIN_3)
   #define ADC_GPIOA_PINS               (STICKS_PWM_ENABLED() ? 0 : (ADC_GPIO_PIN_STICK_LH | ADC_GPIO_PIN_STICK_LV | ADC_GPIO_PIN_STICK_RH | ADC_GPIO_PIN_STICK_RV | ))
   #define ADC_GPIOC_PINS                (ADC_GPIO_PIN_POT1 | ADC_GPIO_PIN_POT2 | ADC_GPIO_PIN_POT3 | ADC_GPIO_PIN_SLIDER2)
   #define ADC_GPIOF_PINS                (ADC_GPIO_PIN_SLIDER1 | ADC_GPIO_PIN_BATT | ADC_GPIO_PIN_EXT1 | ADC_GPIO_PIN_EXT2)
