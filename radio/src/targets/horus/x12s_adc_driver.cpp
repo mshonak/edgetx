@@ -21,8 +21,11 @@
 
 #include "adc_driver.h"
 #include "x12s_adc_driver.h"
+#include "delays_driver.h"
 
-#include "opentx.h"
+#include "stm32_hal_ll.h"
+#include "hal.h"
+
 
 #define ADC_CS_HIGH()                  LL_GPIO_SetOutputPin(ADC_SPI_GPIO, ADC_SPI_PIN_CS)
 #define ADC_CS_LOW()                   LL_GPIO_ResetOutputPin(ADC_SPI_GPIO, ADC_SPI_PIN_CS)
@@ -33,51 +36,44 @@
 
 uint16_t SPIx_ReadWriteByte(uint16_t value)
 {
-  while (SPI_I2S_GetFlagStatus(ADC_SPI, SPI_I2S_FLAG_TXE) == RESET);
-  SPI_I2S_SendData(ADC_SPI, value);
+  while (!LL_SPI_IsActiveFlag_TXE(ADC_SPI));
+  LL_SPI_TransmitData16(ADC_SPI, value);
 
-  while (SPI_I2S_GetFlagStatus(ADC_SPI, SPI_I2S_FLAG_RXNE) == RESET);
-  return SPI_I2S_ReceiveData(ADC_SPI);
+  while (!LL_SPI_IsActiveFlag_RXNE(ADC_SPI));
+  return LL_SPI_ReceiveData16(ADC_SPI);
 }
 
 static void ADS7952_Init()
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
-  SPI_InitTypeDef SPI_InitStructure;
+  LL_GPIO_InitTypeDef pinInit;
+  LL_GPIO_StructInit(&pinInit);
 
-  GPIO_InitStructure.GPIO_Pin = ADC_SPI_PIN_MISO | ADC_SPI_PIN_SCK | ADC_SPI_PIN_MOSI;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(ADC_SPI_GPIO, &GPIO_InitStructure);
+  pinInit.Pin = ADC_SPI_PIN_MISO | ADC_SPI_PIN_SCK | ADC_SPI_PIN_MOSI;
+  pinInit.Mode = LL_GPIO_MODE_ALTERNATE;
+  pinInit.Alternate = ADC_GPIO_AF;
+  LL_GPIO_Init(ADC_SPI_GPIO, &pinInit);
 
-  GPIO_InitStructure.GPIO_Pin = ADC_SPI_PIN_CS;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(ADC_SPI_GPIO, &GPIO_InitStructure);
+  pinInit.Pin = ADC_SPI_PIN_CS;
+  pinInit.Mode = LL_GPIO_MODE_OUTPUT;
+  pinInit.Alternate = LL_GPIO_AF_0;
+  LL_GPIO_Init(ADC_SPI_GPIO, &pinInit);
 
-  GPIO_PinAFConfig(ADC_SPI_GPIO, ADC_SPI_PinSource_SCK, ADC_GPIO_AF);
-  GPIO_PinAFConfig(ADC_SPI_GPIO, ADC_SPI_PinSource_MISO, ADC_GPIO_AF);
-  GPIO_PinAFConfig(ADC_SPI_GPIO, ADC_SPI_PinSource_MOSI, ADC_GPIO_AF);
+  LL_SPI_DeInit(ADC_SPI);
 
-  SPI_I2S_DeInit(ADC_SPI);
+  LL_SPI_InitTypeDef spiInit;
+  LL_SPI_StructInit(&spiInit);
 
-  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-  SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
-  SPI_InitStructure.SPI_CRCPolynomial = 7;
-  SPI_Init(ADC_SPI, &SPI_InitStructure);
-  SPI_Cmd(ADC_SPI, ENABLE);
-  SPI_I2S_ITConfig(ADC_SPI, SPI_I2S_IT_TXE, DISABLE);
-  SPI_I2S_ITConfig(ADC_SPI, SPI_I2S_IT_RXNE, DISABLE);
+  spiInit.TransferDirection = LL_SPI_FULL_DUPLEX;
+  spiInit.Mode = LL_SPI_MODE_MASTER;
+  spiInit.DataWidth = LL_SPI_DATAWIDTH_16BIT;
+  spiInit.NSS = LL_SPI_NSS_SOFT;
+  spiInit.BaudRate = LL_SPI_BAUDRATEPRESCALER_DIV8;
+  LL_SPI_Init(ADC_SPI, &spiInit);
+
+  LL_SPI_Enable(ADC_SPI);
+
+  LL_SPI_DisableIT_TXE(ADC_SPI);
+  LL_SPI_DisableIT_RXNE(ADC_SPI);
 
   ADC_CS_HIGH();
   delay_01us(1);

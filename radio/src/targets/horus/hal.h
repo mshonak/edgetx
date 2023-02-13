@@ -279,15 +279,12 @@
   #define ADC_RCC_APB1Periph            0
   #define ADC_RCC_APB2Periph            (RCC_APB2Periph_SPI4)
   #define ADC_SPI                       SPI4
-  #define ADC_GPIO_AF                   GPIO_AF_SPI4
+  #define ADC_GPIO_AF                   LL_GPIO_AF_5
   #define ADC_SPI_GPIO                  GPIOE
-  #define ADC_SPI_PIN_SCK               GPIO_Pin_2 // PE.02
-  #define ADC_SPI_PIN_CS                GPIO_Pin_4 // PE.04
-  #define ADC_SPI_PIN_MOSI              GPIO_Pin_6 // PE.06
-  #define ADC_SPI_PIN_MISO              GPIO_Pin_5 // PE.05
-  #define ADC_SPI_PinSource_SCK         GPIO_PinSource2
-  #define ADC_SPI_PinSource_MISO        GPIO_PinSource5
-  #define ADC_SPI_PinSource_MOSI        GPIO_PinSource6
+  #define ADC_SPI_PIN_SCK               LL_GPIO_PIN_2 // PE.02
+  #define ADC_SPI_PIN_CS                LL_GPIO_PIN_4 // PE.04
+  #define ADC_SPI_PIN_MOSI              LL_GPIO_PIN_6 // PE.06
+  #define ADC_SPI_PIN_MISO              LL_GPIO_PIN_5 // PE.05
 
   #define ADC_SPI_STICK_LH              0
   #define ADC_SPI_STICK_LV              1
