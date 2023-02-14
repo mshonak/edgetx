@@ -77,7 +77,7 @@ HWPots::HWPots(Window* parent) : FormGroup(parent, rect_t{})
     // TODO: check initialised ADC inputs instead!
 
     // Display EX3 & EX4 (= last two pots) only when FlySky gimbals are present
-    // TODO!
+    // TODO: use input disabled mask instead
 // #if !defined(SIMU) && defined(RADIO_FAMILY_T16)
 //     if (!globalData.flyskygimbals && (i >= (NUM_POTS - 2))) continue;
 // #endif

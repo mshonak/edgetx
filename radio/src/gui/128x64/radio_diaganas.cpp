@@ -90,8 +90,7 @@ void menuRadioDiagAnalogs(event_t event)
 
   coord_t y = MENU_HEADER_HEIGHT + 1;
 
-  lcdDrawTextAlignedLeft(y, STICKS_PWM_ENABLED() ? STR_PWM_STICKS_POTS_SLIDERS
-                                                 : STR_STICKS_POTS_SLIDERS);
+  lcdDrawTextAlignedLeft(y, STR_STICKS_POTS_SLIDERS);
 
   for (uint8_t i = 0; i < MAX_ANALOG_INPUTS; i++) {
     // TODO: if available

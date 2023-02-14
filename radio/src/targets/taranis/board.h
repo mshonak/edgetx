@@ -412,15 +412,8 @@ enum Analogs {
   #define NUM_TRIMS_KEYS                (NUM_TRIMS * 2)
 #endif
 
-#if defined(STICKS_PWM)
-  #define STICKS_PWM_ENABLED()          (!hardwareOptions.sticksPwmDisabled)
-#else
-  #define STICKS_PWM_ENABLED()          false
-#endif
-
 PACK(typedef struct {
   uint8_t pcbrev:2;
-  uint8_t sticksPwmDisabled:1;
   uint8_t pxx2Enabled:1;
 }) HardwareOptions;
 

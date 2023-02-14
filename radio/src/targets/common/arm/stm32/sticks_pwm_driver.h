@@ -19,4 +19,5 @@
  * GNU General Public License for more details.
  */
 
-void sticksPwmInit();
+// returns 'true' if PWM sticks have been detected
+bool sticksPwmDetect();

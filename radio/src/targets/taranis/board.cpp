@@ -47,6 +47,10 @@
   #include "bluetooth_driver.h"
 #endif
 
+#if defined(PWM_STICKS)
+  #include "sticks_pwm_driver.h"
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif

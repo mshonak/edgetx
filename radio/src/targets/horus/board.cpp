@@ -37,6 +37,10 @@
 
 #include <string.h>
 
+#if defined(PWM_STICKS)
+  #include "sticks_pwm_driver.h"
+#endif
+
 #if defined(RADIO_FAMILY_T16) || defined(PCBNV14)
   #include "flysky_gimbal_driver.h"
 #endif
@@ -145,14 +149,12 @@ void boardInit()
   switchInit();
   rotaryEncoderInit();
 
-#if defined(STICKS_PWM)
+#if defined(PWM_STICKS)
   sticksPwmDetect();
 #endif
-
-#if defined(RADIO_FAMILY_T16) || defined(PCBNV14)
-  globalData.flyskygimbals = flysky_gimbal_init();
-#else
-  globalData.flyskygimbals = false;
+  
+#if defined(RADIO_FAMILY_T16)
+  flysky_gimbal_init();
 #endif
 
   if (!adcInit(&_adc_driver))

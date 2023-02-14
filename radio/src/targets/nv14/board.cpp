@@ -188,7 +188,7 @@ void boardInit()
 
   init_trainer();
   battery_charge_init();
-  globalData.flyskygimbals = flysky_gimbal_init();
+  flysky_gimbal_init();
   init2MhzTimer();
   init1msTimer();
   TouchInit();

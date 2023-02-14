@@ -336,6 +336,7 @@
   #define ADC_GPIO_PIN_EXT3             ADC_GPIO_PIN_STICK_RH
   #define ADC_GPIO_PIN_EXT4             ADC_GPIO_PIN_STICK_RV
   #if !defined(RADIO_TX16S)
+    #define PWM_STICKS
     #define PWM_TIMER                   TIM5
     #define PWM_GPIO                    GPIOA
     #define PWM_GPIO_AF                 GPIO_AF_TIM5
@@ -343,8 +344,8 @@
     #define PWM_IRQn                    TIM5_IRQn
     #define PWM_GPIOA_PINS              (ADC_GPIO_PIN_STICK_LH | ADC_GPIO_PIN_STICK_LV | ADC_GPIO_PIN_STICK_RH | ADC_GPIO_PIN_STICK_RV)
   #endif
-  #define ADC_GPIOA_PINS_FS            (LL_GPIO_PIN_2 | LL_GPIO_PIN_3)
-  #define ADC_GPIOA_PINS               (STICKS_PWM_ENABLED() ? 0 : (ADC_GPIO_PIN_STICK_LH | ADC_GPIO_PIN_STICK_LV | ADC_GPIO_PIN_STICK_RH | ADC_GPIO_PIN_STICK_RV | ))
+  #define ADC_GPIOA_PINS_FS             (LL_GPIO_PIN_2 | LL_GPIO_PIN_3)
+  #define ADC_GPIOA_PINS                (ADC_GPIO_PIN_STICK_LH | ADC_GPIO_PIN_STICK_LV | ADC_GPIO_PIN_STICK_RH | ADC_GPIO_PIN_STICK_RV)
   #define ADC_GPIOC_PINS                (ADC_GPIO_PIN_POT1 | ADC_GPIO_PIN_POT2 | ADC_GPIO_PIN_POT3 | ADC_GPIO_PIN_SLIDER2)
   #define ADC_GPIOF_PINS                (ADC_GPIO_PIN_SLIDER1 | ADC_GPIO_PIN_BATT | ADC_GPIO_PIN_EXT1 | ADC_GPIO_PIN_EXT2)
   #define ADC_CHANNEL_STICK_LH          LL_ADC_CHANNEL_0   // ADC3_IN0
