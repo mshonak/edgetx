@@ -29,7 +29,7 @@ void clearInputs()
 
 void setDefaultInputs()
 {
-  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = 0; i < max_sticks; i++) {
     uint8_t stick_index = channelOrder(i + 1) - 1;
     ExpoData *expo = expoAddress(i);
@@ -38,7 +38,7 @@ void setDefaultInputs()
     expo->chn = i;
     expo->weight = 100;
     expo->mode = 3; // TODO constant
-    strncpy(g_model.inputNames[i], getStickName(stick_index), LEN_INPUT_NAME);
+    strncpy(g_model.inputNames[i], getMainControlLabel(stick_index), LEN_INPUT_NAME);
   }
 
   storageDirty(EE_MODEL);
@@ -51,7 +51,7 @@ void clearMixes()
 
 void setDefaultMixes()
 {
-  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = 0; i < max_sticks; i++) {
     MixData * mix = mixAddress(i);
     mix->destCh = i;

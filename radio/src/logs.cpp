@@ -230,9 +230,9 @@ void writeHeader()
     }
   }
 
-  auto n_inputs = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto n_inputs = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (uint8_t i = 0; i < n_inputs; i++) {
-    const char* p = analogGetCanonicalName(ADC_INPUT_STICK, i);
+    const char* p = analogGetCanonicalName(ADC_INPUT_MAIN, i);
     while (*p) { f_putc(*(p++), &g_oLogFile); }
     f_putc(',', &g_oLogFile);
   }
@@ -356,8 +356,8 @@ void logsWrite()
         }
       }
 
-      auto n_inputs = adcGetMaxInputs(ADC_INPUT_STICK);
-      auto offset = adcGetInputOffset(ADC_INPUT_STICK);
+      auto n_inputs = adcGetMaxInputs(ADC_INPUT_MAIN);
+      auto offset = adcGetInputOffset(ADC_INPUT_MAIN);
 
       for (uint8_t i = 0; i < n_inputs; i++) {
         f_printf(&g_oLogFile, "%d,", calibratedAnalogs[offset + i]);

@@ -618,9 +618,9 @@ void putsVBat(coord_t x, coord_t y, LcdFlags att)
   putsVolts(x, y, g_vbat100mV, att);
 }
 
-void drawStickName(coord_t x, coord_t y, uint8_t idx, LcdFlags att)
+void drawMainControlLabel(coord_t x, coord_t y, uint8_t idx, LcdFlags att)
 {
-  lcdDrawSizedText(x, y, getStickName(idx), UINT8_MAX, att);
+  lcdDrawSizedText(x, y, getMainControlLabel(idx), UINT8_MAX, att);
 }
 
 void drawSource(coord_t x, coord_t y, uint32_t idx, LcdFlags att)

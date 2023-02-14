@@ -128,7 +128,7 @@ class SpecialFunctionEditPage : public Page
 
       case FUNC_TRAINER: {
         new StaticText(line, rect_t{}, STR_VALUE, 0, COLOR_THEME_PRIMARY1);
-        auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+        auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
         auto choice = new Choice(line, rect_t{}, 0, max_sticks + 1,
                                  GET_SET_DEFAULT(CFN_CH_INDEX(cfn)));
         choice->setTextHandler([=](int32_t value) {
@@ -137,7 +137,7 @@ class SpecialFunctionEditPage : public Page
           else if (value == MAX_STICKS + 1)
             return std::string(STR_CHANS);
 
-          return std::string(getStickName(value));
+          return std::string(getMainControlLabel(value));
         });
         break;
       }
@@ -563,7 +563,7 @@ class SpecialFunctionButton : public Button
         else if (value == NUM_STICKS + 1)
           strcat(s, STR_CHANS);
         else
-          strcat(s, getStickName(value - 1));
+          strcat(s, getMainControlLabel(value - 1));
         break;
       }
 

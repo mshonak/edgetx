@@ -902,7 +902,7 @@ void menuModelSetup(event_t event)
       case ITEM_MODEL_SETUP_BEEP_CENTER: {
         lcdDrawTextAlignedLeft(y, STR_BEEPCTR);
         uint8_t pot_offset = adcGetInputOffset(ADC_INPUT_POT);
-        uint8_t max_inputs = adcGetMaxInputs(ADC_INPUT_STICK) + adcGetMaxInputs(ADC_INPUT_POT);
+        uint8_t max_inputs = adcGetMaxInputs(ADC_INPUT_MAIN) + adcGetMaxInputs(ADC_INPUT_POT);
         for (uint8_t i = 0; i < max_inputs; i++) {
           coord_t x = MODEL_SETUP_2ND_COLUMN + i*FW;
           if ( i >= pot_offset && IS_POT_MULTIPOS(i - pot_offset) ) {

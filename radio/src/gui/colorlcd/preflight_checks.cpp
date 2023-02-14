@@ -314,7 +314,7 @@ CenterBeepsMatrix::CenterBeepsMatrix(Window* parent, const rect_t& r) :
   // Setup button layout & texts
   uint8_t btn_cnt = 0;
 
-  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   auto max_pots = adcGetMaxInputs(ADC_INPUT_POT);
   max_analogs = max_sticks + max_pots;
 

@@ -324,7 +324,7 @@ getvalue_t getValue(mixsrc_t i, bool* valid)
 
   else if (i <= MIXSRC_LAST_STICK) {
     i -= MIXSRC_FIRST_STICK;
-    if (i >= adcGetMaxInputs(ADC_INPUT_STICK)) {
+    if (i >= adcGetMaxInputs(ADC_INPUT_MAIN)) {
       if (valid != nullptr) *valid = false;
       return 0;
     }

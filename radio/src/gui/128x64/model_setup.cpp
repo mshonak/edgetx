@@ -479,7 +479,7 @@ void menuModelSetup(event_t event)
       0, // Custom position for throttle warning value
       WARN_ROWS
 
-    uint8_t(adcGetMaxInputs(ADC_INPUT_STICK) + adcGetMaxInputs(ADC_INPUT_POT) - 1), // Center beeps
+    uint8_t(adcGetMaxInputs(ADC_INPUT_MAIN) + adcGetMaxInputs(ADC_INPUT_POT) - 1), // Center beeps
     0, // Global functions
 
     0, // ADC Jitter filter
@@ -963,7 +963,7 @@ void menuModelSetup(event_t event)
 
       case ITEM_MODEL_SETUP_BEEP_CENTER: {
         lcdDrawTextAlignedLeft(y, STR_BEEPCTR);
-        uint8_t input_max = adcGetMaxInputs(ADC_INPUT_STICK) + adcGetMaxInputs(ADC_INPUT_POT);
+        uint8_t input_max = adcGetMaxInputs(ADC_INPUT_MAIN) + adcGetMaxInputs(ADC_INPUT_POT);
         for (uint8_t i = 0; i < input_max; i++) {
           coord_t x = MODEL_SETUP_2ND_COLUMN + i*FW;
           LcdFlags flags = 0;

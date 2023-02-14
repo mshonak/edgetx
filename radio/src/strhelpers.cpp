@@ -532,22 +532,27 @@ char *getSwitchPositionName(char *dest, swsrc_t idx)
   return dest;
 }
 
-const char* getAnalogName(uint8_t type, uint8_t idx)
+const char* getAnalogLabel(uint8_t type, uint8_t idx)
 {
-  if (analogHasCustomName(type, idx))
-    return analogGetCustomName(type, idx);
+  if (analogHasCustomLabel(type, idx))
+    return analogGetCustomLabel(type, idx);
 
+  if (type == ADC_INPUT_MAIN) {
+    // TODO: provide some way to use wheel/throttle instead
+    return STR_STICK_NAMES[idx];
+  }
+  
   return analogGetCanonicalName(type, idx);
 }
 
-const char* getStickName(uint8_t idx)
+const char* getMainControlLabel(uint8_t idx)
 {
-  return getAnalogName(ADC_INPUT_STICK, idx);
+  return getAnalogLabel(ADC_INPUT_MAIN, idx);
 }
 
 const char* getPotName(uint8_t idx)
 {
-  return getAnalogName(ADC_INPUT_POT, idx);
+  return getAnalogLabel(ADC_INPUT_POT, idx);
 }
 
 // this should be declared in header, but it used so much foreign symbols that
@@ -609,7 +614,7 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
     if (idx < MAX_STICKS) {
       pos = strAppend(pos, STR_CHAR_STICK, sizeof(STR_CHAR_STICK) - 1);
       dest_len -= sizeof(STR_CHAR_STICK) - 1;
-      name = getStickName(idx);
+      name = getMainControlLabel(idx);
     } else {
       idx -= MAX_STICKS;
       if (IS_SLIDER(idx)) {

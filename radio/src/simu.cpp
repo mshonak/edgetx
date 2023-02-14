@@ -663,7 +663,7 @@ int main(int argc, char ** argv)
 
 uint16_t simu_get_analog(uint8_t idx)
 {
-  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   if (idx < max_sticks)
     return opentxSim->sliders[idx]->getValue();
 

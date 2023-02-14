@@ -24,9 +24,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
-void analogSetCustomName(uint8_t type, uint8_t idx, const char* str, size_t len);
-const char* analogGetCustomName(uint8_t type, uint8_t idx);
-bool analogHasCustomName(uint8_t type, uint8_t idx);
+void analogSetCustomLabel(uint8_t type, uint8_t idx, const char* str, size_t len);
+const char* analogGetCustomLabel(uint8_t type, uint8_t idx);
+bool analogHasCustomLabel(uint8_t type, uint8_t idx);
 
-int analogLookupIdx(uint8_t type, const char* name, size_t len);
+const char* analogGetPhysicalName(uint8_t type, uint8_t idx);
+int analogLookupPhysicalIdx(uint8_t type, const char* name, size_t len);
+
 const char* analogGetCanonicalName(uint8_t type, uint8_t idx);
+int analogLookupCanonicalIdx(uint8_t type, const char* name, size_t len);

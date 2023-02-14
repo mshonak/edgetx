@@ -126,7 +126,7 @@ static void _init_menu_tab_array(uint8_t* tab, size_t len)
   tab += HEADER_LINE; // skip header line
 
   tab[ITEM_RADIO_HARDWARE_LABEL_STICKS] = 0; // calib button
-  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = ITEM_RADIO_HARDWARE_STICK; i <= ITEM_RADIO_HARDWARE_STICK_END; i++) {
     uint8_t idx = i - ITEM_RADIO_HARDWARE_STICK;
     tab[i] = idx < max_sticks ? 0 : HIDDEN_ROW;
@@ -458,10 +458,10 @@ void menuRadioHardware(event_t event)
           lcdDrawText(lcdNextPos, y, adcGetInputName(ADC_INPUT_POT, idx), flags);
 
           // draw custom name
-          if (analogHasCustomName(ADC_INPUT_POT, idx) ||
+          if (analogHasCustomLabel(ADC_INPUT_POT, idx) ||
               (attr && s_editMode > 0 && menuHorizontalPosition == 0)) {
             editName(HW_SETTINGS_COLUMN1, y,
-                     (char*)analogGetCustomName(ADC_INPUT_POT, idx), LEN_ANA_NAME, event,
+                     (char*)analogGetCustomLabel(ADC_INPUT_POT, idx), LEN_ANA_NAME, event,
                      attr && menuHorizontalPosition == 0, 0, old_editMode);
           } else {
             lcdDrawMMM(HW_SETTINGS_COLUMN1, y, menuHorizontalPosition==0 ? attr : 0);

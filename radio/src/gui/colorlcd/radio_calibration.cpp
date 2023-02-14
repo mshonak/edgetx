@@ -81,7 +81,7 @@ void RadioCalibrationPage::buildBody(FormWindow * window)
   new StickCalibrationWindow(
       window, {window->width() / 3, window->height() / 2, 0, 0}, 0, 1);
 
-  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   if (max_sticks > 2) {
       new StickCalibrationWindow(
           window, {(2 * window->width()) / 3, window->height() / 2, 0, 0}, 3,

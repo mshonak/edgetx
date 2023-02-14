@@ -35,7 +35,7 @@
 #define JITTER_ALPHA            (1<<JITTER_FILTER_STRENGTH)
 
 enum {
-  ADC_INPUT_STICK=0,
+  ADC_INPUT_MAIN=0, // gimbals / wheel + throttle
   ADC_INPUT_POT,
   ADC_INPUT_AXIS,
   ADC_INPUT_VBAT,

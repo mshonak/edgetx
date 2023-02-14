@@ -208,7 +208,7 @@
 
 #define TR_VSWASHTYPE                  "---","120","120X","140","90"
 
-#define TR_STICKS_VSRCRAW      STR_CHAR_STICK "Dir", STR_CHAR_STICK "Ele", STR_CHAR_STICK "Mot", STR_CHAR_STICK "Ale"
+#define TR_STICK_NAMES         "Dir", "Ele", "Mot", "Ale"
 
 #if defined(PCBHORUS)
   #define TR_TRIMS_VSRCRAW     STR_CHAR_TRIM "Dir", STR_CHAR_TRIM "Ele", STR_CHAR_TRIM "Mot", STR_CHAR_TRIM "Ale", STR_CHAR_TRIM "T5",  STR_CHAR_TRIM "T6"

@@ -426,7 +426,7 @@ const char* adcGetInputName(uint8_t type, uint8_t idx)
 
 const char* adcGetInputName(uint8_t idx)
 {
-  uint8_t type = ADC_INPUT_STICK;
+  uint8_t type = ADC_INPUT_MAIN;
 
   // find the proper input type
   while (_hal_adc_inputs[type].offset + _hal_adc_inputs[type].n_inputs <= idx) {
@@ -440,7 +440,7 @@ const char* adcGetInputName(uint8_t idx)
 int adcGetInputIdx(const char* input, uint8_t len)
 {
   int idx = 0;
-  uint8_t type = ADC_INPUT_STICK;
+  uint8_t type = ADC_INPUT_MAIN;
 
   do {
     for (uint8_t i = 0; i < _hal_adc_inputs[type].n_inputs; i++, idx++) {

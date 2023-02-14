@@ -42,7 +42,7 @@ void drawPotsBars()
       auto v = calibratedAnalogs[offset + i] + RESX;
       uint8_t len = (v * BAR_HEIGHT / (RESX * 2)) + 1l;
       V_BAR(x, LCD_H - 8, len);
-      drawStickName(x - 2, LCD_H - 6, i, TINSIZE);
+      drawMainControlLabel(x - 2, LCD_H - 6, i, TINSIZE);
     }
   }
 }

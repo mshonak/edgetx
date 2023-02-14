@@ -27,7 +27,7 @@
 
 static char _custom_names[MAX_ANALOG_INPUTS][LEN_ANA_NAME + 1] = { 0 };
 
-void analogSetCustomName(uint8_t type, uint8_t idx, const char* str, size_t len)
+void analogSetCustomLabel(uint8_t type, uint8_t idx, const char* str, size_t len)
 {
   if (idx >= adcGetMaxInputs(type)) return;
   idx += adcGetInputOffset(type);
@@ -36,7 +36,7 @@ void analogSetCustomName(uint8_t type, uint8_t idx, const char* str, size_t len)
   _custom_names[idx][LEN_ANA_NAME] = '\0';
 }
 
-const char* analogGetCustomName(uint8_t type, uint8_t idx)
+const char* analogGetCustomLabel(uint8_t type, uint8_t idx)
 {
   if (idx >= adcGetMaxInputs(type)) return "";
   idx += adcGetInputOffset(type);
@@ -44,42 +44,16 @@ const char* analogGetCustomName(uint8_t type, uint8_t idx)
   return _custom_names[idx];
 }
 
-bool analogHasCustomName(uint8_t type, uint8_t idx)
+bool analogHasCustomLabel(uint8_t type, uint8_t idx)
 {
-  return *analogGetCustomName(type, idx) != 0;
+  return *analogGetCustomLabel(type, idx) != 0;
 }
 
-// TODO: needs to be generic
-static const char* _stick_names[] = {
-  "Rud", "Ele", "Thr", "Ail",
-};
-
-// TODO: remove special case
-static int analogLookupStickIdx(const char* name, size_t len)
-{
-  for (uint8_t i = 0; i < DIM(_stick_names); i++) {
-    if (!strncmp(_stick_names[i], name, len)) return i;
-  }
-
-  return -1;
-}
-
-// TODO: remove special case
-static const char* analogGetCanonicalStickName(uint8_t idx)
-{
-  if (idx >= DIM(_stick_names)) return "";
-  return _stick_names[idx];
-}
-
-int analogLookupIdx(uint8_t type, const char* name, size_t len)
+int analogLookupPhysicalIdx(uint8_t type, const char* name, size_t len)
 {
   auto max_inputs = adcGetMaxInputs(type);
   if (!max_inputs) return -1;
 
-  // TODO: remove special case
-  if (type == ADC_INPUT_STICK)
-    return analogLookupStickIdx(name, len);
-  
   for (uint8_t i = 0; i < max_inputs; i++) {
     if (!strncmp(adcGetInputName(type, i), name, len)) return i;
   }
@@ -87,12 +61,45 @@ int analogLookupIdx(uint8_t type, const char* name, size_t len)
   return -1;
 }
 
+const char* analogGetPhysicalName(uint8_t type, uint8_t idx)
+{
+  return adcGetInputName(type, idx);
+}
+
+// Canonical gimbal axes names for radios with 2 gimbals
+// Please note that the order is chosen in such a way
+// that it corresponds to "mode 1" based on the physical
+// gimbal axes order used.
+static const char* _gimbal_names[] = {
+  "Rud", // LH
+  "Ele", // LV
+  "Thr", // RV
+  "Ail", // RH
+};
+
+static const char* analogGetCanonicalStickName(uint8_t idx)
+{
+  if (idx >= DIM(_gimbal_names)) return "";
+  return _gimbal_names[idx];
+}
+
 const char* analogGetCanonicalName(uint8_t type, uint8_t idx)
 {
-  // TODO: remove special case
-  if (type == ADC_INPUT_STICK)
+  if (type == ADC_INPUT_MAIN)
     return analogGetCanonicalStickName(idx);
 
   return adcGetInputName(type, idx);
+}
+
+int analogLookupCanonicalIdx(uint8_t type, const char* name, size_t len)
+{
+  if (type == ADC_INPUT_MAIN) {
+    for (uint8_t i = 0; i < DIM(_gimbal_names); i++) {
+      if (!strncmp(_gimbal_names[i], name, len)) return i;
+    }
+    return -1;
+  }
+
+  return analogLookupPhysicalIdx(type, name, len);
 }
 

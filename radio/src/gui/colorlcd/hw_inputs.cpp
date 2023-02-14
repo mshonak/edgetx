@@ -47,12 +47,12 @@ HWSticks::HWSticks(Window* parent) : FormGroup(parent, rect_t{})
   FlexGridLayout grid(col_two_dsc, row_dsc, 2);
   setFlexLayout();
 
-  auto max_sticks = adcGetMaxInputs(ADC_INPUT_STICK);
+  auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = 0; i < max_sticks; i++) {
     auto line = newLine(&grid);
-    new StaticText(line, rect_t{}, analogGetCanonicalName(ADC_INPUT_STICK, i),
+    new StaticText(line, rect_t{}, analogGetCanonicalName(ADC_INPUT_MAIN, i),
                    0, COLOR_THEME_PRIMARY1);
-    new HWInputEdit(line, (char*)analogGetCustomName(ADC_INPUT_STICK, i),
+    new HWInputEdit(line, (char*)analogGetCustomLabel(ADC_INPUT_MAIN, i),
                     LEN_ANA_NAME);
   }
 
@@ -91,7 +91,7 @@ HWPots::HWPots(Window* parent) : FormGroup(parent, rect_t{})
     auto box_obj = box->getLvObj();
     lv_obj_set_style_flex_cross_place(box_obj, LV_FLEX_ALIGN_CENTER, 0);
 
-    new HWInputEdit(box, (char*)analogGetCustomName(ADC_INPUT_POT, i), LEN_ANA_NAME);
+    new HWInputEdit(box, (char*)analogGetCustomLabel(ADC_INPUT_POT, i), LEN_ANA_NAME);
     new Choice(
         box, rect_t{}, STR_POTTYPES, POT_NONE, POT_SLIDER_WITH_DETENT,
         [=]() -> int {

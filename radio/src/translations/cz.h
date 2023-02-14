@@ -207,7 +207,7 @@
 
 #define TR_VSWASHTYPE                  "---","120","120X","140","90"
 
-#define TR_STICKS_VSRCRAW              STR_CHAR_STICK "Smě", STR_CHAR_STICK "Výš", STR_CHAR_STICK "Pln", STR_CHAR_STICK "Kři"
+#define TR_STICK_NAMES                 "Smě", "Výš", "Pln", "Kři"
 
 #if defined(PCBHORUS)
   #define TR_TRIMS_VSRCRAW             STR_CHAR_TRIM "Smě", STR_CHAR_TRIM "Výš", STR_CHAR_TRIM "Pln", STR_CHAR_TRIM "Kři", STR_CHAR_TRIM "T5", STR_CHAR_TRIM "T6"
