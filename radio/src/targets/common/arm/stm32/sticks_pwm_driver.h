@@ -19,5 +19,7 @@
  * GNU General Public License for more details.
  */
 
+#pragma once
+
 // returns 'true' if PWM sticks have been detected
 bool sticksPwmDetect();

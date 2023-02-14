@@ -19,6 +19,8 @@
  * GNU General Public License for more details.
  */
 
+#pragma once
+
 #include "stm32_hal_ll.h"
 
 struct stm32_spi_adc_t {
