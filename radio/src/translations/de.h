@@ -265,8 +265,6 @@
 #define TR_CYC_VSRCRAW                 "[C1]","[C2]","[C3]"
 #endif
 
-#define TR_RESERVE_VSRCRAW             "[--]"
-#define TR_EXTRA_VSRCRAW               "Batt","Time","GPS",TR_RESERVE_VSRCRAW,TR_RESERVE_VSRCRAW,TR_RESERVE_VSRCRAW,TR_RESERVE_VSRCRAW,"Tmr1","Tmr2","Tmr3"
 
 #define TR_SRC_BATT                    "Batt"
 #define TR_SRC_TIME                    "Time"
