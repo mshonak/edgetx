@@ -158,6 +158,7 @@ void ViewMainDecoration::createSliders(Window* ml, Window* mr, Window* bl, Windo
     sliders[2] = sl;
   }
 
+  // TODO: check how many pots are configured instead
   auto max_pots = adcGetMaxInputs(ADC_INPUT_POT);
   if (max_pots > 3) {
     // create containers for the sliders, so that they are at the borders of the display
@@ -168,28 +169,17 @@ void ViewMainDecoration::createSliders(Window* ml, Window* mr, Window* bl, Windo
     auto rightPots = create_layout_box(mr, LV_ALIGN_RIGHT_MID, LV_FLEX_FLOW_COLUMN);
     rightPots->setHeight(VERTICAL_SLIDERS_HEIGHT);
 
-    if (IS_POT_AVAILABLE(3)) {
-      sl = new MainViewVerticalSlider(leftPots, 3);
-      sl->updateSize();
-      sliders[3] = sl;
+    for (int i = 3; i <= 6; i++) {
+      if (IS_POT_AVAILABLE(i)) {
+        sl = new MainViewVerticalSlider(i & 1 ? leftPots : rightPots, i);
+        sliders[i] = sl;
+      }
     }
 
-    if (IS_POT_AVAILABLE(4)) {
-      sl = new MainViewVerticalSlider(rightPots, 4);
-      sl->updateSize();
-      sliders[4] = sl;
-    }
-
-    if (IS_POT_AVAILABLE(5)) {
-      sl = new MainViewVerticalSlider(leftPots, 5);
-      sl->updateSize();
-      sliders[5] = sl;
-    }
-
-    if (IS_POT_AVAILABLE(6)) {
-      sl = new MainViewVerticalSlider(rightPots, 6);
-      sl->updateSize();
-      sliders[6] = sl;
+    // update size AFTER all pots/sliders are created
+    for (int i = 3; i <= 6; i++) {
+      if (sliders[i] != nullptr)
+        sliders[i]->updateSize();
     }
   }
 }

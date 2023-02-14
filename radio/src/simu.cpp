@@ -678,11 +678,6 @@ uint16_t simu_get_analog(uint8_t idx)
   auto max_axes = adcGetMaxInputs(ADC_INPUT_AXIS);
   if (idx < max_axes) return 0;
 
-  idx -= max_axes;
-
-  // VBAT
-  if (idx == 0) return 800; // 2.34V
-
   // probably RTC_BAT
   return 0;
 }

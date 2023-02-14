@@ -627,7 +627,7 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
   }
 #if MAX_AXIS > 0
   else if (idx <= MIXSRC_LAST_AXIS) {
-    idx -= MIXSRC_LAST_AXIS;
+    idx -= MIXSRC_FIRST_AXIS;
     auto name = adcGetInputName(ADC_INPUT_AXIS, idx);
     strncpy(dest, name, dest_len - 1);
     dest[dest_len - 1] = '\0';

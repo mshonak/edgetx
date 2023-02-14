@@ -24,6 +24,7 @@
 #include "dataconstants.h"
 
 #include "hal_adc_inputs.inc"
+#include "board.h"
 
 void enableVBatBridge(){}
 void disableVBatBridge(){}
@@ -33,8 +34,22 @@ extern uint16_t simu_get_analog(uint8_t idx);
 
 static bool simu_start_conversion()
 {
-  for (int i=0; i<MAX_ANALOG_INPUTS; i++)
+  int max_input = adcGetInputOffset(ADC_INPUT_VBAT);
+  for (int i = 0; i < max_input; i++) {
     setAnalogValue(i, simu_get_analog(i));
+  }
+
+  // set VBAT / RTC_BAT
+  if (adcGetMaxInputs(ADC_INPUT_VBAT) > 0) {
+    uint32_t vbat = (BATTERY_MAX + BATTERY_MIN) / 2;
+    vbat = (vbat * BATTERY_DIVIDER) / 100;
+    setAnalogValue(adcGetInputOffset(ADC_INPUT_VBAT), vbat * 2);
+  }
+
+  if (adcGetMaxInputs(ADC_INPUT_RTC_BAT) > 0) {
+    uint32_t rtc_bat = (300 * (2048 >> ANALOG_SCALE)) / ADC_VREF_PREC2;
+    setAnalogValue(adcGetInputOffset(ADC_INPUT_RTC_BAT), rtc_bat * 2);
+  }
 
   return true;
 }
