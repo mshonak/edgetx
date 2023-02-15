@@ -19,7 +19,7 @@
  * GNU General Public License for more details.
  */
 
-#include "stm32_hal_adc.h"
+#include "stm32_adc.h"
 #include "stm32_gpio_driver.h"
 #include "opentx.h"
 

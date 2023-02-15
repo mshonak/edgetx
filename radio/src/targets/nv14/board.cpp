@@ -19,7 +19,7 @@
  * GNU General Public License for more details.
  */
  
-#include "stm32_hal_adc.h"
+#include "stm32_adc.h"
 
 #include "board.h"
 #include "boards/generic_stm32/module_ports.h"

@@ -57,7 +57,7 @@ if (PCB STREQUAL X10)
   add_definitions(-DSOFTWARE_VOLUME)
   set(FIRMWARE_SRC
     ${FIRMWARE_SRC}
-    targets/common/arm/stm32/stm32_hal_adc.cpp
+    targets/common/arm/stm32/stm32_adc.cpp
     targets/common/arm/stm32/audio_dac_driver.cpp
     )
   if (NOT PCBREV STREQUAL TX16S)
@@ -259,11 +259,6 @@ set(FIRMWARE_TARGET_SRC
 set(FIRMWARE_SRC
   ${FIRMWARE_SRC}
   hal/adc_driver.cpp
-  boards/generic_stm32/module_ports.cpp
-  boards/generic_stm32/aux_ports.cpp
-  boards/generic_stm32/sport_update.cpp
-  boards/generic_stm32/intmodule_heartbeat.cpp
-  boards/generic_stm32/analog_inputs.cpp
   targets/common/arm/stm32/stm32_exti_driver.cpp
   targets/common/arm/stm32/timers_driver.cpp
   targets/common/arm/stm32/stm32_pulse_driver.cpp

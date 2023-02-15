@@ -20,7 +20,7 @@
  */
 
 #include "stm32_spi_adc.h"
-#include "stm32_hal_adc.h"
+#include "stm32_adc.h"
 
 void ads79xx_init(const stm32_spi_adc_t* adc);
 bool ads79xx_adc_start_read(const stm32_spi_adc_t* adc, const stm32_adc_input_t* inputs);

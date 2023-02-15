@@ -66,15 +66,6 @@ set(FIRMWARE_C_FLAGS_DEBUG "-g" CACHE STRING "Additional flags for firmware targ
 set(FIRMWARE_CXX_FLAGS "" CACHE STRING "Additional flags for firmware target c++ compiler (note: all CMAKE_CXX_FLAGS[_*] are ignored for firmware/bootloader).")
 set(FIRMWARE_CXX_FLAGS_DEBUG "-g" CACHE STRING "Additional flags for firmware target (Debug config) c++ compiler (note: CMAKE_CXX_FLAGS_DEBUG is ignored for firmware/bootloader).")
 
-set(GCC_ARM_PATH "" CACHE STRING "Alternative GCC ARM path")
-
-set(FIRMWARE_C_COMPILER "${GCC_ARM_PATH}arm-none-eabi-gcc" CACHE STRING "Specific C compiler for firmware target.")
-set(FIRMWARE_CXX_COMPILER "${GCC_ARM_PATH}arm-none-eabi-g++" CACHE STRING "Specific C++ compiler for firmware target.")
-set(FIRMWARE_ASM_COMPILER "${GCC_ARM_PATH}arm-none-eabi-as" CACHE STRING "Specific assembler for firmware target.")
-set(FIRMWARE_OBJCOPY "${GCC_ARM_PATH}arm-none-eabi-objcopy" CACHE STRING "Specific objcopy for firmware target.")
-set(FIRMWARE_SIZE "${GCC_ARM_PATH}arm-none-eabi-size" CACHE STRING "Specific size for firmware target.")
-set(FIRMWARE_RANLIB "${GCC_ARM_PATH}arm-none-eabi-ranlib" CACHE STRING "Specific ranlib for firmware target.")
-
 set(THIRDPARTY_DIR thirdparty)
 set(LUA_DIR ${THIRDPARTY_DIR}/Lua/src)
 set(RTOS_DIR ${THIRDPARTY_DIR}/FreeRTOS)
@@ -104,14 +95,18 @@ else()
   message(FATAL_ERROR "Unknown PCB '${PCB}'")
 endif()
 
+set(HW_DESC_JSON ${FLAVOUR}.json)
+AddHardwareDefTarget(${HW_DESC_JSON})
+
+# enable generating JSON definition separately for debugging
+add_custom_target(hardware_defs DEPENDS ${HW_DESC_JSON} ${HW_DESC_JSON}.h)
+
 add_subdirectory(bitmaps)
 add_subdirectory(fonts)
 
-if(NOT PCB STREQUAL 9XRPRO)
-  option(DBLKEYS "Double Keys" ON)
-  if(DBLKEYS)
-    add_definitions(-DDBLKEYS)
-  endif()
+option(DBLKEYS "Double Keys" ON)
+if(DBLKEYS)
+  add_definitions(-DDBLKEYS)
 endif()
 
 if(CPU_TYPE STREQUAL STM32F4)
@@ -124,6 +119,7 @@ endif()
 
 if(CPU_FAMILY STREQUAL STM32)
   include(targets/common/arm/stm32/CMakeLists.txt)
+  include(boards/generic_stm32/CMakeLists.txt)
 endif()
 
 if(ARCH STREQUAL ARM)
@@ -532,7 +528,7 @@ endif()
 
 add_definitions(-DFREE_RTOS)
 
-add_executable(firmware ${SRC} ${FIRMWARE_HEADERS})
+add_executable(firmware ${SRC})
 link_libraries(firmware -lstdc++)
 add_dependencies(firmware ${RADIO_DEPENDENCIES})
 set_target_properties(firmware PROPERTIES EXCLUDE_FROM_ALL TRUE)

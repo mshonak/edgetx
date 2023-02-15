@@ -41,27 +41,10 @@ set(FIRMWARE_TARGET_SRC ${FIRMWARE_TARGET_SRC}
   ../common/arm/stm32/stm32_serial_driver.cpp
   ../common/arm/stm32/stm32_softserial_driver.cpp
   ../common/arm/stm32/module_timer_driver.cpp
-  ../common/arm/stm32/switch_driver.cpp
   ../common/arm/stm32/stm32_switch_driver.cpp
-  ../common/arm/stm32/stm32_hal_adc.cpp
+  ../common/arm/stm32/stm32_adc.cpp
   ../common/arm/stm32/stm32_gpio_driver.cpp
   ../common/arm/stm32/mixer_scheduler_driver.cpp
-  )
-
-set(HW_DESC_JSON ${FLAVOUR}.json)
-AddHardwareDefTarget(${HW_DESC_JSON})
-AddHWGenTarget(${HW_DESC_JSON} stm32_switches stm32_switches.inc)
-AddHWGenTarget(${HW_DESC_JSON} stm32_adc_inputs stm32_adc_inputs.inc)
-AddHWGenTarget(${HW_DESC_JSON} hal_adc_inputs hal_adc_inputs.inc)
-
-# enable generating JSON definition separately for debugging
-add_custom_target(hardware_defs DEPENDS ${HW_DESC_JSON} ${HW_DESC_JSON}.h)
-
-set(FIRMWARE_SRC ${FIRMWARE_SRC}
-  ${CMAKE_CURRENT_BINARY_DIR}/stm32_switches.inc
-  ${CMAKE_CURRENT_BINARY_DIR}/stm32_adc_inputs.inc
-  ${CMAKE_CURRENT_BINARY_DIR}/hal_adc_inputs.inc
-  ${CMAKE_CURRENT_BINARY_DIR}/${HW_DESC_JSON}
   )
 
 if(IMU)
