@@ -265,9 +265,7 @@ set(FIRMWARE_SRC
   boards/generic_stm32/intmodule_heartbeat.cpp
   boards/generic_stm32/analog_inputs.cpp
   targets/common/arm/stm32/stm32_exti_driver.cpp
-  targets/common/arm/stm32/mixer_scheduler_driver.cpp
   targets/common/arm/stm32/timers_driver.cpp
-  targets/common/arm/stm32/extmodule_driver.cpp
   targets/common/arm/stm32/stm32_pulse_driver.cpp
   targets/common/arm/stm32/stm32_usart_driver.cpp
   targets/common/arm/stm32/rotary_encoder_driver.cpp

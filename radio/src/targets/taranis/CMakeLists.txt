@@ -459,17 +459,6 @@ else()
   # defines existing internal modules
   set(INTERNAL_MODULES PXX1)
 
-  set(FIRMWARE_TARGET_SRC
-    ${FIRMWARE_TARGET_SRC}
-    intmodule_pulses_driver.cpp
-    )
-endif()
-
-if(HARDWARE_EXTERNAL_MODULE)
-  set(FIRMWARE_SRC
-    ${FIRMWARE_SRC}
-    targets/common/arm/stm32/extmodule_driver.cpp
-    )
 endif()
 
 if(ROTARY_ENCODER)
@@ -577,7 +566,6 @@ set(FIRMWARE_SRC
   boards/generic_stm32/intmodule_heartbeat.cpp
   boards/generic_stm32/analog_inputs.cpp
   targets/common/arm/stm32/heartbeat_driver.cpp
-  targets/common/arm/stm32/mixer_scheduler_driver.cpp
   targets/common/arm/stm32/timers_driver.cpp
   targets/common/arm/stm32/audio_dac_driver.cpp
   targets/common/arm/stm32/pwr_driver.cpp
