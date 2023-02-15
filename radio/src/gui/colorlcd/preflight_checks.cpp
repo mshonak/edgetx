@@ -285,7 +285,7 @@ void PotWarnMatrix::setTextWithColor(uint8_t btn_id)
 {
   auto idx = pot_idx[btn_id];
   auto color = isActive(btn_id) ? COLOR_THEME_PRIMARY1 : COLOR_THEME_SECONDARY1;
-  setText(btn_id, makeRecolor(getPotName(idx), color).c_str());
+  setText(btn_id, makeRecolor(getPotLabel(idx), color).c_str());
 }
 
 void PotWarnMatrix::onPress(uint8_t btn_id)

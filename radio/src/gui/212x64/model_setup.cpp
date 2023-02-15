@@ -885,7 +885,7 @@ void menuModelSetup(event_t event)
                 flags |= INVERS;
               }
 
-              lcdDrawText(x, y, getPotName(i), flags);
+              lcdDrawText(x, y, getPotLabel(i), flags);
               x = lcdNextPos+3;
             }
           }

@@ -152,7 +152,6 @@ extern const char* const STR_VCURVETYPE[];
 extern const char* const STR_VCURVEFUNC[];
 extern const char* const STR_VMLTPX[];
 extern const char* const STR_VMLTPX2[];
-extern const char* const STR_VMIXTRIMS[];
 extern const char* const STR_VCSWFUNC[];
 extern const char* const STR_VFSWFUNC[];
 extern const char* const STR_VFSWRESET[];
@@ -172,7 +171,6 @@ extern const char* const STR_IMU_VSRCRAW[];
 extern const char* const STR_SM_VSRCRAW[];
 #endif
 extern const char* const STR_CYC_VSRCRAW[];
-extern const char* const STR_TRIMS_VSRCRAW[];
 
 extern const char* const STR_ROTARY_ENC_OPT[];
 

@@ -30,7 +30,8 @@
 #include "switches.h"
 #include "analogs.h"
 
-const char s_charTab[] = "_-.,";
+static char _static_str_buffer[32];
+static const char s_charTab[] = "_-.,";
 
 char hex2zchar(uint8_t hex) { return (hex >= 10 ? hex - 9 : 27 + hex); }
 
@@ -550,7 +551,29 @@ const char* getMainControlLabel(uint8_t idx)
   return getAnalogLabel(ADC_INPUT_MAIN, idx);
 }
 
-const char* getPotName(uint8_t idx)
+const char* getTrimLabel(uint8_t idx)
+{
+  if (idx < adcGetMaxInputs(ADC_INPUT_MAIN)) {
+    return getMainControlLabel(idx);
+  }
+
+  // TODO: replace with string from HW def
+  strAppendStringWithIndex(_static_str_buffer, "T", idx + 1);
+}
+
+const char* getTrimSourceLabel(uint16_t src_raw, int8_t trim_src)
+{
+  if (trim_src < TRIM_ON) {
+    return getTrimLabel(-trim_src - 1);
+  } else if (trim_src == TRIM_ON && src_raw >= MIXSRC_FIRST_STICK &&
+             src_raw <= MIXSRC_LAST_STICK) {
+    return STR_OFFON[1];
+  } else {
+    return STR_OFFON[0];
+  }
+}
+
+const char* getPotLabel(uint8_t idx)
 {
   return getAnalogLabel(ADC_INPUT_POT, idx);
 }
@@ -624,7 +647,7 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
         pos = strAppend(pos, STR_CHAR_POT, sizeof(STR_CHAR_POT) - 1);
         dest_len -= sizeof(STR_CHAR_POT) - 1;
       }
-      name = getPotName(idx);
+      name = getPotLabel(idx);
     }
     strncpy(pos, name, dest_len - 1);
     pos[dest_len - 1] = '\0';
@@ -657,7 +680,8 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
     getStringAtIndex(dest, STR_CYC_VSRCRAW, idx);
   } else if (idx <= MIXSRC_LAST_TRIM) {
     idx -= MIXSRC_FIRST_TRIM;
-    getStringAtIndex(dest, STR_TRIMS_VSRCRAW, idx);
+    char* pos = strAppend(dest, STR_CHAR_TRIM, sizeof(STR_CHAR_TRIM) - 1);
+    strAppend(pos, getTrimLabel(idx));
   } else if (idx <= MIXSRC_LAST_SWITCH) {
     idx -= MIXSRC_FIRST_SWITCH;
     char* pos = strAppend(dest, STR_CHAR_SWITCH, sizeof(STR_CHAR_SWITCH) - 1);
@@ -723,18 +747,16 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
 // all other instantiations are done from this file
 template char *getSourceString<16>(char (&dest)[16], mixsrc_t idx);
 
-static char tmpHelpersString[32];
-
 char *getSourceString(mixsrc_t idx)
 {
-  return getSourceString(tmpHelpersString, idx);
+  return getSourceString(_static_str_buffer, idx);
 }
 
-char *getCurveString(int idx) { return getCurveString(tmpHelpersString, idx); }
+char *getCurveString(int idx) { return getCurveString(_static_str_buffer, idx); }
 
 char *getTimerString(int32_t tme, TimerOptions timerOptions)
 {
-  return getFormattedTimerString(tmpHelpersString, tme, timerOptions);
+  return getFormattedTimerString(_static_str_buffer, tme, timerOptions);
 }
 
 char *getTimerString(char *dest, int32_t tme, TimerOptions timerOptions)
@@ -744,10 +766,10 @@ char *getTimerString(char *dest, int32_t tme, TimerOptions timerOptions)
 
 char *getSwitchPositionName(swsrc_t idx)
 {
-  return getSwitchPositionName(tmpHelpersString, idx);
+  return getSwitchPositionName(_static_str_buffer, idx);
 }
 
-char *getGVarString(int idx) { return getGVarString(tmpHelpersString, idx); }
+char *getGVarString(int idx) { return getGVarString(_static_str_buffer, idx); }
 
 #if defined(LIBOPENUI)
 char *getValueWithUnit(char *dest, size_t len, int32_t val, uint8_t unit,
@@ -865,7 +887,7 @@ std::string formatNumberAsString(int32_t val, LcdFlags flags, uint8_t len,
 
 char *getSourceCustomValueString(source_t source, int32_t val, LcdFlags flags)
 {
-  return getSourceCustomValueString(tmpHelpersString, source, val, flags);
+  return getSourceCustomValueString(_static_str_buffer, source, val, flags);
 }
 
 std::string getValueWithUnit(int val, uint8_t unit, LcdFlags flags)

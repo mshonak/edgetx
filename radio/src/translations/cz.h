@@ -91,9 +91,7 @@
 #define TR_VMLTPX2                     "+=","*=",":="
 
 #if defined(PCBHORUS)
-  #define TR_VMIXTRIMS                 "VYP","ZAP","Směr","Výšk","Plyn","Křid","T5","T6"
 #else
-  #define TR_VMIXTRIMS                 "VYP","ZAP","Směr","Výšk","Plyn","Křid"
 #endif
 
 #if LCD_W >= 212
@@ -208,12 +206,6 @@
 #define TR_VSWASHTYPE                  "---","120","120X","140","90"
 
 #define TR_STICK_NAMES                 "Smě", "Výš", "Pln", "Kři"
-
-#if defined(PCBHORUS)
-  #define TR_TRIMS_VSRCRAW             STR_CHAR_TRIM "Smě", STR_CHAR_TRIM "Výš", STR_CHAR_TRIM "Pln", STR_CHAR_TRIM "Kři", STR_CHAR_TRIM "T5", STR_CHAR_TRIM "T6"
-#else
-  #define TR_TRIMS_VSRCRAW             STR_CHAR_TRIM "Smě", STR_CHAR_TRIM "Výš", STR_CHAR_TRIM "Pln", STR_CHAR_TRIM "Kři"
-#endif
 
 #if defined(PCBHORUS)
   #define TR_TRIMS_SWITCHES            STR_CHAR_TRIM "Sl", STR_CHAR_TRIM "Sp", STR_CHAR_TRIM "Vd", STR_CHAR_TRIM "Vn", STR_CHAR_TRIM "Pd", STR_CHAR_TRIM "Pn", STR_CHAR_TRIM "Kl", STR_CHAR_TRIM "Kp", STR_CHAR_TRIM "5d", STR_CHAR_TRIM "5n", STR_CHAR_TRIM "6d", STR_CHAR_TRIM "6n"

@@ -91,9 +91,7 @@
 #define TR_VMLTPX2                     "+=","*=",":="
 
 #if defined(PCBHORUS)
-  #define TR_VMIXTRIMS                 "AUS","EIN","Sei","Höh","Gas","Que","T5","T6"
 #else
-  #define TR_VMIXTRIMS                 "AUS","EIN","Sei","Höh","Gas","Que"
 #endif
 
 #if LCD_W >= 212
@@ -207,12 +205,6 @@
 #define TR_VSWASHTYPE                  "---","120","120X","140","90"
 
 #define TR_STICK_NAMES                 "Sei", "Höh", "Gas", "Que"
-
-#if defined(PCBHORUS)
-  #define TR_TRIMS_VSRCRAW             STR_CHAR_TRIM "Sei",STR_CHAR_TRIM "Höh",STR_CHAR_TRIM "Gas",STR_CHAR_TRIM "Que",STR_CHAR_TRIM "T5",STR_CHAR_TRIM "T6"
-#else
-  #define TR_TRIMS_VSRCRAW             TR("TrmS",STR_CHAR_TRIM "Sei"),TR("TrmH",STR_CHAR_TRIM "Höh"),TR("TrmG",STR_CHAR_TRIM "Gas"),TR("TrmQ",STR_CHAR_TRIM "que")
-#endif
 
 #if defined(PCBHORUS)
   #define TR_TRIMS_SWITCHES            STR_CHAR_TRIM "Rl",STR_CHAR_TRIM "Rr",STR_CHAR_TRIM "Ed",STR_CHAR_TRIM "Eu",STR_CHAR_TRIM "Td",STR_CHAR_TRIM "Tu",STR_CHAR_TRIM "Al",STR_CHAR_TRIM "Ar",STR_CHAR_TRIM "5d",STR_CHAR_TRIM "5u",STR_CHAR_TRIM "6d",STR_CHAR_TRIM "6u"
