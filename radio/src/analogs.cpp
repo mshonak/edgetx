@@ -49,16 +49,27 @@ bool analogHasCustomLabel(uint8_t type, uint8_t idx)
   return *analogGetCustomLabel(type, idx) != 0;
 }
 
-int analogLookupPhysicalIdx(uint8_t type, const char* name, size_t len)
+static int _lookup_input_idx(uint8_t type, const char* name, size_t len,
+                             const char* (*fct)(uint8_t,uint8_t))
 {
   auto max_inputs = adcGetMaxInputs(type);
   if (!max_inputs) return -1;
 
   for (uint8_t i = 0; i < max_inputs; i++) {
-    if (!strncmp(adcGetInputName(type, i), name, len)) return i;
+    if (!strncmp(fct(type, i), name, len)) return i;
   }
 
   return -1;
+}
+
+int analogLookupPhysicalIdx(uint8_t type, const char* name, size_t len)
+{
+  return _lookup_input_idx(type, name, len, adcGetInputName);
+}
+
+static int analogLookupLabelIdx(uint8_t type, const char* name, size_t len)
+{
+  return _lookup_input_idx(type, name, len, adcGetInputLabel);
 }
 
 const char* analogGetPhysicalName(uint8_t type, uint8_t idx)
@@ -66,27 +77,14 @@ const char* analogGetPhysicalName(uint8_t type, uint8_t idx)
   return adcGetInputName(type, idx);
 }
 
-// Canonical gimbal axes names for radios with 2 gimbals
-// Please note that the order is chosen in such a way
-// that it corresponds to "mode 1" based on the physical
-// gimbal axes order used.
-static const char* _gimbal_names[] = {
-  "Rud", // LH
-  "Ele", // LV
-  "Thr", // RV
-  "Ail", // RH
-};
-
-static const char* analogGetCanonicalStickName(uint8_t idx)
-{
-  if (idx >= DIM(_gimbal_names)) return "";
-  return _gimbal_names[idx];
-}
-
 const char* analogGetCanonicalName(uint8_t type, uint8_t idx)
 {
+  // Main controls are special cases here as
+  // we use the label slot to place the specific names
+  // (2-gimbal radios vs. surface radios)
+
   if (type == ADC_INPUT_MAIN)
-    return analogGetCanonicalStickName(idx);
+    return adcGetInputLabel(type, idx);
 
   return adcGetInputName(type, idx);
 }
@@ -94,10 +92,7 @@ const char* analogGetCanonicalName(uint8_t type, uint8_t idx)
 int analogLookupCanonicalIdx(uint8_t type, const char* name, size_t len)
 {
   if (type == ADC_INPUT_MAIN) {
-    for (uint8_t i = 0; i < DIM(_gimbal_names); i++) {
-      if (!strncmp(_gimbal_names[i], name, len)) return i;
-    }
-    return -1;
+    return analogLookupLabelIdx(type, name, len);
   }
 
   return analogLookupPhysicalIdx(type, name, len);

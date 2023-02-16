@@ -6,6 +6,17 @@ import legacy_names
 
 from json_index import build_adc_index, build_adc_gpio_port_index, build_switch_gpio_port_index
 
+MAIN_CONTROL_LUT = {
+    # 2 Gimbal radios
+    "LH": "Rud",
+    "LV": "Ele",
+    "RV": "Thr",
+    "RH": "Ail",
+    # Surface radios
+    "WH": "Whl",
+    "TR": "Thr",
+}
+
 def generate_from_template(json_filename, template_filename, target):
 
     with open(json_filename) as json_file:
@@ -34,4 +45,5 @@ def generate_from_template(json_filename, template_filename, target):
                                   adc_index=adc_index,
                                   adc_gpios=adc_gpios,
                                   switch_gpios=switch_gpios,
-                                  legacy_inputs=legacy_inputs))
+                                  legacy_inputs=legacy_inputs,
+                                  main_labels=MAIN_CONTROL_LUT))

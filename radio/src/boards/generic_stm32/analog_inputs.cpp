@@ -41,23 +41,8 @@ constexpr uint8_t n_ADC_spi = DIM(_ADC_spi);
 constexpr uint8_t n_GPIO = DIM(_ADC_GPIOs);
 constexpr uint8_t n_inputs = DIM(_ADC_inputs);
 
-static int8_t _vbat_input;
-static int8_t _vrtc_input;
-
-static int8_t _find_input_name(const char* name)
-{
-  for (uint8_t i = 0; i < n_inputs; i++) {
-    if (!strcmp(_ADC_inputs[i].name, name)) return i;
-  }
-
-  return -1;
-}
-
 static bool adc_init()
 {
-  _vbat_input = _find_input_name("VBAT");
-  _vrtc_input = _find_input_name("RTC_BAT");
-
   bool success = stm32_hal_adc_init(_ADC_adc, n_ADC, _ADC_inputs, _ADC_GPIOs, n_GPIO);
 #if defined(ADC_SPI)
   if (n_ADC_spi > 0) ads79xx_init(&_ADC_spi[0]);
