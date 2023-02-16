@@ -18,7 +18,7 @@ def generate_from_template(json_filename, template_filename, target):
             adc_gpios = build_adc_gpio_port_index(adc_inputs)
 
             switches = root_obj.get('switches')
-            switch_gpios = build_switch_gpio_port_index(switches);
+            switch_gpios = build_switch_gpio_port_index(switches)
 
             legacy_inputs = legacy_names.inputs_by_target(target)
             

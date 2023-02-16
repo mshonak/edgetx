@@ -914,7 +914,7 @@ void menuModelSetup(event_t event)
             flags = BLINK | INVERS;
           else if (ANALOG_CENTER_BEEP(x) || (attr && CURSOR_ON_LINE()))
             flags = INVERS;
-          lcdDrawTextAtIndex(x, y, STR_RETA123, i, flags);
+          lcdDrawText(x, y, getAnalogShortLabel(i), flags);
         }
         if (attr && CURSOR_ON_CELL) {
           if (event==EVT_KEY_BREAK(KEY_ENTER)) {

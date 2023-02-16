@@ -100,8 +100,9 @@ class ADCInputParser:
     ]
     
 
-    def __init__(self, hw_defs):
+    def __init__(self, hw_defs, labels):
         self.hw_defs = hw_defs
+        self.labels = labels
         self.regs = self._parse_regs()
         self.dirs = self._parse_dirs()
         self.adcs = []
@@ -225,6 +226,10 @@ class ADCInputParser:
                 d = self.dirs[len(self.inputs)]
                 if d < 0:
                     adc_input.inverted = True
+            if adc_input.type == 'POT':
+                input_labels = self.labels[adc_input.name]
+                adc_input.label = input_labels['label']
+                adc_input.short_label = input_labels['short_label']
             self.inputs.append(adc_input)
 
     def parse_inputs(self):

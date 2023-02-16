@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     if args.i == 'defines':
         for filename in args.filename:
-            parse_defines(filename)
+            parse_defines(filename, args.T)
 
     elif args.i == 'json':
         for filename in args.filename:

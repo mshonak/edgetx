@@ -26,6 +26,7 @@
 #include "libopenui.h"
 
 #include "tasks/mixer_task.h"
+#include "hal/adc_driver.h"
 
 #define SET_DIRTY()     storageDirty(EE_GENERAL)
 
@@ -744,12 +745,16 @@ void RadioSetupPage::build(FormWindow * window)
   new StaticText(line, rect_t{}, STR_RXCHANNELORD, 0,
                  COLOR_THEME_PRIMARY1);  // RAET->AETR
   grid.setColSpan(2);
-  choice = new Choice(line, rect_t{}, 0, 4 * 3 * 2 - 1,
+
+  uint8_t mains = adcGetMaxInputs(ADC_INPUT_MAIN);
+  int permutations = 1;
+  for (int i = 1; i <= mains; i++) permutations *= i;
+  choice = new Choice(line, rect_t{}, 0, permutations - 1,
                       GET_SET_DEFAULT(g_eeGeneral.templateSetup));
   choice->setTextHandler([](uint8_t value) {
     std::string s;
-    for (uint8_t i = 0; i < 4; i++) {
-      s += STR_RETA123[channelOrder(value, i + 1) - 1];
+    for (uint8_t i = 0; i < adcGetMaxInputs(ADC_INPUT_MAIN); i++) {
+      s += getAnalogShortLabel(channelOrder(value, i));
     }
     return s;
   });

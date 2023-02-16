@@ -23,6 +23,7 @@
 
 #include "opentx.h"
 #include "tasks/mixer_task.h"
+#include "hal/adc_driver.h"
 
 const unsigned char sticks[]  = {
 #include "sticks.lbm"
@@ -635,10 +636,14 @@ void menuRadioSetup(event_t event)
 
       case ITEM_RADIO_SETUP_RX_CHANNEL_ORD:
         lcdDrawTextAlignedLeft(y, STR_RXCHANNELORD); // RAET->AETR
-        for (uint8_t i = 1; i <= 4; i++) {
-          putsChnLetter(RADIO_SETUP_2ND_COLUMN - FW + i*FW, y, channelOrder(i), attr);
+        {
+          int permutations = 1;
+          for (uint8_t i = 0; i < adcGetMaxInputs(ADC_INPUT_MAIN); i++) {
+            putsChnLetter(RADIO_SETUP_2ND_COLUMN - FW + i*FW, y, channelOrder(i), attr);
+            permutations *= i + 1;
+          }
+          if (attr) CHECK_INCDEC_GENVAR(event, g_eeGeneral.templateSetup, 0, permutations - 1);
         }
-        if (attr) CHECK_INCDEC_GENVAR(event, g_eeGeneral.templateSetup, 0, 23);
         break;
 
       case ITEM_RADIO_SETUP_STICK_MODE_LABELS:

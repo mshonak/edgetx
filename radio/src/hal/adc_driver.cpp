@@ -421,7 +421,7 @@ const char* adcGetInputName(uint8_t type, uint8_t idx)
       idx >= _hal_adc_inputs[type].n_inputs)
     return "";
 
-  return _hal_adc_inputs[type].names[idx];
+  return _hal_adc_inputs[type].inputs[idx].name;
 }
 
 const char* adcGetInputName(uint8_t idx)
@@ -434,7 +434,7 @@ const char* adcGetInputName(uint8_t idx)
   }
 
   idx -= _hal_adc_inputs[type].offset;
-  return _hal_adc_inputs[type].names[idx];
+  return _hal_adc_inputs[type].inputs[idx].name;
 }
 
 int adcGetInputIdx(const char* input, uint8_t len)
@@ -444,10 +444,28 @@ int adcGetInputIdx(const char* input, uint8_t len)
 
   do {
     for (uint8_t i = 0; i < _hal_adc_inputs[type].n_inputs; i++, idx++) {
-      if (!strncmp(_hal_adc_inputs[type].names[i], input, len))
+      if (!strncmp(_hal_adc_inputs[type].inputs[i].name, input, len))
         return idx;
     }
   } while(++type < ADC_INPUT_ALL);
 
   return -1;
+}
+
+const char* adcGetInputLabel(uint8_t type, uint8_t idx)
+{
+  if (type >= ADC_INPUT_ALL ||
+      idx >= _hal_adc_inputs[type].n_inputs)
+    return "";
+
+  return _hal_adc_inputs[type].inputs[idx].label;
+}
+
+const char* adcGetInputShortLabel(uint8_t type, uint8_t idx)
+{
+  if (type >= ADC_INPUT_ALL ||
+      idx >= _hal_adc_inputs[type].n_inputs)
+    return "";
+
+  return _hal_adc_inputs[type].inputs[idx].short_label;
 }

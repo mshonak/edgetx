@@ -800,7 +800,7 @@ void drawSource(coord_t x, coord_t y, uint32_t idx, LcdFlags att)
 
 void putsChnLetter(coord_t x, coord_t y, uint8_t idx, LcdFlags att)
 {
-  lcdDrawTextAtIndex(x, y, STR_RETA123, idx-1, att);
+  lcdDrawText(x, y, getAnalogShortLabel(idx), att);
 }
 
 void drawModelName(coord_t x, coord_t y, char *name, uint8_t id, LcdFlags att)
@@ -848,10 +848,10 @@ void drawShortTrimMode(coord_t x, coord_t y, uint8_t fm, uint8_t idx, LcdFlags a
   uint8_t mode = v.mode;
   uint8_t p = v.mode >> 1;
   if (mode == TRIM_MODE_NONE) {
-    putsChnLetter(x, y, idx+1, att);
+    putsChnLetter(x, y, idx, att);
   }
   else {
-    lcdDrawChar(x, y, '0'+p, att);
+    lcdDrawChar(x, y, '0' + p, att);
   }
 }
 

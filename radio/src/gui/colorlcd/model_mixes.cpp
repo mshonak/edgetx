@@ -32,6 +32,7 @@
 #include "mixer_edit.h"
 
 #include "tasks/mixer_task.h"
+#include "hal/adc_driver.h"
 
 #define SET_DIRTY()     storageDirty(EE_MODEL)
 #define PASTE_BEFORE    -2
@@ -75,8 +76,11 @@ void insertMix(uint8_t idx, uint8_t channel)
   mix->destCh = channel;
   mix->srcRaw = channel + 1;
   if (!isSourceAvailable(mix->srcRaw)) {
-    mix->srcRaw = (channel > 3 ? MIXSRC_FIRST_STICK - 1 + channel
-                               : MIXSRC_FIRST_STICK - 1 + channelOrder(channel));
+    if (channel >= adcGetMaxInputs(ADC_INPUT_MAIN)) {
+      mix->srcRaw = MIXSRC_FIRST_STICK + channel;
+    } else {
+      mix->srcRaw = MIXSRC_FIRST_STICK + channelOrder(channel);
+    }
     while (!isSourceAvailable(mix->srcRaw)) {
       mix->srcRaw += 1;
     }

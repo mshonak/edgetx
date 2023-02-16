@@ -21,6 +21,7 @@
 
 #include "opentx.h"
 #include "tasks/mixer_task.h"
+#include "hal/adc_driver.h"
 
 #define _STR_MAX(x)                     "/" #x
 #define STR_MAX(x)                     _STR_MAX(x)
@@ -57,7 +58,11 @@ void insertExpo(uint8_t idx)
   memmove(expo+1, expo, (MAX_EXPOS-(idx+1))*sizeof(ExpoData));
   memclear(expo, sizeof(ExpoData));
   for (int i = s_currCh; i < INPUTSRC_LAST; i++) {
-    expo->srcRaw = (s_currCh > 4 ? MIXSRC_FIRST_STICK - 1 + i: MIXSRC_FIRST_STICK - 1 + channelOrder(i));
+    if (i > adcGetMaxInputs(ADC_INPUT_MAIN)) {
+      expo->srcRaw = MIXSRC_FIRST_STICK - 1 + i;
+    } else {
+      expo->srcRaw = MIXSRC_FIRST_STICK + channelOrder(i - 1);
+    }
     if (isSourceAvailableInInputs(expo->srcRaw)) {
       break;
     }
@@ -183,7 +188,12 @@ void displayExpoLine(coord_t y, ExpoData * ed, LcdFlags attr)
   drawSource(EXPO_LINE_SRC_POS, y, ed->srcRaw, attr);
 
   if (ed->trimSource != TRIM_ON) {
-    lcdDrawChar(EXPO_LINE_TRIM_POS, y, ed->trimSource > 0 ? '-' : STR_RETA123[-ed->trimSource][0], attr);
+    if (ed->trimSource > 0) {
+      lcdDrawChar(EXPO_LINE_TRIM_POS, y, '-', attr);
+    } else {
+      const char* short_label = getAnalogShortLabel(-ed->trimSource);
+      lcdDrawChar(EXPO_LINE_TRIM_POS, y, short_label ? short_label[0] : ' ', attr);
+    }
   }
 
   if (!ed->flightModes || ((ed->curve.value || ed->swtch) && ((get_tmr10ms() / 200) & 1)))

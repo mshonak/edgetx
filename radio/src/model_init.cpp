@@ -31,7 +31,7 @@ void setDefaultInputs()
 {
   auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = 0; i < max_sticks; i++) {
-    uint8_t stick_index = channelOrder(i + 1) - 1;
+    uint8_t stick_index = channelOrder(i);
     ExpoData *expo = expoAddress(i);
     expo->srcRaw = MIXSRC_FIRST_STICK + stick_index;
     expo->curve.type = CURVE_REF_EXPO;

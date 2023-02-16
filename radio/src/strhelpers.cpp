@@ -542,8 +542,33 @@ const char* getAnalogLabel(uint8_t type, uint8_t idx)
     // TODO: provide some way to use wheel/throttle instead
     return STR_STICK_NAMES[idx];
   }
+
+  if (type == ADC_INPUT_POT) {
+    return adcGetInputLabel(type, idx);
+  }
   
   return analogGetCanonicalName(type, idx);
+}
+
+const char* getAnalogShortLabel(uint8_t idx)
+{
+  auto max = adcGetMaxInputs(ADC_INPUT_MAIN);
+  if (idx < max) {
+    _static_str_buffer[0] = STR_STICK_NAMES[idx][0];
+    _static_str_buffer[1] = '\0';
+    return _static_str_buffer;
+  }
+
+  idx -= max;
+  max = adcGetMaxInputs(ADC_INPUT_POT);
+
+  if (idx < max) {
+    return adcGetInputShortLabel(ADC_INPUT_POT, idx);
+  }
+
+  // we only support short labels
+  // on main controls and pots
+  return "";
 }
 
 const char* getMainControlLabel(uint8_t idx)

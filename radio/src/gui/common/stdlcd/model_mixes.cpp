@@ -21,6 +21,7 @@
 
 #include "opentx.h"
 #include "tasks/mixer_task.h"
+#include "hal/adc_driver.h"
 
 #define _STR_MAX(x)                     "/" #x
 #define STR_MAX(x)                     _STR_MAX(x)
@@ -67,7 +68,11 @@ void insertMix(uint8_t idx)
   mix->destCh = s_currCh-1;
   mix->srcRaw = s_currCh;
   if (!isSourceAvailable(mix->srcRaw)) {
-    mix->srcRaw = (s_currCh > 4 ? MIXSRC_FIRST_STICK - 1 + s_currCh : MIXSRC_FIRST_STICK - 1 + channelOrder(s_currCh));
+    if (s_currCh > adcGetMaxInputs(ADC_INPUT_MAIN)) {
+      mix->srcRaw = MIXSRC_FIRST_STICK - 1 + s_currCh;
+    } else {
+      mix->srcRaw = MIXSRC_FIRST_STICK + channelOrder(s_currCh - 1);
+    }
     while (!isSourceAvailable(mix->srcRaw)) {
       mix->srcRaw += 1;
     }

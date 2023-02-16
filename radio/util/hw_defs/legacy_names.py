@@ -5,46 +5,64 @@ LEGACY_NAMES = [
             "P1": {
                 "yaml": "S1",
                 "lua": "s1",
+                "label": "S1",
+                "short_label": "1",
                 "description": "Potentiometer S1"
             },
             "P2": {
                 "yaml": "6POS",
                 "lua": "6pos",
+                "label": "6POS",
+                "short_label": "3",
                 "description": "Multipos Switch"
             },
             "P3": {
                 "yaml": "S2",
                 "lua": "s2",
+                "label": "S2",
+                "short_label": "2",
                 "description": "Potentiometer S2"
             },
             "SL1": {
                 "yaml": "LS",
                 "lua": "ls",
+                "label": "LS",
+                "short_label": "L",
                 "description": "Left slider"
             },
             "SL2": {
                 "yaml": "RS",
                 "lua": "rs",
+                "label": "RS",
+                "short_label": "R",
                 "description": "Right slider"
             },
             "EXT1": {
                 "yaml": "EXT1",
                 "lua": "ext1",
+                "label": "EXT1",
+                "short_label": "E1",
                 "description": "Ext 1"
             },
             "EXT2": {
                 "yaml": "EXT2",
                 "lua": "ext2",
+                "label": "EXT2",
+                "short_label": "E2",
                 "description": "Ext 2"
             },
             "EXT3": {
                 "yaml": "EXT3",
                 "lua": "ext3",
+                "label": "EXT3",
+                "short_label": "E3",
                 "description": "Ext 3"
             },
             "EXT4": {
                 "yaml": "EXT4",
                 "lua": "ext4",
+                "label": "EXT4",
+                "short_label": "E4",
                 "description": "Ext 4"
             }
         }
@@ -55,36 +73,50 @@ LEGACY_NAMES = [
             "P1": {
                 "yaml": "S1",
                 "lua": "s1",
+                "label": "S1",
+                "short_label": "1",
                 "description": "Potentiometer S1"
             },
             "P2": {
                 "yaml": "6POS",
                 "lua": "6pos",
+                "label": "6POS",
+                "short_label": "3",
                 "description": "Multipos Switch"
             },
             "P3": {
                 "yaml": "S2",
                 "lua": "s2",
+                "label": "S2",
+                "short_label": "2",
                 "description": "Potentiometer S2"
             },
             "SL1": {
                 "yaml": "LS",
                 "lua": "ls",
+                "label": "LS",
+                "short_label": "L",
                 "description": "Left slider"
             },
             "SL2": {
                 "yaml": "RS",
                 "lua": "rs",
+                "label": "RS",
+                "short_label": "R",
                 "description": "Right slider"
             },
             "SL3": {
                 "yaml": "S3",
                 "lua": "s3",
+                "label": "L1",
+                "short_label": "1",
                 "description": "Slider S3"
             },
             "SL4": {
                 "yaml": "S4",
                 "lua": "s4",
+                "label": "L2",
+                "short_label": "2",
                 "description": "Slider S4"
             },
             "JSx": {
@@ -105,41 +137,57 @@ LEGACY_NAMES = [
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
+                "label": "F1",
+                "short_label": "1",
                 "description": "Potentiometer 1"
             },
             "P2": {
                 "yaml": "POT2",
                 "lua": "s2",
+                "label": "F2",
+                "short_label": "2",
                 "description": "Potentiometer 2"
             },
             "P3": {
                 "yaml": "POT3",
                 "lua": "s3",
+                "label": "EXT3",
+                "short_label": "3",
                 "description": "Potentiometer 3"
             },
             "P4": {
                 "yaml": "POT4",
                 "lua": "s4",
-                "description": "Potentiometer 4 (X9E only)"
+                "label": "EXT4",
+                "short_label": "4",
+                "description": "Potentiometer 4"
             },
             "SL1": {
                 "yaml": "SLIDER1",
                 "lua": "ls",
+                "label": "LS",
+                "short_label": "L",
                 "description": "Left slider"
             },
             "SL2": {
                 "yaml": "SLIDER2",
                 "lua": "rs",
+                "label": "RS",
+                "short_label": "R",
                 "description": "Right slider"
             },
             "SL3": {
                 "yaml": "SLIDER3",
                 "lua": "lcs",
+                "label": "S1",
+                "short_label": "1",
                 "description": "Left center slider (X9E only)"
             },
             "SL4": {
                 "yaml": "SLIDER4",
                 "lua": "rcs",
+                "label": "S2",
+                "short_label": "2",
                 "description": "Right center slider (X9E only)"
             }            
         }
@@ -150,16 +198,22 @@ LEGACY_NAMES = [
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
+                "label": "S1",
+                "short_label": "1",
                 "description": "Potentiometer 1"
             },
             "P2": {
                 "yaml": "POT2",
                 "lua": "s2",
+                "label": "S2",
+                "short_label": "2",
                 "description": "Potentiometer 2"
             },
             "P3": {
                 "yaml": "POT3",
                 "lua": "s3",
+                "label": "S3",
+                "short_label": "3",
                 "description": "Potentiometer 3"
             }
         }
@@ -180,11 +234,15 @@ LEGACY_NAMES = [
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
+                "label": "S1",
+                "short_label": "1",
                 "description": "Potentiometer 1"
             },
             "P2": {
                 "yaml": "POT2",
                 "lua": "s2",
+                "label": "S2",
+                "short_label": "2",
                 "description": "Potentiometer 2"
             }
         }
@@ -195,6 +253,8 @@ LEGACY_NAMES = [
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
+                "label": "S1",
+                "short_label": "1",
                 "description": "Potentiometer 1"
             }
         }
@@ -205,26 +265,36 @@ LEGACY_NAMES = [
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
+                "label": "S1",
+                "short_label": "1",
                 "description": "Potentiometer 1"
             },
             "P2": {
                 "yaml": "POT2",
                 "lua": "s2",
+                "label": "S2",
+                "short_label": "2",
                 "description": "Potentiometer 2"
             },
             "P3": {
                 "yaml": "POT3",
                 "lua": "s3",
+                "label": "S3",
+                "short_label": "3",
                 "description": "Potentiometer 3"
             },
             "SL1": {
                 "yaml": "SLIDER1",
                 "lua": "ls",
+                "label": "LS",
+                "short_label": "L",
                 "description": "Left slider"
             },
             "SL2": {
                 "yaml": "SLIDER2",
                 "lua": "rs",
+                "label": "RS",
+                "short_label": "R",
                 "description": "Right slider"
             }
         }

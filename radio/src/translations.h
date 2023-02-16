@@ -143,7 +143,6 @@ extern const char* const STR_POTTYPES[];
 extern const char* const STR_SLIDERTYPES[];
 extern const char* const STR_VTRIMINC[];
 extern const char* const STR_VDISPLAYTRIMS[];
-extern const char* const STR_RETA123[];
 
 extern const char* const STR_TIMER_DIR[];
 

@@ -98,6 +98,8 @@ const char *getSwitchPositionSymbol(uint8_t pos);
 char *getSwitchPositionName(char *dest, swsrc_t idx);
 char *getSwitchName(char *dest, uint8_t idx);
 
+const char* getAnalogLabel(uint8_t type, uint8_t idx);
+const char* getAnalogShortLabel(uint8_t idx);
 const char* getMainControlLabel(uint8_t idx);
 const char* getTrimLabel(uint8_t idx);
 const char* getTrimSourceLabel(uint16_t src_raw, int8_t trim_src);

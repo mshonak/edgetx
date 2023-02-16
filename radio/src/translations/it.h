@@ -73,26 +73,10 @@
 #define TR_CURVE_TYPES         "Fisso","Modific."
 #define TR_ADCFILTERVALUES     "Globali","Off","On"
 
-#if defined(PCBX10)
-  #define TR_RETA123           "D","E","M","A","1","3","2","4","5","6","7","S","D"
-#elif defined(PCBHORUS)
-  #define TR_RETA123           "D","E","M","A","1","3","2","4","5","S","D"
-#elif defined(PCBX9E)
-  #define TR_RETA123           "D","E","M","A","1","2","3","4","S","D","S","D"
-#elif defined(PCBTARANIS)
-  #define TR_RETA123           "D","E","M","A","1","2","3","S","D"
-#else
-  #define TR_RETA123           "D","E","M","A","1","2","3"
-#endif
-
 #define TR_VCURVETYPE          "Diff","Espo","Funz","Pers"
 #define TR_VCURVEFUNC          "---","x>0","x<0","|x|","f>0","f<0","|f|"
 #define TR_VMLTPX              "Add.","Molt.","Sost."
 #define TR_VMLTPX2             "+=","*=",":="
-
-#if defined(PCBHORUS)
-#else
-#endif
 
 #if LCD_W >= 212
   #define TR_CSWTIMER          "Timer"

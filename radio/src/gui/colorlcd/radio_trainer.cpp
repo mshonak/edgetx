@@ -64,8 +64,8 @@ void RadioTrainerPage::build(FormWindow * form)
 
   auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (uint8_t i = 0; i < max_sticks; i++) {
-    uint8_t chan = channelOrder(i + 1);
-    TrainerMix* td = &g_eeGeneral.trainer.mix[chan - 1];
+    uint8_t chan = channelOrder(i);
+    TrainerMix* td = &g_eeGeneral.trainer.mix[chan];
 
     auto line = form->newLine(&grid);
     new StaticText(line, rect_t{}, getMainControlLabel(chan), 0, COLOR_THEME_PRIMARY1);

@@ -6,6 +6,8 @@ import json
 from hal_switches import Switch, parse_switches
 from hal_adc import ADCInput, SPI_ADCInput, ADC, ADCInputParser
 
+import legacy_names
+
 #
 # Return a file handle or STDIN
 #
@@ -62,13 +64,14 @@ class DictEncoder(json.JSONEncoder):
 #
 # Parse HAL defines into JSON
 #
-def parse_defines(filename):
+def parse_defines(filename, target):
 
     hw_defs = parse_hw_defs(filename)
     out_defs = {}
 
     # parse ADC first, we might have switches using ADC
-    adc_parser = ADCInputParser(hw_defs)
+    legacy_inputs = legacy_names.inputs_by_target(target)
+    adc_parser = ADCInputParser(hw_defs,legacy_inputs)
     adc_inputs = adc_parser.parse_inputs()
     out_defs["adc_inputs"] = adc_inputs
 

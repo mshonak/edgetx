@@ -43,10 +43,16 @@ enum {
   ADC_INPUT_ALL,
 };
 
+struct etx_hal_adc_input_t {
+  const char* name;
+  const char* label;
+  const char* short_label;
+};
+
 struct etx_hal_adc_inputs_t {
-  uint8_t      n_inputs;
-  uint8_t      offset;
-  const char** names;
+  uint8_t                    n_inputs;
+  uint8_t                    offset;
+  const etx_hal_adc_input_t* inputs;
 };
 
 struct etx_hal_adc_driver_t {
@@ -101,6 +107,9 @@ const char* adcGetInputName(uint8_t type, uint8_t idx);
 
 const char* adcGetInputName(uint8_t idx);
 int adcGetInputIdx(const char* input, uint8_t len);
+
+const char* adcGetInputLabel(uint8_t type, uint8_t idx);
+const char* adcGetInputShortLabel(uint8_t type, uint8_t idx);
 
 // To be implemented by the target driver
 // int8_t adcGetVRTC();

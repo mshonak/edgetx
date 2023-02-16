@@ -359,7 +359,10 @@ CenterBeepsMatrix::CenterBeepsMatrix(Window* parent, const rect_t& r) :
 
 void CenterBeepsMatrix::setTextWithColor(uint8_t btn_id)
 {
-  setText(btn_id, makeRecolor(STR_RETA123[ana_idx[btn_id]], isActive(btn_id) ? COLOR_THEME_PRIMARY1 : COLOR_THEME_SECONDARY1).c_str());
+  setText(btn_id, makeRecolor(getAnalogShortLabel(ana_idx[btn_id]),
+                              isActive(btn_id) ? COLOR_THEME_PRIMARY1
+                                               : COLOR_THEME_SECONDARY1)
+                      .c_str());
 }
 
 void CenterBeepsMatrix::onPress(uint8_t btn_id)

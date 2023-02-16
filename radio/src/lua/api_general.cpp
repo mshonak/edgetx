@@ -28,6 +28,7 @@
 #include "lua_api.h"
 #include "api_filesystem.h"
 #include "hal/module_port.h"
+#include "hal/adc_driver.h"
 #include "switches.h"
 
 #if defined(LIBOPENUI)
@@ -1823,7 +1824,7 @@ Get stick that is assigned to a channel. See Default Channel Order in General Se
 static int luaDefaultStick(lua_State * L)
 {
   uint8_t channel = luaL_checkinteger(L, 1);
-  lua_pushinteger(L, channelOrder(channel+1)-1);
+  lua_pushinteger(L, channelOrder(channel));
   return 1;
 }
 
@@ -1907,10 +1908,10 @@ Get channel assigned to stick. See Default Channel Order in General Settings
 static int luaDefaultChannel(lua_State * L)
 {
   uint8_t stick = luaL_checkinteger(L, 1);
-  for (int i=1; i<=4; i++) {
-    int tmp = channelOrder(i) - 1;
+  for (int i = 0; i < adcGetMaxInputs(ADC_INPUT_MAIN); i++) {
+    int tmp = channelOrder(i);
     if (tmp == stick) {
-      lua_pushinteger(L, i-1);
+      lua_pushinteger(L, i);
       return 1;
     }
   }

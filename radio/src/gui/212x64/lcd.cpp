@@ -715,7 +715,7 @@ void drawSource(coord_t x, coord_t y, uint32_t idx, LcdFlags att)
 
 void putsChnLetter(coord_t x, coord_t y, uint8_t idx, LcdFlags att)
 {
-  lcdDrawTextAtIndex(x, y, STR_RETA123, idx-1, att);
+  lcdDrawText(x, y, getAnalogShortLabel(idx), att);
 }
 
 void drawModelName(coord_t x, coord_t y, char *name, uint8_t id, LcdFlags att)

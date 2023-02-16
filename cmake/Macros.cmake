@@ -106,7 +106,7 @@ function(AddHardwareDefTarget output)
   set(GEN_HW_DEFS ${GEN_HW_DEFS} | sed "'/^#define _/d'" | sort)
 
   set(GEN_JSON ${PYTHON_EXECUTABLE} ${RADIO_DIRECTORY}/util/hw_defs/generate_hw_def.py)
-  set(GEN_JSON ${GEN_JSON} -i defines -)
+  set(GEN_JSON ${GEN_JSON} -i defines -T ${FLAVOUR} -)
 
   add_custom_command(OUTPUT ${output}
     COMMAND ${GEN_HW_DEFS} | ${GEN_JSON} > ${output}
