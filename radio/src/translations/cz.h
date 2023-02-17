@@ -194,6 +194,7 @@
 #define TR_VSWASHTYPE                  "---","120","120X","140","90"
 
 #define TR_STICK_NAMES                 "Smě", "Výš", "Pln", "Kři"
+#define TR_SURFACE_NAMES               "Smě", "Pln"
 
 #if defined(PCBHORUS)
   #define TR_TRIMS_SWITCHES            STR_CHAR_TRIM "Sl", STR_CHAR_TRIM "Sp", STR_CHAR_TRIM "Vd", STR_CHAR_TRIM "Vn", STR_CHAR_TRIM "Pd", STR_CHAR_TRIM "Pn", STR_CHAR_TRIM "Kl", STR_CHAR_TRIM "Kp", STR_CHAR_TRIM "5d", STR_CHAR_TRIM "5n", STR_CHAR_TRIM "6d", STR_CHAR_TRIM "6n"

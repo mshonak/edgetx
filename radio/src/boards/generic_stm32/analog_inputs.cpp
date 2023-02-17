@@ -29,12 +29,13 @@
   #include "ads79xx.h"
 #endif
 
+#include "definitions.h"
+#include "translations.h"
+#include <string.h>
+
 // generated files
 #include "stm32_adc_inputs.inc"
 #include "hal_adc_inputs.inc"
-
-#include "definitions.h"
-#include <string.h>
 
 constexpr uint8_t n_ADC = DIM(_ADC_adc);
 constexpr uint8_t n_ADC_spi = DIM(_ADC_spi);

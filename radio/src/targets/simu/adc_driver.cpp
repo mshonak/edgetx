@@ -22,6 +22,7 @@
 #include "hal/adc_driver.h"
 #include "definitions.h"
 #include "dataconstants.h"
+#include "translations.h"
 
 #include "hal_adc_inputs.inc"
 #include "board.h"

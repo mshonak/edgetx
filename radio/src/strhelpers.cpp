@@ -539,8 +539,8 @@ const char* getAnalogLabel(uint8_t type, uint8_t idx)
     return analogGetCustomLabel(type, idx);
 
   if (type == ADC_INPUT_MAIN) {
-    // TODO: provide some way to use wheel/throttle instead
-    return STR_STICK_NAMES[idx];
+    // main controls: translated label is stored in "short label"
+    return adcGetInputShortLabel(type, idx);
   }
 
   if (type == ADC_INPUT_POT) {
@@ -554,9 +554,16 @@ const char* getAnalogShortLabel(uint8_t idx)
 {
   auto max = adcGetMaxInputs(ADC_INPUT_MAIN);
   if (idx < max) {
-    _static_str_buffer[0] = STR_STICK_NAMES[idx][0];
-    _static_str_buffer[1] = '\0';
-    return _static_str_buffer;
+    // main controls: translated label is stored in "short label"
+    auto label = adcGetInputShortLabel(ADC_INPUT_MAIN, idx);
+    if (label) {
+      static char _str_buffer[2];
+      _str_buffer[0] = STR_STICK_NAMES[idx][0];
+      _str_buffer[1] = '\0';
+      return _str_buffer;
+    } else {
+      return "";
+    }
   }
 
   idx -= max;
@@ -583,7 +590,9 @@ const char* getTrimLabel(uint8_t idx)
   }
 
   // TODO: replace with string from HW def
-  strAppendStringWithIndex(_static_str_buffer, "T", idx + 1);
+  static char _trim_buffer[4];
+  strAppendStringWithIndex(_trim_buffer, "T", idx + 1);
+  return _trim_buffer;
 }
 
 const char* getTrimSourceLabel(uint16_t src_raw, int8_t trim_src)
@@ -676,7 +685,6 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
     }
     strncpy(pos, name, dest_len - 1);
     pos[dest_len - 1] = '\0';
-
   }
 #if MAX_AXIS > 0
   else if (idx <= MIXSRC_LAST_AXIS) {

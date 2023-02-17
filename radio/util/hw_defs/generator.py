@@ -8,13 +8,13 @@ from json_index import build_adc_index, build_adc_gpio_port_index, build_switch_
 
 MAIN_CONTROL_LUT = {
     # 2 Gimbal radios
-    "LH": "Rud",
-    "LV": "Ele",
-    "RV": "Thr",
-    "RH": "Ail",
+    "LH": { "str": "Rud", "local": "STR_STICK_NAMES[0]" },
+    "LV": { "str": "Ele", "local": "STR_STICK_NAMES[1]" },
+    "RV": { "str": "Thr", "local": "STR_STICK_NAMES[2]" },
+    "RH": { "str": "Ail", "local": "STR_STICK_NAMES[3]" },
     # Surface radios
-    "WH": "Whl",
-    "TR": "Thr",
+    "WH": { "str": "Whl", "local": "STR_SURFACE_NAMES[0]" },
+    "TR": { "str": "Thr", "local": "STR_SURFACE_NAMES[1]" },
 }
 
 def generate_from_template(json_filename, template_filename, target):

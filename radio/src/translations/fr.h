@@ -199,6 +199,8 @@
 #define TR_VSWASHTYPE                  "--- ","120","120X","140","90"
 
 #define TR_STICK_NAMES                 "Dir", "Prf", "Gaz", "Ail"
+#define TR_SURFACE_NAMES               "Dir", "Gaz"
+
 
 #if defined(PCBHORUS)
   #define TR_TRIMS_SWITCHES              STR_CHAR_TRIM "Dg", STR_CHAR_TRIM "Dd", STR_CHAR_TRIM "Pb", STR_CHAR_TRIM "Ph", STR_CHAR_TRIM "Gb", STR_CHAR_TRIM "Gh", STR_CHAR_TRIM "Ag", STR_CHAR_TRIM "Ad", STR_CHAR_TRIM "5d", STR_CHAR_TRIM "5u", STR_CHAR_TRIM "6d", STR_CHAR_TRIM "6u"
