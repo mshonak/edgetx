@@ -2,6 +2,18 @@ LEGACY_NAMES = [
     {
         "targets": {"x10","x10express","t16","tx16s","t18"},
         "inputs": {
+            "LH": {
+                "yaml": "Rud"
+            },
+            "LV": {
+                "yaml": "Ele"
+            },
+            "RV": {
+                "yaml": "Thr"
+            },
+            "RH": {
+                "yaml": "Ail"
+            },
             "P1": {
                 "yaml": "S1",
                 "lua": "s1",
@@ -70,6 +82,18 @@ LEGACY_NAMES = [
     {
         "targets": {"x12s"},
         "inputs": {
+            "LH": {
+                "yaml": "Rud"
+            },
+            "LV": {
+                "yaml": "Ele"
+            },
+            "RV": {
+                "yaml": "Thr"
+            },
+            "RH": {
+                "yaml": "Ail"
+            },
             "P1": {
                 "yaml": "S1",
                 "lua": "s1",
@@ -134,6 +158,18 @@ LEGACY_NAMES = [
     {
         "targets": {"x9e"},
         "inputs": {
+            "LH": {
+                "yaml": "Rud"
+            },
+            "LV": {
+                "yaml": "Ele"
+            },
+            "RV": {
+                "yaml": "Thr"
+            },
+            "RH": {
+                "yaml": "Ail"
+            },
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
@@ -195,6 +231,18 @@ LEGACY_NAMES = [
     {
         "targets": {"boxer"},
         "inputs": {
+            "LH": {
+                "yaml": "Rud"
+            },
+            "LV": {
+                "yaml": "Ele"
+            },
+            "RV": {
+                "yaml": "Thr"
+            },
+            "RH": {
+                "yaml": "Ail"
+            },
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
@@ -231,6 +279,18 @@ LEGACY_NAMES = [
             "zorro"
         },
         "inputs": {
+            "LH": {
+                "yaml": "Rud"
+            },
+            "LV": {
+                "yaml": "Ele"
+            },
+            "RV": {
+                "yaml": "Thr"
+            },
+            "RH": {
+                "yaml": "Ail"
+            },
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
@@ -250,6 +310,18 @@ LEGACY_NAMES = [
     {
         "targets": {"x9lite","x9lites"},
         "inputs": {
+            "LH": {
+                "yaml": "Rud"
+            },
+            "LV": {
+                "yaml": "Ele"
+            },
+            "RV": {
+                "yaml": "Thr"
+            },
+            "RH": {
+                "yaml": "Ail"
+            },
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",
@@ -262,6 +334,18 @@ LEGACY_NAMES = [
     {
         "targets": {"x9d","x9d+","x9d+2019"},
         "inputs": {
+            "LH": {
+                "yaml": "Rud"
+            },
+            "LV": {
+                "yaml": "Ele"
+            },
+            "RV": {
+                "yaml": "Thr"
+            },
+            "RH": {
+                "yaml": "Ail"
+            },
             "P1": {
                 "yaml": "POT1",
                 "lua": "s1",

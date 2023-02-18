@@ -878,7 +878,8 @@ PACK(struct RadioData {
   CUST_ATTR(aux2SerialMode, r_serialMode, nullptr);
   NOBACKUP(uint32_t serialPort ARRAY(SERIAL_CONF_BITS_PER_PORT,struct_serialConfig,nullptr));
 
-  CUST_ARRAY(sticksConfig, struct_stickConfig, stick_name_valid);
+  CUST_ARRAY(sticksConfig, struct_stickConfig, MAX_STICKS, stick_name_valid);
+  CUST_ARRAY(slidersConfig, struct_sliderConfig, MAX_POTS, nullptr);
   potconfig_t potsConfig ARRAY(4,struct_potConfig,nullptr);
   swconfig_t switchConfig ARRAY(2,struct_switchConfig,nullptr);
 

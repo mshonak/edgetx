@@ -194,6 +194,7 @@ extern void rtcDisableBackupReg();
 
 void boardOff()
 {
+  ledOff();
   backlightEnable(0);
 
   while (pwrPressed()) {

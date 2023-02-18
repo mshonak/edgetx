@@ -438,8 +438,6 @@ void hapticDone();
 void hapticOff();
 void hapticOn(uint32_t pwmPercent);
 
-#define USART_FLAG_ERRORS              (USART_FLAG_ORE | USART_FLAG_NE | USART_FLAG_FE | USART_FLAG_PE)
-
 // BT driver
 #define BT_TX_FIFO_SIZE    64
 #define BT_RX_FIFO_SIZE    256

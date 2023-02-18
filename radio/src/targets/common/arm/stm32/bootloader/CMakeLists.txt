@@ -72,9 +72,9 @@ if(PCB STREQUAL X10 OR PCB STREQUAL X12S OR PCB STREQUAL NV14)
     ../../../../../fonts/lvgl/lv_font_roboto_bl_16.c
     ../../../../../thirdparty/libopenui/src/bitmapbuffer.cpp
     ../../../../../thirdparty/libopenui/thirdparty/lz4/lz4.c
-    ../../../../../targets/${TARGET_DIR}/sdram_driver.c
     ../../../../../targets/common/arm/stm32/sdio_sd.c
     ../../../../../targets/common/arm/stm32/rtc_driver.cpp
+    ../../../../../targets/${TARGET_DIR}/sdram_driver.c
     ../../../../../targets/${TARGET_DIR}/haptic_driver.cpp
     )
 
@@ -83,11 +83,18 @@ if(PCB STREQUAL X10 OR PCB STREQUAL X12S OR PCB STREQUAL NV14)
     set(BOOTLOADER_SRC ${BOOTLOADER_SRC} ../../../../../${LVGL_FILE})
   endforeach()
 
+  if(NOT PCB STREQUAL NV14)
+    set(BOOTLOADER_SRC
+      ${BOOTLOADER_SRC}
+      ../../../../../targets/${TARGET_DIR}/led_driver.cpp
+    )
+  endif()
+
+  
   if(USB_CHARGER)
     set(BOOTLOADER_SRC
       ${BOOTLOADER_SRC}
       ../../../../../targets/${TARGET_DIR}/usb_charger_driver.cpp
-      ../../../../../targets/${TARGET_DIR}/led_driver.cpp
       )
   endif()
 

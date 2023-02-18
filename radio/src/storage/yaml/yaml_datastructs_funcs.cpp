@@ -125,6 +125,25 @@ bool in_write_weight(const YamlNode* node, uint32_t val, yaml_writer_func wf,
   return wf(opaque, s, strlen(s));
 }
 
+static int _legacy_input_idx(const char* val, uint8_t val_len)
+{
+  for (uint8_t i = 0; i < DIM(_legacy_inputs); i++){
+    if (!strncmp(_legacy_inputs[i].legacy, val, val_len))
+      return i;
+  }
+
+  return -1;
+}
+
+static int _legacy_mix_src(const char* val, uint8_t val_len)
+{
+  auto idx = _legacy_input_idx(val, val_len);
+  if (idx >= 0)
+    return _legacy_inputs[idx].src_raw;
+
+  return -1;
+}
+
 extern const struct YamlIdStr enum_MixSources[];
 
 // sources: parse/output
@@ -216,13 +235,19 @@ static uint32_t r_mixSrcRaw(const YamlNode* node, const char* val, uint8_t val_l
       return yaml_str2uint(val, val_len) * 3 + sign + MIXSRC_FIRST_TELEM;
     }
 
-    auto stick_idx = analogLookupCanonicalIdx(ADC_INPUT_MAIN, val, val_len);
-    if (stick_idx >= 0) return stick_idx + MIXSRC_FIRST_STICK;
+    auto idx = analogLookupCanonicalIdx(ADC_INPUT_MAIN, val, val_len);
+    if (idx >= 0) return idx + MIXSRC_FIRST_STICK;
 
-    auto pot_idx = analogLookupCanonicalIdx(ADC_INPUT_POT, val, val_len);
-    if (pot_idx >= 0) return pot_idx + MIXSRC_FIRST_POT;
+    idx = analogLookupCanonicalIdx(ADC_INPUT_POT, val, val_len);
+    if (idx >= 0) return idx + MIXSRC_FIRST_POT;
 
-    // TODO: legacy sources
+#if MAX_AXIS > 0
+    idx = analogLookupCanonicalIdx(ADC_INPUT_AXIS, val, val_len);
+    if (idx >= 0) return idx + MIXSRC_FIRST_POT;
+#endif
+    
+    idx = _legacy_mix_src(val, val_len);
+    if (idx >= 0) return idx;
     
     return yaml_parse_enum(enum_MixSources, val, val_len);
 }
@@ -276,6 +301,11 @@ static bool w_mixSrcRaw(const YamlNode* node, uint32_t val, yaml_writer_func wf,
     else if (val <= MIXSRC_LAST_POT) {
         str = analogGetCanonicalName(ADC_INPUT_POT, val - MIXSRC_FIRST_POT);
     }
+#if MAX_AXIS > 0
+    else if (val <= MIXSRC_LAST_AXIS) {
+        str = analogGetCanonicalName(ADC_INPUT_AXIS, val - MIXSRC_FIRST_AXIS);
+    }
+#endif
     else if (val >= MIXSRC_FIRST_LOGICAL_SWITCH
              && val <= MIXSRC_LAST_LOGICAL_SWITCH) {
 
@@ -542,6 +572,9 @@ static uint32_t r_calib(void* user, const char* val, uint8_t val_len)
   int idx = adcGetInputIdx(val, val_len);
   if (idx >= 0) return idx;
 
+  idx = _legacy_input_idx(val, val_len);
+  if (idx >= 0) return idx;
+
   // detect invalid values
   if (val_len == 0 || (val[0] < '0') || (val[0] > '9')) {
     return -1;
@@ -605,6 +638,48 @@ static const struct YamlNode struct_stickConfig[] = {
     YAML_END
 };
 
+static uint32_t slider_read(void* user, const char* val, uint8_t val_len)
+{
+  (void)user;
+  auto idx = _legacy_mix_src(val, val_len);
+  if (idx >= 0) return idx - MIXSRC_FIRST_POT;
+
+  return -1;
+}
+
+static const struct YamlIdStr enum_SliderConfig[] = {
+    {  POT_NONE, "none" },
+    {  POT_SLIDER_WITH_DETENT, "with_detent" },
+    {  0, NULL }
+};
+
+static void sl_type_read(void* user, uint8_t* data, uint32_t bitoffs,
+                         const char* val, uint8_t val_len)
+{
+  auto tw = reinterpret_cast<YamlTreeWalker*>(user);
+  uint16_t idx = tw->getElmts(1);
+
+  bitoffs += POT_CFG_BITS * idx;
+  data += bitoffs >> 3UL;
+  bitoffs &= 7;
+
+  auto cfg = yaml_parse_enum(enum_SliderConfig, val, val_len);
+  yaml_put_bits(data, cfg, bitoffs, POT_CFG_BITS);
+}
+
+static void sl_name_read(void* user, uint8_t* data, uint32_t bitoffs,
+                         const char* val, uint8_t val_len)
+{
+  _read_analog_name(ADC_INPUT_POT, user, data, bitoffs, val, val_len);
+}
+
+static const struct YamlNode struct_sliderConfig[] = {
+    YAML_IDX_CUST( "sl", slider_read, nullptr ),
+    YAML_CUSTOM( "type", sl_type_read, nullptr ),
+    YAML_CUSTOM( "name", sl_name_read, nullptr ),
+    YAML_END
+};
+
 static uint32_t sw_read(void* user, const char* val, uint8_t val_len)
 {
   (void)user;
@@ -662,7 +737,14 @@ static const struct YamlNode struct_switchConfig[] = {
 static uint32_t pot_read(void* user, const char* val, uint8_t val_len)
 {
   (void)user;
-  return analogLookupPhysicalIdx(ADC_INPUT_POT, val, val_len);
+  auto idx = analogLookupPhysicalIdx(ADC_INPUT_POT, val, val_len);
+  if (idx >= 0) return idx;
+
+  idx = _legacy_mix_src(val, val_len);
+  if (idx >= MIXSRC_FIRST_POT && idx <= MIXSRC_LAST_POT)
+    return idx - MIXSRC_FIRST_POT;
+
+  return -1;
 }
 
 static bool pot_write(void* user, yaml_writer_func wf, void* opaque)
@@ -1206,9 +1288,9 @@ static void r_customFn(void* user, uint8_t* data, uint32_t bitoffs,
                && val[4] == 's') {
       CFN_CH_INDEX(cfn) = NUM_STICKS + 1;
     } else {
-      uint32_t stick = yaml_parse_enum(enum_MixSources, val, l_sep);
-      if (stick >= MIXSRC_FIRST_STICK && stick <= MIXSRC_LAST_STICK) {
-        CFN_CH_INDEX(cfn) = stick - MIXSRC_FIRST_STICK + 1;
+      auto stick = analogLookupCanonicalIdx(ADC_INPUT_MAIN, val, val_len);
+      if (stick >= 0) {
+        CFN_CH_INDEX(cfn) = stick + 1;
       }
     }
     break;
