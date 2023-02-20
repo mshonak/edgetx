@@ -133,119 +133,6 @@ uint32_t isBootloaderStart(const uint8_t * buffer);
   #define TRAINER_CONNECTED()           true
 #endif
 
-void check_telemetry_exti();
-
-// Keys driver
-enum EnumKeys
-{
-#if defined(KEYS_GPIO_REG_SHIFT)
-  KEY_SHIFT,
-#endif
-
-#if defined(KEYS_GPIO_REG_MENU)
-  KEY_MENU,
-#endif
-
-  KEY_EXIT,
-  KEY_ENTER,
-
-#if defined(KEYS_GPIO_REG_DOWN)
-  KEY_DOWN,
-  KEY_UP,
-#endif
-
-#if defined(KEYS_GPIO_REG_RIGHT)
-  KEY_RIGHT,
-  KEY_LEFT,
-#endif
-
-#if defined(KEYS_GPIO_REG_PAGE)
-  KEY_PAGE,
-#endif
-
-#if defined(KEYS_GPIO_REG_PAGEUP)
-  KEY_PAGEUP,
-#endif
-
-#if defined(KEYS_GPIO_REG_PAGEDN)
-  KEY_PAGEDN,
-#endif
-
-#if defined(KEYS_GPIO_REG_SYS)
-  KEY_SYS,
-#endif
-
-#if defined(KEYS_GPIO_REG_MDL)
-  KEY_MODEL,
-#endif
-
-#if defined(KEYS_GPIO_REG_TELE)
-  KEY_TELE,
-#endif
-
-#if defined(KEYS_GPIO_REG_PLUS)
-  KEY_PLUS,
-  KEY_MINUS,
-#endif
-
-  KEY_COUNT,
-  KEY_MAX = KEY_COUNT - 1,
-
-#if defined(KEYS_GPIO_REG_BIND)
-  KEY_BIND,
-#endif
-
-#if defined(ROTARY_ENCODER_NAVIGATION)
-  KEY_PLUS,
-  KEY_MINUS,
-#endif
-
-  TRM_BASE,
-  TRM_LH_DWN = TRM_BASE,
-  TRM_LH_UP,
-  TRM_LV_DWN,
-  TRM_LV_UP,
-  TRM_RV_DWN,
-  TRM_RV_UP,
-  TRM_RH_DWN,
-  TRM_RH_UP,
-  TRM_LAST = TRM_RH_UP,
-
-  NUM_KEYS
-};
-
-#if defined(PCBX9E) && !defined(SIMU)
-  #define KEY_UP                        KEY_MINUS
-  #define KEY_DOWN                      KEY_PLUS
-  #define KEY_RIGHT                     KEY_PLUS
-  #define KEY_LEFT                      KEY_MINUS
-#elif defined(NAVIGATION_XLITE)
-  #define KEY_PLUS                      KEY_RIGHT
-  #define KEY_MINUS                     KEY_LEFT
-#elif defined(NAVIGATION_9X)
-  #define KEY_MENU                      KEY_ENTER
-  #define KEY_MINUS                     KEY_DOWN
-  #define KEY_PLUS                      KEY_UP
-#else
-  #define KEY_UP                        KEY_PLUS
-  #define KEY_DOWN                      KEY_MINUS
-  #define KEY_RIGHT                     KEY_MINUS
-  #define KEY_LEFT                      KEY_PLUS
-#endif
-
-#if defined(KEYS_GPIO_PIN_SHIFT)
-#define IS_SHIFT_KEY(index)             (index == KEY_SHIFT)
-#if defined(SIMU)
-#define IS_SHIFT_PRESSED()              (readKeys() & (1 << KEY_SHIFT))
-#else
-#define IS_SHIFT_PRESSED()              (~KEYS_GPIO_REG_SHIFT & KEYS_GPIO_PIN_SHIFT)
-#endif
-#else
-#define IS_SHIFT_KEY(index)             (false)
-#define IS_SHIFT_PRESSED()              (false)
-#endif
-
-
 #if defined(PCBXLITES)
   #define NUM_SWITCHES                  6
   #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
@@ -347,10 +234,6 @@ enum EnumKeys
 
 #define STORAGE_NUM_SWITCHES_POSITIONS  (STORAGE_NUM_SWITCHES * 3)
 
-void keysInit();
-uint32_t switchState(uint8_t index);
-uint32_t readKeys();
-uint32_t readTrims();
 #if defined(FUNCTION_SWITCHES)
 extern uint8_t fsPreviousState;
 void evalFunctionSwitches();
@@ -358,9 +241,6 @@ void setFSStartupPosition();
 uint8_t getFSLogicalState(uint8_t index);
 uint8_t getFSPhysicalState(uint8_t index);
 #endif
-
-#define TRIMS_PRESSED()                 (readTrims())
-#define KEYS_PRESSED()                  (readKeys())
 
 // ADC driver
 enum Analogs {
@@ -563,19 +443,6 @@ uint8_t isBacklightEnabled();
 
 // Debug driver
 void debugPutc(const char c);
-
-// Telemetry driver
-// void telemetryPortInit(uint32_t baudrate, uint8_t mode);
-// void telemetryPortSetDirectionInput();
-// void telemetryPortSetDirectionOutput();
-// void sportSendByte(uint8_t byte);
-// void sportSendByteLoop(uint8_t byte);
-// void sportStopSendByteLoop();
-// void sportSendBuffer(const uint8_t * buffer, uint32_t count);
-// bool sportGetByte(uint8_t * byte);
-// void telemetryClearFifo();
-// extern uint32_t telemetryErrors;
-
 
 // Audio driver
 void audioInit() ;

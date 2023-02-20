@@ -24,16 +24,17 @@
 
 #include "definitions.h"
 #include "opentx_constants.h"
+
 #include "board_common.h"
 #include "hal.h"
 #include "hal/serial_port.h"
 
-#if !defined(LUA_EXPORT_GENERATION)
-#include "stm32f4xx_sdio.h"
-#include "stm32f4xx_dma2d.h"
-#include "stm32f4xx_ltdc.h"
-#include "stm32f4xx_fmc.h"
-#endif
+// #if !defined(LUA_EXPORT_GENERATION)
+// #include "stm32f4xx_sdio.h"
+// #include "stm32f4xx_dma2d.h"
+// #include "stm32f4xx_ltdc.h"
+// #include "stm32f4xx_fmc.h"
+// #endif
 
 #include "touch_driver.h"
 #include "lcd_driver.h"
@@ -150,73 +151,19 @@ extern HardwareOptions hardwareOptions;
 #define IS_UART_MODULE(port)            (port == INTERNAL_MODULE)
 #define IS_PXX2_INTERNAL_ENABLED()      (false)
 
-// Keys driver
-enum EnumKeys
-{
-  KEY_ENTER,
-  KEY_EXIT,
-  KEY_PGUP,
-  KEY_PGDN,
-  KEY_UP,
-  KEY_DOWN,
-  KEY_LEFT,
-  KEY_RIGHT,
-  KEY_MODEL,
-  KEY_RADIO,
-  KEY_TELEM,
-  TRM_BASE,
-  TRM_LH_DWN = TRM_BASE,
-  TRM_LH_UP,
-  TRM_LV_DWN,
-  TRM_LV_UP,
-  TRM_RV_DWN,
-  TRM_RV_UP,
-  TRM_RH_DWN,
-  TRM_RH_UP,
-  TRM_LS_DWN,
-  TRM_LS_UP,
-  TRM_LAST = TRM_LS_UP,
-
-  NUM_KEYS
-};
-
-#define IS_SHIFT_KEY(index)             (false)
-#define IS_SHIFT_PRESSED()              (false)
-enum VirtualKeys {
-  VKEY_MIN,
-  VKEY_MAX,
-  VKEY_INC,
-  VKEY_DEC,
-  VKEY_INC_LARGE,
-  VKEY_DEC_LARGE,
-  VKEY_DEFAULT,
-};
-
 #if !defined(NUM_FUNCTIONS_SWITCHES)
 #define NUM_FUNCTIONS_SWITCHES        0
 #endif
 
-void monitorInit();
-void keysInit();
-uint8_t keyState(uint8_t index);
-uint32_t switchState(uint8_t index);
-uint32_t readKeys();
-uint32_t readTrims();
-void setTrimsAsButtons(bool);
-bool getTrimsAsButtons();
-#define TRIMS_EMULATE_BUTTONS
 #define NUM_TRIMS                       NUM_STICKS
 #define NUM_TRIMS_KEYS                  (NUM_TRIMS * 2)
-#define TRIMS_PRESSED()                 (readTrims())
-#define KEYS_PRESSED()                  (readKeys())
-#define DBLKEYS_PRESSED_RGT_LFT(in)     (false)
-#define DBLKEYS_PRESSED_UP_DWN(in)      (false)
-#define DBLKEYS_PRESSED_RGT_UP(in)      (false)
-#define DBLKEYS_PRESSED_LFT_DWN(in)     (false)
 
 #define DEFAULT_STICK_DEADZONE          2
 
-#define DEFAULT_POTS_CONFIG (POT_WITHOUT_DETENT << 0) + (POT_WITHOUT_DETENT << 2) // 2 pots without detent
+// 2 pots without detent
+#define DEFAULT_POTS_CONFIG   \
+  (POT_WITHOUT_DETENT << 0) + \
+      (POT_WITHOUT_DETENT << 2)
 
 #define BATTERY_WARN                  36 // 3.6V
 #define BATTERY_MIN                   35 // 3.5V

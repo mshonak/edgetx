@@ -23,6 +23,10 @@
 #include "libopenui_config.h"
 #include "lcd.h"
 
+// StdPeriph
+#include "stm32f4xx_ltdc.h"
+#include "stm32f4xx_dma2d.h"
+
 static volatile uint8_t _frame_addr_reloaded = 0;
 
 static void startLcdRefresh(lv_disp_drv_t *disp_drv, uint16_t *buffer,

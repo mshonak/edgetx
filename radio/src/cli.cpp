@@ -1261,17 +1261,12 @@ int cliDisplay(const char ** argv)
   }
 
   if (!strcmp(argv[1], "keys")) {
-    for (int i=0; i<TRM_BASE; i++) {
-      cliSerialPrint("[%s] = %s", STR_VKEYS[i]+1, keys[i].state() ? "on" : "off");
-    }
-#if defined(ROTARY_ENCODER_NAVIGATION)
-    typedef int32_t rotenc_t;
-    extern volatile rotenc_t rotencValue;
-    cliSerialPrint("[Enc.] = %d", rotencValue / ROTARY_ENCODER_GRANULARITY);
-#endif
-    for (int i=TRM_BASE; i<=TRM_LAST; i++) {
-      cliSerialPrint("[Trim%d] = %s", i-TRM_BASE, keys[i].state() ? "on" : "off");
-    }
+    // for (int i=0; i<TRM_BASE; i++) {
+    //   cliSerialPrint("[%s] = %s", STR_VKEYS[i]+1, keys[i].state() ? "on" : "off");
+    // }
+    // for (int i=TRM_BASE; i<=TRM_LAST; i++) {
+    //   cliSerialPrint("[Trim%d] = %s", i-TRM_BASE, keys[i].state() ? "on" : "off");
+    // }
     for (int i=MIXSRC_FIRST_SWITCH; i<=MIXSRC_LAST_SWITCH; i++) {
       mixsrc_t sw = i - MIXSRC_FIRST_SWITCH;
       if (SWITCH_EXISTS(sw)) {

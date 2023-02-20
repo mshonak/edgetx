@@ -104,11 +104,6 @@ add_custom_target(hardware_defs DEPENDS ${HW_DESC_JSON} ${HW_DESC_JSON}.h)
 add_subdirectory(bitmaps)
 add_subdirectory(fonts)
 
-option(DBLKEYS "Double Keys" ON)
-if(DBLKEYS)
-  add_definitions(-DDBLKEYS)
-endif()
-
 if(CPU_TYPE STREQUAL STM32F4)
   include(targets/common/arm/stm32/f4/CMakeLists.txt)
 endif()
@@ -392,6 +387,7 @@ set(SRC
   model_init.cpp
   serial.cpp
   sbus.cpp
+  inactivity_timer.cpp
   hal/module_port.cpp
   hal/adc_driver.cpp
   tasks/mixer_task.cpp

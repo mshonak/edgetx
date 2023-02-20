@@ -177,64 +177,13 @@ void SDRAM_Init();
   #define IS_PXX1_INTERNAL_ENABLED()            (true)
 #endif
 
-// Keys driver
-enum EnumKeys
-{
-  KEY_PGUP,
-  KEY_PGDN,
-  KEY_ENTER,
-  KEY_MODEL,
-  KEY_UP = KEY_MODEL,
-  KEY_EXIT,
-  KEY_DOWN = KEY_EXIT,
-  KEY_TELEM,
-  KEY_RIGHT = KEY_TELEM,
-  KEY_RADIO,
-  KEY_LEFT = KEY_RADIO,
-
-  TRM_BASE,
-  TRM_LH_DWN = TRM_BASE,
-  TRM_LH_UP,
-  TRM_LV_DWN,
-  TRM_LV_UP,
-  TRM_RV_DWN,
-  TRM_RV_UP,
-  TRM_RH_DWN,
-  TRM_RH_UP,
-  TRM_LS_DWN,
-  TRM_LS_UP,
-  TRM_RS_DWN,
-  TRM_RS_UP,
-  TRM_LAST = TRM_RS_UP,
-
-  NUM_KEYS
-};
-
-#define IS_SHIFT_KEY(index)             (false)
-#define IS_SHIFT_PRESSED()              (false)
-
 #if !defined(NUM_FUNCTIONS_SWITCHES)
 #define NUM_FUNCTIONS_SWITCHES        0
 #endif
 
-void keysInit();
-uint32_t switchState(uint8_t index);
-uint32_t readKeys();
-#define KEYS_PRESSED()                          (readKeys())
-#define DBLKEYS_PRESSED_RGT_LFT(in)             ((in & ((1<<KEY_RIGHT) + (1<<KEY_LEFT))) == ((1<<KEY_RIGHT) + (1<<KEY_LEFT)))
-#define DBLKEYS_PRESSED_UP_DWN(in)              ((in & ((1<<KEY_UP) + (1<<KEY_DOWN))) == ((1<<KEY_UP) + (1<<KEY_DOWN)))
-#define DBLKEYS_PRESSED_RGT_UP(in)              ((in & ((1<<KEY_RIGHT) + (1<<KEY_UP))) == ((1<<KEY_RIGHT) + (1<<KEY_UP)))
-#define DBLKEYS_PRESSED_LFT_DWN(in)             ((in & ((1<<KEY_LEFT) + (1<<KEY_DOWN))) == ((1<<KEY_LEFT) + (1<<KEY_DOWN)))
-
 // Trims driver
 #define NUM_TRIMS                               6
 #define NUM_TRIMS_KEYS                          (NUM_TRIMS * 2)
-uint32_t readTrims();
-#define TRIMS_PRESSED()                         (readTrims())
-
-// Rotary encoder driver
-void rotaryEncoderInit();
-void rotaryEncoderCheck();
 
 // Battery driver
 #if defined(PCBX10)

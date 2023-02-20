@@ -5,6 +5,7 @@ import json
 
 from hal_switches import Switch, parse_switches
 from hal_adc import ADCInput, SPI_ADCInput, ADC, ADCInputParser
+from hal_keys import Key, Trim, parse_trims, parse_keys
 
 import legacy_names
 
@@ -57,6 +58,10 @@ class DictEncoder(json.JSONEncoder):
             return prune_dict(obj.__dict__)
         if isinstance(obj, ADC):
             return prune_dict(obj.__dict__)
+        if isinstance(obj, Trim):
+            return prune_dict(obj.__dict__)
+        if isinstance(obj, Key):
+            return prune_dict(obj.__dict__)
 
         # Let the base class default method raise the TypeError
         return json.JSONEncoder.default(self, obj)
@@ -77,6 +82,12 @@ def parse_defines(filename, target):
 
     switches = parse_switches(hw_defs, adc_parser)
     out_defs["switches"] = switches
+
+    keys = parse_keys(hw_defs)
+    out_defs["keys"] = keys
+
+    trims = parse_trims(hw_defs)
+    out_defs["trims"] = trims
 
     print(json.dumps(out_defs, cls=DictEncoder, indent=2))
 

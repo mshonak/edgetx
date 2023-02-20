@@ -116,9 +116,11 @@ void menuRadioSetup(event_t event)
   struct gtm t;
   gettime(&t);
 
-  if ((menuVerticalPosition==ITEM_RADIO_SETUP_DATE+HEADER_LINE || menuVerticalPosition==ITEM_RADIO_SETUP_TIME+HEADER_LINE) &&
-      (s_editMode>0) &&
-      (event==EVT_KEY_FIRST(KEY_ENTER) || event==EVT_KEY_FIRST(KEY_EXIT) || IS_ROTARY_BREAK(event) || IS_ROTARY_LONG(event))) {
+  if ((menuVerticalPosition == ITEM_RADIO_SETUP_DATE + HEADER_LINE ||
+       menuVerticalPosition == ITEM_RADIO_SETUP_TIME + HEADER_LINE) &&
+      (s_editMode > 0) &&
+      (event == EVT_KEY_FIRST(KEY_ENTER) || event == EVT_KEY_LONG(KEY_ENTER) ||
+       event == EVT_KEY_FIRST(KEY_EXIT))) {
     // set the date and time into RTC chip
     rtcSetTime(&t);
   }

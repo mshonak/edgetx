@@ -329,54 +329,51 @@ void menuModelExposAll(event_t event)
         }
       }
       break;
-    case EVT_KEY_LONG(KEY_LEFT):
-    case EVT_KEY_LONG(KEY_RIGHT):
-      if (s_copyMode && !s_copyTgtOfs) {
-        if (reachExposLimit()) break;
-        s_currCh = chn;
-        if (event == EVT_KEY_LONG(KEY_RIGHT)) { s_currIdx++; menuVerticalPosition++; }
-        insertExpo(s_currIdx);
-        pushMenu(menuModelExpoOne);
-        s_copyMode = 0;
-        killEvents(event);
-      }
-      break;
-    case EVT_KEY_FIRST(KEY_UP):
-    case EVT_KEY_REPT(KEY_UP):
-    case EVT_KEY_FIRST(KEY_DOWN):
-    case EVT_KEY_REPT(KEY_DOWN):
-#if defined(ROTARY_ENCODER_NAVIGATION)
-    case EVT_ROTARY_RIGHT:
-    case EVT_ROTARY_LEFT:
-#endif
-      if (s_copyMode) {
-        uint8_t next_ofs = (IS_PREVIOUS_EVENT(event) ? s_copyTgtOfs - 1 : s_copyTgtOfs + 1);
+
+      // TODO: add PLUS / MINUS?
+    // case EVT_KEY_LONG(KEY_LEFT):
+    // case EVT_KEY_LONG(KEY_RIGHT):
+    //   if (s_copyMode && !s_copyTgtOfs) {
+    //     if (reachExposLimit()) break;
+    //     s_currCh = chn;
+    //     if (event == EVT_KEY_LONG(KEY_RIGHT)) { s_currIdx++; menuVerticalPosition++; }
+    //     insertExpo(s_currIdx);
+    //     pushMenu(menuModelExpoOne);
+    //     s_copyMode = 0;
+    //     killEvents(event);
+    //   }
+    //   break;
+  }
+
+  if (s_copyMode &&
+      (IS_NEXT_EVENT(event) || IS_PREVIOUS_EVENT(event))) {
+
+    uint8_t next_ofs = (IS_PREVIOUS_EVENT(event) ? s_copyTgtOfs - 1 : s_copyTgtOfs + 1);
         
-        if (s_copyTgtOfs==0 && s_copyMode==COPY_MODE) {
-          // insert a mix on the same channel (just above / just below)
-          if (reachExposLimit()) break;
-          copyExpo(s_currIdx);
-          if (IS_NEXT_EVENT(event))
-            s_currIdx++;
-          else if (sub-menuVerticalOffset >= 6)
-            menuVerticalOffset++;
-        }
-        else if (next_ofs==0 && s_copyMode==COPY_MODE) {
-          // delete the mix
-          deleteExpo(s_currIdx);
-          if (IS_PREVIOUS_EVENT(event))
-            s_currIdx--;
-        }
-        else {
-          // only swap the mix with its neighbor
-          if (!swapExpos(s_currIdx, IS_PREVIOUS_EVENT(event)))
-            break;
-          storageDirty(EE_MODEL);
-        }
-        
-        s_copyTgtOfs = next_ofs;
+    if (s_copyTgtOfs==0 && s_copyMode==COPY_MODE) {
+      // insert a mix on the same channel (just above / just below)
+      if (!reachExposLimit()) {
+        copyExpo(s_currIdx);
+        if (IS_NEXT_EVENT(event))
+          s_currIdx++;
+        else if (sub-menuVerticalOffset >= 6)
+          menuVerticalOffset++;
       }
-      break;
+    }
+    else if (next_ofs==0 && s_copyMode==COPY_MODE) {
+      // delete the mix
+      deleteExpo(s_currIdx);
+      if (IS_PREVIOUS_EVENT(event))
+        s_currIdx--;
+    }
+    else {
+      // only swap the mix with its neighbor
+      if (swapExpos(s_currIdx, IS_PREVIOUS_EVENT(event))) {
+        storageDirty(EE_MODEL);
+      }
+    }
+    
+    s_copyTgtOfs = next_ofs;
   }
   
   lcdDrawNumber(FW*sizeof(TR_MENUINPUTS)+FW+FW/2, 0, getExposCount(), RIGHT);

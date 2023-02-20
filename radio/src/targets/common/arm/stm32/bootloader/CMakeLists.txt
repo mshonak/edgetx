@@ -22,7 +22,7 @@ set(BOOTLOADER_SRC
   ../../../../../${FATFS_DIR}/ffunicode.c
   ../../../../../targets/${TARGET_DIR}/${LCD_DRIVER}
   ../../../../../targets/${TARGET_DIR}/backlight_driver.cpp
-  ../../../../../targets/${TARGET_DIR}/keys_driver.cpp
+  #../../../../../targets/${TARGET_DIR}/keys_driver.cpp
   ../../../../../targets/${TARGET_DIR}/diskio.cpp
   ../../../../../targets/${TARGET_DIR}/board.cpp
   ../pwr_driver.cpp
@@ -37,6 +37,7 @@ set(BOOTLOADER_SRC
   ../stm32_exti_driver.cpp
   ../stm32_serial_driver.cpp
   ../stm32_usart_driver.cpp
+  ../stm32_gpio_driver.cpp
   init.c
   boot.cpp
   bin_files.cpp

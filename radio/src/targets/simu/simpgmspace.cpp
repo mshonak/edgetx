@@ -27,7 +27,9 @@
 
 #include "opentx.h"
 #include "simulcd.h"
+
 #include "hal/adc_driver.h"
+#include "hal/rotary_encoder.h"
 
 #include <errno.h>
 #include <stdarg.h>
@@ -46,11 +48,16 @@ char * main_thread_error = nullptr;
 bool simu_shutdown = false;
 bool simu_running = false;
 
-uint32_t telemetryErrors = 0;
 
-typedef int32_t rotenc_t;
 volatile rotenc_t rotencValue = 0;
 volatile uint32_t rotencDt = 0;
+
+rotenc_t rotaryEncoderGetValue()
+{
+  return rotencValue / ROTARY_ENCODER_GRANULARITY;
+}
+
+rotenc_t rotaryEncoderGetRawValue() { return rotencValue; }
 
 // TODO: remove all STM32 defs
 GPIO_TypeDef gpioa, gpiob, gpioc, gpiod, gpioe, gpiof, gpiog, gpioh, gpioi, gpioj;
@@ -122,7 +129,7 @@ void simuInit()
   adcInit(&simu_adc_driver);
 }
 
-bool keysStates[NUM_KEYS] = { false };
+bool keysStates[MAX_KEYS] = { false };
 void simuSetKey(uint8_t key, bool state)
 {
   // TRACE("simuSetKey(%d, %d)", key, state);
@@ -419,67 +426,6 @@ void lcdSetRefVolt(uint8_t val)
 }
 #endif
 
-void telemetryPortInit(uint8_t baudrate)
-{
-}
-
-void telemetryPortInit()
-{
-}
-
-void sportUpdatePowerOn()
-{
-}
-
-void sportUpdatePowerOff()
-{
-}
-
-void sportUpdatePowerInit()
-{
-}
-
-void telemetryPortSetDirectionInput()
-{
-}
-
-void telemetryPortSetDirectionOutput()
-{
-}
-
-void rxPdcUsart( void (*pChProcess)(uint8_t x) )
-{
-}
-
-void telemetryPortInit(uint32_t baudrate, uint8_t mode)
-{
-}
-
-bool sportGetByte(uint8_t * byte)
-{
-  return false;
-}
-
-void telemetryClearFifo()
-{
-}
-
-void telemetryPortInvertedInit(uint32_t baudrate)
-{
-}
-
-void sportSendByte(uint8_t byte)
-{
-}
-
-void sportSendBuffer(const uint8_t * buffer, uint32_t count)
-{
-}
-
-void check_telemetry_exti()
-{
-}
-
 void boardInit()
 {
 }
@@ -489,16 +435,6 @@ bool pwrPressed() { return false; }
 void pwrInit() {}
 void pwrOn() {}
 void pwrOff() {}
-
-bool keyDown()
-{
-  return readKeys();
-}
-
-bool trimDown(uint8_t idx)
-{
-  return readTrims() & (1 << idx);
-}
 
 #if defined(TRIMS_EMULATE_BUTTONS)
 bool trimsAsButtons = false;
@@ -519,7 +455,7 @@ uint32_t readKeys()
 {
   uint32_t result = 0;
 
-  for (int i = 0; i < NUM_KEYS; i++) {
+  for (int i = 0; i < MAX_KEYS; i++) {
     if (keysStates[i]) {
       // TRACE("key pressed %d", i);
       result |= 1 << i;
@@ -533,7 +469,7 @@ uint32_t readTrims()
 {
   uint32_t result = 0;
 
-  for (int i=0; i<NUM_TRIMS_KEYS; i++) {
+  for (int i = 0; i < MAX_TRIMS; i++) {
     if (trimsStates[i]) {
       // TRACE("trim pressed %d", i);
       result |= 1 << i;
@@ -541,7 +477,7 @@ uint32_t readTrims()
   }
 
 #if defined(PCBXLITE)
-  if (IS_SHIFT_PRESSED())
+  if (keysStates[KEY_SHIFT])
     result = ((result & 0x03) << 6) | ((result & 0x0c) << 2);
 #endif
 

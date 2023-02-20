@@ -22,7 +22,9 @@
 #include "opentx.h"
 #include "timers.h"
 #include "switches.h"
+
 #include "hal/adc_driver.h"
+#include "hal/switch_driver.h"
 
 uint8_t s_mixer_first_run_done = false;
 

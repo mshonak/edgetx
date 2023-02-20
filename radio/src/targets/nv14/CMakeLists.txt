@@ -39,7 +39,7 @@ set_property(CACHE PCB_RF_BAUD PROPERTY STRINGS ${RF_BAUD_RATE})
 
 set(FLAVOUR nv14)
 add_definitions(-DPCBNV14 -DPCBFLYSKY -DAFHDS2_BAUDRATE=${PCB_RF_BAUD})
-add_definitions(-DBATTERY_CHARGE)
+add_definitions(-DBATTERY_CHARGE -DUSE_TRIMS_AS_BUTTONS)
 
 # defines existing internal modules
 set(INTERNAL_MODULES AFHDS2A;AFHDS3 CACHE STRING "Internal modules")

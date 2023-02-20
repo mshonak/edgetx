@@ -46,12 +46,9 @@ void menuRadioDiagAnalogs(event_t event)
 #endif
 
   switch (event) {
-    case EVT_KEY_FIRST(KEY_UP):
-#if defined(KEYS_GPIO_REG_PAGEDN)
+    case EVT_KEY_FIRST(KEY_RIGHT):
     case EVT_KEY_BREAK(KEY_PAGEDN):
-#elif defined(NAVIGATION_X7)
     case EVT_KEY_BREAK(KEY_PAGE):
-#endif
     {
      if (viewpage == ANAVIEW_LAST)
        viewpage = ANAVIEW_FIRST;
@@ -61,12 +58,9 @@ void menuRadioDiagAnalogs(event_t event)
      break;
     }
 
-    case EVT_KEY_FIRST(KEY_DOWN):
-#if defined(KEYS_GPIO_REG_PAGEUP)
+    case EVT_KEY_FIRST(KEY_LEFT):
     case EVT_KEY_BREAK(KEY_PAGEUP):
-#elif defined(NAVIGATION_X7)
     case EVT_KEY_LONG(KEY_PAGE):
-#endif
     {
      if (viewpage == ANAVIEW_FIRST)
        viewpage = ANAVIEW_LAST;

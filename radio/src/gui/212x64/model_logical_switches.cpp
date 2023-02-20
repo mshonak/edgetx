@@ -189,7 +189,7 @@ void menuModelLogicalSwitches(event_t event)
     if (cstate == LS_FAMILY_EDGE) {
       lcdDrawText(CSW_6TH_COLUMN, y, STR_NA);
       if (attr && horz == LS_FIELD_DELAY) {
-        REPEAT_LAST_CURSOR_MOVE();
+        repeatLastCursorMove(event);
       }
     }
     else if (cs->delay > 0) {
@@ -200,7 +200,7 @@ void menuModelLogicalSwitches(event_t event)
     }
 
     if (attr && horz == LS_FIELD_V3 && cstate != LS_FAMILY_EDGE) {
-      REPEAT_LAST_CURSOR_MOVE();
+      repeatLastCursorMove(event);
     }
 
     if (s_editMode>0 && attr) {

@@ -49,27 +49,29 @@
 
 
 // Trims
-#define TRIMS_GPIO_REG_RHL              GPIOD->IDR
-#define TRIMS_GPIO_PIN_RHL              GPIO_Pin_7  // PD.07
-#define TRIMS_GPIO_REG_RHR              GPIOG->IDR
-#define TRIMS_GPIO_PIN_RHR              GPIO_Pin_10 // PG.10
-#define TRIMS_GPIO_REG_RVD              GPIOJ->IDR
-#define TRIMS_GPIO_PIN_RVD              GPIO_Pin_0  // PJ.00
-#define TRIMS_GPIO_REG_RVU              GPIOB->IDR
-#define TRIMS_GPIO_PIN_RVU              GPIO_Pin_15 // PB.15
-#define TRIMS_GPIO_REG_RPRESS           GPIOC->IDR
-#define TRIMS_GPIO_PIN_RPRESS           GPIO_Pin_13 // PC.13
+#define TRIMS_GPIO_REG_RHL              GPIOD
+#define TRIMS_GPIO_PIN_RHL              LL_GPIO_PIN_7  // PD.07
+#define TRIMS_GPIO_REG_RHR              GPIOG
+#define TRIMS_GPIO_PIN_RHR              LL_GPIO_PIN_10 // PG.10
+#define TRIMS_GPIO_REG_RVD              GPIOJ
+#define TRIMS_GPIO_PIN_RVD              LL_GPIO_PIN_0  // PJ.00
+#define TRIMS_GPIO_REG_RVU              GPIOB
+#define TRIMS_GPIO_PIN_RVU              LL_GPIO_PIN_15 // PB.15
 
-#define TRIMS_GPIO_REG_LHL              GPIOH->IDR
-#define TRIMS_GPIO_PIN_LHL              GPIO_Pin_2  // PH.02
-#define TRIMS_GPIO_REG_LHR              GPIOG->IDR
-#define TRIMS_GPIO_PIN_LHR              GPIO_Pin_2  // PG.02
-#define TRIMS_GPIO_REG_LVU              GPIOH->IDR
-#define TRIMS_GPIO_PIN_LVU              GPIO_Pin_7  // PH.07
-#define TRIMS_GPIO_REG_LVD              GPIOJ->IDR
-#define TRIMS_GPIO_PIN_LVD              GPIO_Pin_12 // PJ.12
-#define TRIMS_GPIO_REG_LPRESS           GPIOG->IDR
-#define TRIMS_GPIO_PIN_LPRESS           GPIO_Pin_11 // PG.11
+#define KEYS_GPIO_REG_ENTER             GPIOC
+#define KEYS_GPIO_PIN_ENTER             LL_GPIO_PIN_13 // PC.13
+
+#define TRIMS_GPIO_REG_LHL              GPIOH
+#define TRIMS_GPIO_PIN_LHL              LL_GPIO_PIN_2  // PH.02
+#define TRIMS_GPIO_REG_LHR              GPIOG
+#define TRIMS_GPIO_PIN_LHR              LL_GPIO_PIN_2  // PG.02
+#define TRIMS_GPIO_REG_LVU              GPIOH
+#define TRIMS_GPIO_PIN_LVU              LL_GPIO_PIN_7  // PH.07
+#define TRIMS_GPIO_REG_LVD              GPIOJ
+#define TRIMS_GPIO_PIN_LVD              LL_GPIO_PIN_12 // PJ.12
+
+#define KEYS_GPIO_REG_EXIT              GPIOG
+#define KEYS_GPIO_PIN_EXIT              LL_GPIO_PIN_11 // PG.11
 
 // Monitor pin
 #define MONITOR_RCC_AHB1Periph          (RCC_AHB1Periph_GPIOJ)

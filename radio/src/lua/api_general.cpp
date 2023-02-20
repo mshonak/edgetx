@@ -29,6 +29,7 @@
 #include "api_filesystem.h"
 #include "hal/module_port.h"
 #include "hal/adc_driver.h"
+#include "hal/rotary_encoder.h"
 #include "switches.h"
 
 #if defined(LIBOPENUI)
@@ -853,17 +854,13 @@ static int luaGetSourceValue(lua_State * L)
 Return rotary encoder current speed
 
 @retval number in list: ROTENC_LOWSPEED, ROTENC_MIDSPEED, ROTENC_HIGHSPEED
-        return 0 on radio without rotary encoder
+        returns ROTENC_LOWSPEED on radio without rotary encoder
 
 @status current Introduced in 2.3.10
 */
 static int luaGetRotEncSpeed(lua_State * L)
 {
-#if defined(ROTARY_ENCODER_NAVIGATION)
-  lua_pushunsigned(L, rotencSpeed);
-#else
-  lua_pushunsigned(L, 0);
-#endif
+  lua_pushunsigned(L, rotaryEncoderGetAccel());
   return 1;
 }
 
@@ -1561,6 +1558,15 @@ Stops key state machine. See [Key Events](../key_events.md) for the detailed des
 */
 static int luaKillEvents(lua_State * L)
 {
+#if defined(KEYS_GPIO_REG_PAGE)
+  #define IS_MASKABLE(key)                                      \
+    ((key) != KEY_EXIT && (key) != KEY_ENTER &&                 \
+     ((scriptInternalData[0].reference == SCRIPT_STANDALONE) || \
+      (key) != KEY_PAGE))
+#else
+  #define IS_MASKABLE(key) ((key) != KEY_EXIT && (key) != KEY_ENTER)
+#endif
+
   event_t key = EVT_KEY_MASK(luaL_checkinteger(L, 1));
   // prevent killing maskable keys (only in telemetry scripts)
   // TODO add which type of script is running before lua_resume()
@@ -3006,14 +3012,14 @@ LROT_BEGIN(etxcst, NULL, 0)
   LROT_NUMENTRY( EVT_VIRTUAL_EXIT, EVT_KEY_BREAK(KEY_EXIT) )
 #elif defined(COLORLCD)
 #if defined(KEYS_GPIO_REG_PGUP)
-  LROT_NUMENTRY( EVT_VIRTUAL_PREV_PAGE, EVT_KEY_BREAK(KEY_PGUP) )
-  LROT_NUMENTRY( EVT_VIRTUAL_NEXT_PAGE, EVT_KEY_BREAK(KEY_PGDN) )
+  LROT_NUMENTRY( EVT_VIRTUAL_PREV_PAGE, EVT_KEY_BREAK(KEY_PAGEUP) )
+  LROT_NUMENTRY( EVT_VIRTUAL_NEXT_PAGE, EVT_KEY_BREAK(KEY_PAGEDN) )
 #elif defined(PCBNV14)
   LROT_NUMENTRY( EVT_VIRTUAL_PREV_PAGE, EVT_KEY_BREAK(KEY_LEFT) )
   LROT_NUMENTRY( EVT_VIRTUAL_NEXT_PAGE, EVT_KEY_BREAK(KEY_RIGHT) )
 #else
-  LROT_NUMENTRY( EVT_VIRTUAL_PREV_PAGE, EVT_KEY_LONG(KEY_PGDN) )
-  LROT_NUMENTRY( EVT_VIRTUAL_NEXT_PAGE, EVT_KEY_BREAK(KEY_PGDN) )
+  LROT_NUMENTRY( EVT_VIRTUAL_PREV_PAGE, EVT_KEY_LONG(KEY_PAGEDN) )
+  LROT_NUMENTRY( EVT_VIRTUAL_NEXT_PAGE, EVT_KEY_BREAK(KEY_PAGEDN) )
 #endif
   LROT_NUMENTRY( EVT_VIRTUAL_MENU, EVT_KEY_BREAK(KEY_MODEL) )
   LROT_NUMENTRY( EVT_VIRTUAL_MENU_LONG, EVT_KEY_LONG(KEY_MODEL) )
@@ -3033,7 +3039,7 @@ LROT_BEGIN(etxcst, NULL, 0)
 #endif
 
 #if defined(KEYS_GPIO_REG_RIGHT) && defined(COLORLCD)
-  KEY_EVENTS(TELEM, KEY_TELEM)
+  KEY_EVENTS(TELEM, KEY_TELE)
 #elif defined(KEYS_GPIO_REG_RIGHT)
   KEY_EVENTS(RIGHT, KEY_RIGHT)
 #endif
@@ -3045,23 +3051,23 @@ LROT_BEGIN(etxcst, NULL, 0)
 #endif
 
 #if defined(KEYS_GPIO_REG_LEFT) && defined(COLORLCD)
-  KEY_EVENTS(SYS, KEY_RADIO)
+  KEY_EVENTS(SYS, KEY_SYS)
 #elif defined(KEYS_GPIO_REG_LEFT)
   KEY_EVENTS(LEFT, KEY_LEFT)
 #endif
 
 #if defined(KEYS_GPIO_REG_DOWN) && defined(COLORLCD)
   LROT_NUMENTRY( EVT_RTN_FIRST, EVT_KEY_BREAK(KEY_EXIT) )
-#else
+#elif defined(KEYS_GPIO_REG_DOWN)
   KEY_EVENTS(DOWN, KEY_DOWN)
 #endif
 
 #if defined(KEYS_GPIO_REG_PGUP)
-  KEY_EVENTS(PAGEUP, KEY_PGUP)
+  KEY_EVENTS(PAGEUP, KEY_PAGEUP)
 #endif
 
 #if defined(KEYS_GPIO_REG_PGDN)
-  KEY_EVENTS(PAGEDN, KEY_PGDN)
+  KEY_EVENTS(PAGEDN, KEY_PAGEDN)
 #endif
 
 #if defined(KEYS_GPIO_REG_PAGE)

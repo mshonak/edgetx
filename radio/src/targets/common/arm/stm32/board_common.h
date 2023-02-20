@@ -102,6 +102,7 @@ static inline uint32_t ticksNow()
 
 #include "delays_driver.h"
 
+#if 0
 #define INIT_KEYS_PINS(GPIO) \
   GPIO_InitStructure.GPIO_Pin = KEYS_ ## GPIO ## _PINS; \
   GPIO_Init(GPIO, &GPIO_InitStructure)
@@ -110,22 +111,13 @@ static inline uint32_t ticksNow()
   GPIO_InitStructure.GPIO_Pin = KEYS_ ## GPIO ## _PINS; \
   GPIO_Init(GPIO, &GPIO_InitStructure); \
   GPIO_SetBits(GPIO, KEYS_ ## GPIO ## _PINS)
-
-#if defined(ROTARY_ENCODER_NAVIGATION)
-  typedef int32_t rotenc_t;
-  extern volatile rotenc_t rotencValue;
-  #define IS_ROTARY_ENCODER_NAVIGATION_ENABLE()  true
-  #define ROTARY_ENCODER_NAVIGATION_VALUE        rotencValue
-  #define ROTENC_LOWSPEED              1
-  #define ROTENC_MIDSPEED              5
-  #define ROTENC_HIGHSPEED             50
-  #define ROTENC_DELAY_MIDSPEED        32
-  #define ROTENC_DELAY_HIGHSPEED       16
-#elif (defined(RADIO_T8) || defined(RADIO_COMMANDO8)) && defined(__cplusplus)
-  constexpr uint8_t rotencSpeed = 1;
 #endif
 
-#define ROTARY_ENCODER_GRANULARITY (2)
+// #if defined(ROTARY_ENCODER_NAVIGATION)
+//   typedef int32_t rotenc_t;
+//   extern volatile rotenc_t rotencValue;
+//   #define ROTARY_ENCODER_NAVIGATION_VALUE        rotencValue
+// #endif
 
 #if defined(PWR_BUTTON_PRESS)
   #define pwrOffPressed()              pwrPressed()

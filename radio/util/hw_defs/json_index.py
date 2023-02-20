@@ -62,3 +62,25 @@ def build_switch_gpio_port_index(switches):
             append_to_index(gpios, switch['gpio_low'], switch['pin_low'])
 
     return gpios
+
+def build_trim_gpio_port_index(trims):
+
+    def index_contact(gpios, contact):
+        append_to_index(gpios, contact['gpio'], contact['pin'])
+
+    i = 0
+    gpios = {}
+    for trim in trims:
+        index_contact(gpios, trim['dec'])
+        index_contact(gpios, trim['inc'])
+
+    return gpios
+
+def build_key_gpio_port_index(keys):
+
+    i = 0
+    gpios = {}
+    for key in keys:
+        append_to_index(gpios, key['gpio'], key['pin'])
+
+    return gpios

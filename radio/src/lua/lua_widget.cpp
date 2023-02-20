@@ -175,8 +175,8 @@ void LuaEventHandler::onEvent(event_t event)
     killEvents(KEY_EXIT);
   }
 #if !defined(KEYS_GPIO_REG_PGUP)
-  else if (event == EVT_KEY_LONG(KEY_PGDN)) {
-    killEvents(KEY_PGDN);
+  else if (event == EVT_KEY_LONG(KEY_PAGEDN)) {
+    killEvents(KEY_PAGEDN);
   }
 #endif
   luaPushEvent(event);

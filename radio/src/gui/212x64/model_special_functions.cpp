@@ -204,7 +204,7 @@ void menuSpecialFunctions(event_t event, CustomFunctionData * functions, CustomF
           else {
             j = ITEM_CUSTOM_FUNCTIONS_LAST; // skip other fields
             if (sub==k && menuHorizontalPosition > 0) {
-              REPEAT_LAST_CURSOR_MOVE();
+              repeatLastCursorMove(event);
             }
           }
           break;
@@ -243,7 +243,7 @@ void menuSpecialFunctions(event_t event, CustomFunctionData * functions, CustomF
             break;
           }
           else if (attr) {
-            REPEAT_LAST_CURSOR_MOVE();
+            repeatLastCursorMove(event);
           }
           if (active) CHECK_INCDEC_MODELVAR_ZERO(event, CFN_CH_INDEX(cfn), maxParam);
           break;
@@ -388,7 +388,7 @@ void menuSpecialFunctions(event_t event, CustomFunctionData * functions, CustomF
           }
 #endif
           else if (attr) {
-            REPEAT_LAST_CURSOR_MOVE();
+            repeatLastCursorMove(event);
           }
 
           if (active || event==EVT_KEY_LONG(KEY_ENTER)) {
@@ -430,7 +430,7 @@ void menuSpecialFunctions(event_t event, CustomFunctionData * functions, CustomF
             if (active) CFN_PLAY_REPEAT(cfn) = checkIncDec(event, CFN_PLAY_REPEAT(cfn)==CFN_PLAY_REPEAT_NOSTART?-1:CFN_PLAY_REPEAT(cfn), -1, 60/CFN_PLAY_REPEAT_MUL, eeFlags);
           }
           else if (attr) {
-            REPEAT_LAST_CURSOR_MOVE();
+            repeatLastCursorMove(event);
           }
           break;
       }

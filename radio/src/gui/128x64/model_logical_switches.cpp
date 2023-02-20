@@ -209,7 +209,7 @@ void menuModelLogicalSwitchOne(event_t event)
         if (cstate == LS_FAMILY_EDGE) {
           lcdDrawText(CSWONE_2ND_COLUMN, y, STR_NA);
           if (attr) {
-            REPEAT_LAST_CURSOR_MOVE();
+            repeatLastCursorMove(event);
           }
           break;
         }

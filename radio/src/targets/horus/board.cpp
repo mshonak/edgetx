@@ -22,6 +22,7 @@
 #include "hal/adc_driver.h"
 #include "hal/trainer_driver.h"
 #include "hal/switch_driver.h"
+#include "hal/rotary_encoder.h"
 
 #include "board.h"
 #include "boards/generic_stm32/module_ports.h"

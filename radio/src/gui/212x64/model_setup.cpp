@@ -742,7 +742,7 @@ void menuModelSetup(event_t event)
       case ITEM_MODEL_SETUP_SWITCHES_WARNING3:
       case ITEM_MODEL_SETUP_POTS_WARNING2:
         if (i==0) {
-          if (CURSOR_MOVED_LEFT(event))
+          if (IS_PREVIOUS_EVENT(event))
             menuVerticalOffset--;
           else
             menuVerticalOffset++;
@@ -754,7 +754,7 @@ void menuModelSetup(event_t event)
       {
 #if defined(PCBX9E)
         if (i>=NUM_BODY_LINES-2 && getSwitchWarningsCount() > 8*(NUM_BODY_LINES-i)) {
-          if (CURSOR_MOVED_LEFT(event))
+          if (IS_PREVIOUS_EVENT(event))
             menuVerticalOffset--;
           else
             menuVerticalOffset++;
@@ -831,7 +831,7 @@ void menuModelSetup(event_t event)
       case ITEM_MODEL_SETUP_POTS_WARNING:
 #if defined(PCBX9E)
         if (i==NUM_BODY_LINES-1 && g_model.potsWarnMode) {
-          if (CURSOR_MOVED_LEFT(event))
+          if (IS_PREVIOUS_EVENT(event))
             menuVerticalOffset--;
           else
             menuVerticalOffset++;
@@ -872,7 +872,7 @@ void menuModelSetup(event_t event)
 
             if (!IS_POT_SLIDER_AVAILABLE(i)) {
               // skip non configured pot
-              if (attr && (menuHorizontalPosition==i+1)) REPEAT_LAST_CURSOR_MOVE();
+              if (attr && (menuHorizontalPosition==i+1)) repeatLastCursorMove(event);
             }
             else {
               if (max_pots > 5 && i == 3) {
@@ -906,7 +906,7 @@ void menuModelSetup(event_t event)
         for (uint8_t i = 0; i < max_inputs; i++) {
           coord_t x = MODEL_SETUP_2ND_COLUMN + i*FW;
           if ( i >= pot_offset && IS_POT_MULTIPOS(i - pot_offset) ) {
-            if (attr && menuHorizontalPosition == i) REPEAT_LAST_CURSOR_MOVE();
+            if (attr && menuHorizontalPosition == i) repeatLastCursorMove(event);
             continue;
           }
           LcdFlags flags = 0;

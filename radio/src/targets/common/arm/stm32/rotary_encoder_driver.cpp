@@ -24,6 +24,9 @@
 #include "board.h"
 
 #include "hal.h"
+#include "hal/key_driver.h"
+#include "hal/rotary_encoder.h"
+
 #include "board_common.h"
 
 #if !defined(BOOT)
@@ -42,6 +45,16 @@ volatile uint32_t rotencDt = 0;
 #define INC_ROT_2 \
   (g_eeGeneral.rotEncMode == ROTARY_ENCODER_MODE_INVERT_BOTH ? -2 : 2);
 #endif
+
+rotenc_t rotaryEncoderGetValue()
+{
+  return rotencValue / ROTARY_ENCODER_GRANULARITY;
+}
+
+rotenc_t rotaryEncoderGetRawValue()
+{
+  return rotencValue;
+}
 
 void rotaryEncoderCheck()
 {

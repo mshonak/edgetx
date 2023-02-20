@@ -702,7 +702,7 @@ void menuModelSetup(event_t event)
           }
         }
         else if (attr && menuHorizontalPosition == 3) {  // Non visible checkbox
-          REPEAT_LAST_CURSOR_MOVE();
+          repeatLastCursorMove(event);
         }
         break;
       }
@@ -813,7 +813,7 @@ void menuModelSetup(event_t event)
 
       case ITEM_MODEL_SETUP_SWITCHES_WARNING2:
         if (i==0) {
-          if (CURSOR_MOVED_LEFT(event))
+          if (IS_PREVIOUS_EVENT(event))
             menuVerticalOffset--;
           else
             menuVerticalOffset++;
@@ -827,7 +827,7 @@ void menuModelSetup(event_t event)
           horzpos_t l_posHorz = menuHorizontalPosition;
 
           if (i>=NUM_BODY_LINES-2 && getSwitchWarningsCount() > MAX_SWITCH_PER_LINE*(NUM_BODY_LINES-i)) {
-            if (CURSOR_MOVED_LEFT(event))
+            if (IS_PREVIOUS_EVENT(event))
               menuVerticalOffset--;
             else
               menuVerticalOffset++;
@@ -945,7 +945,7 @@ void menuModelSetup(event_t event)
 
             if (!IS_POT_SLIDER_AVAILABLE(i)) {
               // skip non configured pot
-              if (attr && (menuHorizontalPosition==i+1)) REPEAT_LAST_CURSOR_MOVE();
+              if (attr && (menuHorizontalPosition==i+1)) repeatLastCursorMove(event);
             }
             else {
               LcdFlags flags = ((menuHorizontalPosition==i+1) && attr) ? BLINK : 0;
@@ -1843,7 +1843,7 @@ void menuModelSetup(event_t event)
             if (isModuleTypeR9MLiteNonPro(module.type)) { // R9M lite FCC has only one power value, so displayed for info only
               lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN, y, STR_R9M_LITE_FCC_POWER_VALUES, 0, LEFT);
               if (attr) {
-                REPEAT_LAST_CURSOR_MOVE();
+                repeatLastCursorMove(event);
               }
             }
             else {

@@ -35,6 +35,7 @@
 
 #include "targets/simu/simulcd.h"
 #include "hal/adc_driver.h"
+#include "hal/rotary_encoder.h"
 
 #if LCD_W > 212
   #define LCD_ZOOM 1
@@ -350,8 +351,8 @@ void OpenTxSim::updateKeysAndSwitches(bool start)
 #if defined(PCBNV14)
     // no keys
 #elif defined(PCBHORUS)
-    KEY_Page_Up,   KEY_PGUP,
-    KEY_Page_Down, KEY_PGDN,
+    KEY_Page_Up,   KEY_PAGEUP,
+    KEY_Page_Down, KEY_PAGEDN,
     KEY_Return,    KEY_ENTER,
     KEY_Up,        KEY_UP,
     KEY_Down,      KEY_DOWN,
@@ -473,6 +474,7 @@ void OpenTxSim::updateKeysAndSwitches(bool start)
   #endif
 }
 
+extern volatile rotenc_t rotencValue;
 extern volatile uint32_t rotencDt;
 
 long OpenTxSim::onTimeout(FXObject*, FXSelector, void*)
@@ -484,11 +486,11 @@ long OpenTxSim::onTimeout(FXObject*, FXSelector, void*)
 #if defined(ROTARY_ENCODER_NAVIGATION)
     static bool rotencAction = false;
     if (getApp()->getKeyState(KEY_X) || getApp()->getKeyState(KEY_plus)) {
-      if (!rotencAction) ROTARY_ENCODER_NAVIGATION_VALUE += ROTARY_ENCODER_GRANULARITY;
+      if (!rotencAction) rotencValue += ROTARY_ENCODER_GRANULARITY;
       rotencAction = true;
     }
     else if (getApp()->getKeyState(KEY_W) || getApp()->getKeyState(KEY_minus)) {
-      if (!rotencAction) ROTARY_ENCODER_NAVIGATION_VALUE -= ROTARY_ENCODER_GRANULARITY;
+      if (!rotencAction) rotencValue -= ROTARY_ENCODER_GRANULARITY;
       rotencAction = true;
     }
     else {

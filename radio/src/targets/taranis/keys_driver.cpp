@@ -25,7 +25,7 @@
 uint32_t readKeys()
 {
   uint32_t result = 0;
-
+#if 0
   if (~KEYS_GPIO_REG_ENTER & KEYS_GPIO_PIN_ENTER)
     result |= 1 << KEY_ENTER;
 
@@ -95,14 +95,14 @@ uint32_t readKeys()
     result |= 1 << KEY_BIND;
 #endif
   // if (result != 0) TRACE("readKeys(): result=0x%02x", result);
-
+#endif
   return result;
 }
 
 uint32_t readTrims()
 {
   uint32_t result = 0;
-
+#if 0
   if (~TRIMS_GPIO_REG_LHL & TRIMS_GPIO_PIN_LHL)
     result |= 0x01;
   if (~TRIMS_GPIO_REG_LHR & TRIMS_GPIO_PIN_LHR)
@@ -127,7 +127,7 @@ uint32_t readTrims()
 #endif
 
   // TRACE("readTrims(): result=0x%02x", result);
-
+#endif
   return result;
 }
 

@@ -456,8 +456,8 @@ void menuMainView(event_t event)
   switch(event) {
     case EVT_ENTRY:
       killEvents(KEY_EXIT);
-      killEvents(KEY_UP);
-      killEvents(KEY_DOWN);
+      killEvents(KEY_PLUS);
+      killEvents(KEY_MINUS);
       // no break
 
     case EVT_ENTRY_UP:
@@ -506,8 +506,8 @@ void menuMainView(event_t event)
 #endif
       break;
 
-    case EVT_KEY_FIRST(KEY_RIGHT):
-    case EVT_KEY_FIRST(KEY_LEFT):
+    case EVT_KEY_FIRST(KEY_PLUS):
+    case EVT_KEY_FIRST(KEY_MINUS):
 #if defined(ROTARY_ENCODER_NAVIGATION)
     case EVT_ROTARY_LEFT:
     case EVT_ROTARY_RIGHT:

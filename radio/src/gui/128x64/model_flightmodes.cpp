@@ -188,25 +188,24 @@ void menuModelFlightModeOne(event_t event)
 
 void menuModelFlightModesAll(event_t event)
 {
-  SIMPLE_MENU(STR_MENUFLIGHTMODES, menuTabModel, MENU_MODEL_FLIGHT_MODES, HEADER_LINE+MAX_FLIGHT_MODES+1);
+  SIMPLE_MENU(STR_MENUFLIGHTMODES, menuTabModel, MENU_MODEL_FLIGHT_MODES,
+              HEADER_LINE+MAX_FLIGHT_MODES+1);
 
   int8_t sub = menuVerticalPosition - HEADER_LINE;
 
-  switch (event) {
-    case EVT_KEY_FIRST(KEY_ENTER):
-      if (sub == MAX_FLIGHT_MODES) {
-        s_editMode = 0;
-        trimsCheckTimer = 200; // 2 seconds
-      }
-      // no break
-#if !defined(PCBX7)
-    case EVT_KEY_FIRST(KEY_RIGHT):
-#endif
-      if (sub >= 0 && sub < MAX_FLIGHT_MODES) {
-        s_currIdx = sub;
-        pushMenu(menuModelFlightModeOne);
-      }
-      break;
+  // "Check trims" button
+  if (sub == MAX_FLIGHT_MODES && event == EVT_KEY_FIRST(KEY_ENTER)) {
+    s_editMode = 0;
+    trimsCheckTimer = 200;  // 2 seconds
+  }
+
+  // Flight mode lines
+  if (sub >= 0 && sub < MAX_FLIGHT_MODES &&
+      (event == EVT_KEY_FIRST(KEY_ENTER)
+       //|| event == EVT_KEY_FIRST(KEY_RIGHT)
+       )) {
+    s_currIdx = sub;
+    pushMenu(menuModelFlightModeOne);
   }
 
   uint8_t att;
@@ -216,32 +215,17 @@ void menuModelFlightModesAll(event_t event)
     att = (i==sub ? INVERS : 0);
     FlightModeData * p = flightModeAddress(i);
     drawFlightMode(0, y, i+1, att|(getFlightMode()==i ? BOLD : 0));
-#if defined(PCBTARANIS)
     lcdDrawSizedText(NAME_POS, y, p->name, sizeof(p->name), 0);
-#else
-    lcdDrawSizedText(4*FW+NAME_OFS, y, p->name, sizeof(p->name), 0);
-#endif
     if (i == 0) {
       for (uint8_t t=0; t<NUM_STICKS; t++) {
-#if defined(PCBTARANIS)
         drawTrimMode(TRIMS_POS+t*FW*2, y, i, t, 0);
-#else
-        drawShortTrimMode((9+LEN_FLIGHT_MODE_NAME+t)*FW+TRIMS_OFS, y, i, t, 0);
-#endif
       }
     }
     else {
-#if defined(PCBTARANIS)
       drawSwitch(SWITCH_POS, y, p->swtch, 0);
       for (uint8_t t=0; t<NUM_STICKS; t++) {
         drawTrimMode(TRIMS_POS+t*FW*2, y, i, t, 0);
       }
-#else
-      drawSwitch((4+LEN_FLIGHT_MODE_NAME)*FW+SWITCH_OFS, y, p->swtch, 0);
-      for (uint8_t t=0; t<NUM_STICKS; t++) {
-        drawShortTrimMode((9+LEN_FLIGHT_MODE_NAME+t)*FW+TRIMS_OFS, y, i, t, 0);
-      }
-#endif
     }
 
     if (p->fadeIn || p->fadeOut) {

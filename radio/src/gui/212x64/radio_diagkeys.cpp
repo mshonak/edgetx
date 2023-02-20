@@ -20,10 +20,11 @@
  */
 
 #include "opentx.h"
+#include "hal/rotary_encoder.h"
 
 void displayKeyState(uint8_t x, uint8_t y, uint8_t key)
 {
-  uint8_t t = keys[key].state();
+  uint8_t t = keysGetState(key);
   lcdDrawChar(x, y, t+'0', t ? INVERS : 0);
 }
 
@@ -35,14 +36,13 @@ void menuRadioDiagKeys(event_t event)
 
   for (uint8_t i = 0; i < NUM_TRIMS_KEYS; i++) {
     coord_t y = MENU_HEADER_HEIGHT + 1 + FH + FH * (i / 2);
-    if (i & 1)
-      lcdDraw1bitBitmap(24 * FW, y, sticks, i / 2, 0);
-    displayKeyState(i & 1 ? 30 * FW : 28 * FW, y, TRM_BASE + i);
+    if (i & 1) lcdDraw1bitBitmap(24 * FW, y, sticks, i / 2, 0);
+    // displayKeyState(i & 1 ? 30 * FW : 28 * FW, y, TRM_BASE + i);
   }
 
-  for (uint8_t i = 0; i <= KEY_MAX; i++) {
+  for (uint8_t i = 0; i < MAX_KEYS; i++) {
     coord_t y = MENU_HEADER_HEIGHT + 1 + FH * i;
-    lcdDrawTextAtIndex(0, y, STR_VKEYS, (i), 0);
+    lcdDrawTextAtIndex(0, y, STR_VKEYS, i, 0);
     displayKeyState(5 * FW + 2, y, i);
   }
 
@@ -58,8 +58,8 @@ void menuRadioDiagKeys(event_t event)
   }
 
 #if defined(ROTARY_ENCODER_NAVIGATION)
-  coord_t y = MENU_HEADER_HEIGHT + 1 + FH*KEY_COUNT;
+  coord_t y = MENU_HEADER_HEIGHT + 1 + FH * MAX_KEYS;
   lcdDrawText(0, y, STR_ROTARY_ENCODER);
-  lcdDrawNumber(5*FW+FWNUM+2, y, rotencValue / ROTARY_ENCODER_GRANULARITY, RIGHT);
+  lcdDrawNumber(5 * FW + FWNUM + 2, y, rotaryEncoderGetValue(), RIGHT);
 #endif
 }
