@@ -25,6 +25,7 @@
 #include "lua_api.h"
 #include "lua_event.h"
 #include "draw_functions.h"
+#include "touch.h"
 
 #define MAX_INSTRUCTIONS       (20000/100)
 

@@ -34,6 +34,8 @@
 // #include "keys.h"
 #include "debug.h"
 
+#include "watchdog_driver.h"
+
 #include "hal/rotary_encoder.h"
 
 #if defined(DEBUG_SEGGER_RTT)
@@ -71,6 +73,8 @@ const uint8_t bootloaderVersion[] __attribute__ ((section(".version"), used)) =
   {'B', 'O', 'O', 'T', '1', '0'};
 #endif
 
+#define SOFTRESET_REQUEST 0xCAFEDEAD
+  
 volatile tmr10ms_t g_tmr10ms;
 volatile uint8_t tenms = 1;
 

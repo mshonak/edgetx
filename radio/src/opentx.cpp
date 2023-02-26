@@ -23,6 +23,7 @@
 #include "io/frsky_firmware_update.h"
 #include "hal/adc_driver.h"
 #include "timers_driver.h"
+#include "watchdog_driver.h"
 
 #include "switches.h"
 #include "inactivity_timer.h"

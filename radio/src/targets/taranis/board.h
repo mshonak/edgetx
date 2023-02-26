@@ -365,6 +365,7 @@ uint32_t pwrCheck();
 void pwrOn();
 void pwrOff();
 bool pwrPressed();
+bool pwrOffPressed();
 #if defined(PWR_BUTTON_PRESS)
 #define STARTUP_ANIMATION
 uint32_t pwrPressedDuration();
@@ -372,11 +373,7 @@ uint32_t pwrPressedDuration();
 void pwrResetHandler();
 #define pwrForcePressed()   false
 
-#if defined(SIMU)
-#define UNEXPECTED_SHUTDOWN()           false
-#else
-#define UNEXPECTED_SHUTDOWN()           (WAS_RESET_BY_WATCHDOG() || g_eeGeneral.unexpectedShutdown)
-#endif
+bool UNEXPECTED_SHUTDOWN();
 
 // Backlight driver
 #define BACKLIGHT_DISABLE()             backlightDisable()

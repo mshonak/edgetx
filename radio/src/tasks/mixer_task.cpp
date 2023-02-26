@@ -26,6 +26,8 @@
 #include "opentx.h"
 #include "switches.h"
 
+#include "watchdog_driver.h"
+
 RTOS_TASK_HANDLE mixerTaskId;
 RTOS_DEFINE_STACK(mixerTaskId, mixerStack, MIXER_STACK_SIZE);
 

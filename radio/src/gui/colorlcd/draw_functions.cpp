@@ -24,6 +24,8 @@
 #include "theme_manager.h"
 #include "libopenui.h"
 
+#include "watchdog_driver.h"
+
 coord_t drawStringWithIndex(BitmapBuffer * dc, coord_t x, coord_t y, const char * str, int idx, LcdFlags flags, const char * prefix, const char * suffix)
 {
   char s[64];

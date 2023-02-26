@@ -36,6 +36,12 @@
 #include "flysky_gimbal_driver.h"
 #include "timers_driver.h"
 
+#include "lcd_driver.h"
+#include "lcd_driver.h"
+#include "battery_driver.h"
+#include "touch_driver.h"
+#include "watchdog_driver.h"
+
 #include "bitmapbuffer.h"
 #include "colors.h"
 
@@ -52,6 +58,33 @@ extern "C" {
 
 // common ADC driver
 extern const etx_hal_adc_driver_t _adc_driver;
+
+enum PowerReason {
+  SHUTDOWN_REQUEST = 0xDEADBEEF,
+  SOFTRESET_REQUEST = 0xCAFEDEAD,
+};
+
+constexpr uint32_t POWER_REASON_SIGNATURE = 0x0178746F;
+
+bool UNEXPECTED_SHUTDOWN()
+{
+#if defined(SIMU) || defined(NO_UNEXPECTED_SHUTDOWN)
+  return false;
+#else
+  if (WAS_RESET_BY_WATCHDOG())
+    return true;
+  else if (WAS_RESET_BY_SOFTWARE())
+    return RTC->BKP0R != SOFTRESET_REQUEST;
+  else
+    return RTC->BKP1R == POWER_REASON_SIGNATURE && RTC->BKP0R != SHUTDOWN_REQUEST;
+#endif
+}
+
+void SET_POWER_REASON(uint32_t value)
+{
+  RTC->BKP0R = value;
+  RTC->BKP1R = POWER_REASON_SIGNATURE;
+}
 
 HardwareOptions hardwareOptions;
 

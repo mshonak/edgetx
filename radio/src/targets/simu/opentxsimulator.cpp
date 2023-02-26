@@ -23,7 +23,9 @@
 #include "opentx.h"
 #include "simulcd.h"
 #include "switches.h"
+
 #include "hal/adc_driver.h"
+#include "hal/rotary_encoder.h"
 
 #include <QDebug>
 #include <QElapsedTimer>
@@ -271,6 +273,7 @@ void OpenTxSimulator::setInputValue(int type, uint8_t index, int16_t value)
   }
 }
 
+extern volatile rotenc_t rotencValue;
 extern volatile uint32_t rotencDt;
 
 void OpenTxSimulator::rotaryEncoderEvent(int steps)
@@ -279,7 +282,7 @@ void OpenTxSimulator::rotaryEncoderEvent(int steps)
   static uint32_t last_tick = 0;
   if (steps != 0) {
     if (g_eeGeneral.rotEncMode >= ROTARY_ENCODER_MODE_INVERT_BOTH) steps *= -1;
-    ROTARY_ENCODER_NAVIGATION_VALUE += steps * ROTARY_ENCODER_GRANULARITY;
+    rotencValue += steps * ROTARY_ENCODER_GRANULARITY;
     // TODO: set rotencDt
     uint32_t now = RTOS_GET_MS();
     uint32_t dt = now - last_tick;

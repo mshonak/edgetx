@@ -46,13 +46,6 @@ PACK(typedef struct {
 
 extern HardwareOptions hardwareOptions;
 
-#if !defined(LUA_EXPORT_GENERATION)
-  #include "stm32f4xx_sdio.h"
-  #include "stm32f4xx_dma2d.h"
-  #include "stm32f4xx_ltdc.h"
-  #include "stm32f4xx_fmc.h"
-#endif
-
 #define FLASHSIZE                      0x200000
 #define BOOTLOADER_SIZE                0x20000
 #define FIRMWARE_ADDRESS               0x08000000
@@ -198,34 +191,8 @@ void SDRAM_Init();
   #define BATTERY_MAX       115 // 11.5V
 #endif
 
-#if defined(__cplusplus)
-enum PowerReason {
-  SHUTDOWN_REQUEST = 0xDEADBEEF,
-  SOFTRESET_REQUEST = 0xCAFEDEAD,
-};
-
-constexpr uint32_t POWER_REASON_SIGNATURE = 0x0178746F;
-
-inline bool UNEXPECTED_SHUTDOWN()
-{
-#if defined(SIMU) || defined(NO_UNEXPECTED_SHUTDOWN)
-  return false;
-#else
-  if (WAS_RESET_BY_WATCHDOG())
-    return true;
-  else if (WAS_RESET_BY_SOFTWARE())
-    return RTC->BKP0R != SOFTRESET_REQUEST;
-  else
-    return RTC->BKP1R == POWER_REASON_SIGNATURE && RTC->BKP0R != SHUTDOWN_REQUEST;
-#endif
-}
-
-inline void SET_POWER_REASON(uint32_t value)
-{
-  RTC->BKP0R = value;
-  RTC->BKP1R = POWER_REASON_SIGNATURE;
-}
-#endif
+bool UNEXPECTED_SHUTDOWN();
+void SET_POWER_REASON(uint32_t value);
 
 #if defined(__cplusplus) && !defined(SIMU)
 extern "C" {
@@ -239,6 +206,7 @@ void pwrOn();
 void pwrOff();
 void pwrResetHandler();
 bool pwrPressed();
+bool pwrOffPressed();
 #if defined(PWR_EXTRA_SWITCH_GPIO)
   bool pwrForcePressed();
 #else

@@ -60,9 +60,6 @@ rotenc_t rotaryEncoderGetValue()
 rotenc_t rotaryEncoderGetRawValue() { return rotencValue; }
 
 // TODO: remove all STM32 defs
-GPIO_TypeDef gpioa, gpiob, gpioc, gpiod, gpioe, gpiof, gpiog, gpioh, gpioi, gpioj;
-ADC_Common_TypeDef adc;
-RTC_TypeDef rtc;
 
 extern const etx_hal_adc_driver_t simu_adc_driver;
 
@@ -431,10 +428,23 @@ void boardInit()
 }
 
 uint32_t pwrCheck() { return simu_shutdown ? e_power_off : e_power_on; }
+
 bool pwrPressed() { return false; }
+bool pwrOffPressed()
+{
+#if defined(PWR_BUTTON_PRESS)
+  return pwrPressed();
+#else
+  return !pwrPressed();
+#endif
+}
+
 void pwrInit() {}
 void pwrOn() {}
 void pwrOff() {}
+
+bool UNEXPECTED_SHUTDOWN() { return false; }
+void SET_POWER_REASON(uint32_t value) {}
 
 #if defined(TRIMS_EMULATE_BUTTONS)
 bool trimsAsButtons = false;

@@ -25,16 +25,7 @@
 #include <inttypes.h>
 #include "cpu_id.h"
 
-#if defined(LUA_EXPORT_GENERATION)
-// no includes
-#else
-
-#if __clang__
-  // clang is very picky about the use of "register"
-  // Tell clang to ignore the warnings for the following files
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wdeprecated-register"
-#endif
+#if !defined(SIMU) && !defined(BACKUP)
 
 #if defined(STM32F4)
   #include "stm32f4xx.h"
@@ -65,11 +56,6 @@
   #include "dwt.h"    // the old ST library that we use does not define DWT register for STM32F2xx
 #endif
 
-#if __clang__
-// Restore warnings about registers
-#pragma clang diagnostic pop
-#endif
-
 #endif
 
 #include "usb_driver.h"
@@ -89,10 +75,10 @@ extern "C" {
 
 static inline uint32_t ticksNow()
 {
-#if defined(SIMU)
-  return 0;
-#else
+#if !defined(SIMU) && !defined(BACKUP)
   return DWT->CYCCNT;
+#else
+  return 0;
 #endif
 }
   
@@ -101,28 +87,5 @@ static inline uint32_t ticksNow()
 #endif
 
 #include "delays_driver.h"
-
-#if 0
-#define INIT_KEYS_PINS(GPIO) \
-  GPIO_InitStructure.GPIO_Pin = KEYS_ ## GPIO ## _PINS; \
-  GPIO_Init(GPIO, &GPIO_InitStructure)
-
-#define SET_KEYS_PINS_HIGH(GPIO) \
-  GPIO_InitStructure.GPIO_Pin = KEYS_ ## GPIO ## _PINS; \
-  GPIO_Init(GPIO, &GPIO_InitStructure); \
-  GPIO_SetBits(GPIO, KEYS_ ## GPIO ## _PINS)
-#endif
-
-// #if defined(ROTARY_ENCODER_NAVIGATION)
-//   typedef int32_t rotenc_t;
-//   extern volatile rotenc_t rotencValue;
-//   #define ROTARY_ENCODER_NAVIGATION_VALUE        rotencValue
-// #endif
-
-#if defined(PWR_BUTTON_PRESS)
-  #define pwrOffPressed()              pwrPressed()
-#else
-  #define pwrOffPressed()              (!pwrPressed())
-#endif
 
 #endif

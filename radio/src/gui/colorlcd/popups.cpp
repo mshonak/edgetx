@@ -22,6 +22,8 @@
 #include "popups.h"
 #include "libopenui.h"
 
+#include "watchdog_driver.h"
+
 static void _run_popup_dialog(const char* title, const char* msg,
                               const char* info = nullptr)
 {

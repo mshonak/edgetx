@@ -25,6 +25,8 @@
 #include "opentx.h"
 #include "diskio.h"
 #include "timers_driver.h"
+#include "watchdog_driver.h"
+
 #include "hal/module_port.h"
 
 #include "tasks.h"

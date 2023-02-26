@@ -16,11 +16,6 @@ macro(git_id RESULT)
   endif()
 endmacro(git_id)
 
-macro(use_cxx11)
-  if (CMAKE_VERSION VERSION_LESS "3.1" AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
-  endif ()
-endmacro(use_cxx11)
 
 macro(PrintTargetReport targetName)
   if(CMAKE_CXX_COMPILER MATCHES "/(clang-)?cl\\.exe$")
@@ -60,7 +55,6 @@ function(AddCompilerFlags output)
   endforeach()
 
   # Add hotfix for arm64
-  set(ARGS ${ARGS} -Wno-asm-operand-widths -Wno-pragma-once-outside-header)
 
   set(${output} ${${output}} ${ARGS} PARENT_SCOPE)
 endfunction()
@@ -74,7 +68,6 @@ function(GenerateDatacopy source output)
   AddCompilerFlags(GEN_DATACOPY_ARGS)
 
   # Hack to get rid of warnings in StdPeriph lib
-  set(GEN_DATACOPY_ARGS ${GEN_DATACOPY_ARGS} -Wno-asm-operand-widths)
 
   set(GEN_DATACOPY_ARGS
     # source file MUST be the first argument

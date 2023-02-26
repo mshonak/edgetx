@@ -60,6 +60,14 @@ extern "C" {
 }
 #endif
 
+#if !defined(BOOT)
+bool UNEXPECTED_SHUTDOWN()
+{
+  return WAS_RESET_BY_WATCHDOG()
+    || g_eeGeneral.unexpectedShutdown;
+}
+#endif
+
 HardwareOptions hardwareOptions;
 
 // adc_driver.cpp

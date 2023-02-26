@@ -22,7 +22,6 @@
 #pragma once
 
 #include <stdlib.h>
-#include "debounce.h"
 #include "definitions.h"
 #include "opentx_types.h"
 #include "opentx_helpers.h"
