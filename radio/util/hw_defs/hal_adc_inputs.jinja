@@ -57,3 +57,11 @@ static const etx_hal_adc_inputs_t _hal_inputs[] = {
   { {{ n_rtc_bat }}, {{ rtc_bat_offset }}, _rtc_bat_inputs },
   { {{ n_inputs }}, 0, nullptr },
 };
+
+constexpr potconfig_t _pot_default_config = (0)
+{% for pot in pot_inputs %}
+  {% if pot.default %}
+    | (POT_{{ pot.default }} << ({{ loop.index0 }} * POT_CFG_BITS))
+  {% endif %}
+{% endfor %}
+;

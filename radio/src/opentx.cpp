@@ -22,6 +22,7 @@
 #include "opentx.h"
 #include "io/frsky_firmware_update.h"
 #include "hal/adc_driver.h"
+#include "hal/switch_driver.h"
 #include "timers_driver.h"
 #include "watchdog_driver.h"
 
@@ -252,17 +253,8 @@ void generalDefault()
     g_eeGeneral.internalModule = DEFAULT_INTERNAL_MODULE;
 #endif
 
-#if defined(DEFAULT_POTS_CONFIG)
-  g_eeGeneral.potsConfig = DEFAULT_POTS_CONFIG;
-#endif
-
-#if defined(DEFAULT_SWITCH_CONFIG)
-  g_eeGeneral.switchConfig = DEFAULT_SWITCH_CONFIG;
-#endif
-
-// #if defined(DEFAULT_SLIDERS_CONFIG)
-//   g_eeGeneral.slidersConfig = DEFAULT_SLIDERS_CONFIG;
-// #endif
+  g_eeGeneral.potsConfig = adcGetDefaultPotsConfig();
+  g_eeGeneral.switchConfig = switchGetDefaultConfig();
 
 #if defined(STICK_DEAD_ZONE)
   g_eeGeneral.stickDeadZone = DEFAULT_STICK_DEADZONE;
@@ -880,12 +872,12 @@ void alert(const char * title, const char * msg , uint8_t sound)
 }
 
 #if defined(GVARS)
-#if NUM_TRIMS == 6
-  int8_t trimGvar[NUM_TRIMS] = { -1, -1, -1, -1, -1, -1 };
-#elif NUM_TRIMS == 4
-  int8_t trimGvar[NUM_TRIMS] = { -1, -1, -1, -1 };
-#elif NUM_TRIMS == 2
-  int8_t trimGvar[NUM_TRIMS] = { -1, -1 };
+#if MAX_TRIMS == 6
+  int8_t trimGvar[MAX_TRIMS] = { -1, -1, -1, -1, -1, -1 };
+#elif MAX_TRIMS == 4
+  int8_t trimGvar[MAX_TRIMS] = { -1, -1, -1, -1 };
+#elif MAX_TRIMS == 2
+  int8_t trimGvar[MAX_TRIMS] = { -1, -1 };
 #endif
 #endif
 
@@ -1360,7 +1352,7 @@ void moveTrimsToOffsets() // copy state of 3 primary to subtrim
   }
 
   // reset all trims, except throttle (if throttle trim)
-  for (uint8_t i=0; i<NUM_TRIMS; i++) {
+  for (uint8_t i=0; i<MAX_TRIMS; i++) {
     auto thrStick = g_model.getThrottleStickTrimSource() - MIXSRC_FIRST_TRIM;
     if (i != thrStick || !g_model.thrTrim) {
       int16_t original_trim = getTrimValue(mixerCurrentFlightMode, i);

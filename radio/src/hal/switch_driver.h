@@ -22,6 +22,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "opentx_types.h"
 
 enum SwitchHwType {
   SWITCH_HW_2POS = 0,
@@ -40,11 +41,21 @@ enum SwitchHwPos {
 // init hardware for switches
 void switchInit();
 
+// returns the factory configuration for all switches
+swconfig_t switchGetDefaultConfig();
+
 // returns the maximum number of regular switches supported in hardware
 uint8_t switchGetMaxSwitches();
 
 // returns the maximu number of function switches supported in hardware
 uint8_t switchGetMaxFctSwitches();
+
+struct switch_display_pos_t {
+  uint8_t col;
+  uint8_t row;
+};
+
+switch_display_pos_t switchGetDisplayPosition(uint8_t idx);
 
 // The functions bellow support regular as well as function switches.
 //
@@ -63,4 +74,3 @@ SwitchHwPos switchGetPosition(uint8_t idx);
 
 const char* switchGetName(uint8_t idx);
 SwitchHwType switchGetHwType(uint8_t idx);
-

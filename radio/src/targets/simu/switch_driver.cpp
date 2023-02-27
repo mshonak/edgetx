@@ -21,6 +21,7 @@
 
 #include "hal/switch_driver.h"
 #include "definitions.h"
+#include "myeeprom.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -38,6 +39,19 @@ void simuSetSwitch(uint8_t swtch, int8_t state)
 {
   assert(swtch < n_total_switches);
   switchesStates[swtch] = state;
+}
+
+swconfig_t switchGetDefaultConfig()
+{
+  return _switch_default_config;
+}
+
+switch_display_pos_t switchGetDisplayPosition(uint8_t idx)
+{
+  if (idx >= DIM(_switch_display))
+    return {0, 0};
+
+  return _switch_display[idx];
 }
 
 uint8_t switchGetMaxSwitches()

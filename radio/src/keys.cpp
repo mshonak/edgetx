@@ -270,6 +270,12 @@ uint8_t keysGetState(uint8_t key)
   return keys[key].pressed();
 }
 
+uint8_t keysGetTrimState(uint8_t trim)
+{
+  if (trim >= MAX_TRIMS) return 0;
+  return trim_keys[trim].pressed();
+}
+
 #if defined(USE_TRIMS_AS_BUTTONS)
 static bool _trims_as_buttons = false;
 

@@ -133,106 +133,29 @@ uint32_t isBootloaderStart(const uint8_t * buffer);
   #define TRAINER_CONNECTED()           true
 #endif
 
-#if defined(PCBXLITES)
-  #define NUM_SWITCHES                  6
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 10) + (SWITCH_TOGGLE << 8) + (SWITCH_2POS << 6) + (SWITCH_2POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITHOUT_DETENT << 2) + (POT_WITHOUT_DETENT << 0)
-#elif defined(PCBXLITE)
-  #define NUM_SWITCHES                  4
-  #define STORAGE_NUM_SWITCHES          6
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_2POS << 6) + (SWITCH_2POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0);
-  #define DEFAULT_POTS_CONFIG           (POT_WITHOUT_DETENT << 2) + (POT_WITHOUT_DETENT << 0)
-#elif defined(RADIO_TLITE) || defined(RADIO_LR3PRO)
-  #define NUM_SWITCHES                  4
-  #define STORAGE_NUM_SWITCHES          8
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_2POS << 6) + (SWITCH_2POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0);
-  #define DEFAULT_POTS_CONFIG           (0)
-#elif defined(RADIO_TPRO)
-  #define NUM_SWITCHES                  10
-  #define NUM_FUNCTIONS_SWITCHES        6
-  #define NUM_REGULAR_SWITCHES          (NUM_SWITCHES - NUM_FUNCTIONS_SWITCHES)
-  #define STORAGE_NUM_SWITCHES          10
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 6) + (SWITCH_TOGGLE << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0);
-  #define DEFAULT_FS_CONFIG             (SWITCH_2POS << 10) + (SWITCH_2POS << 8) + (SWITCH_2POS << 6) + (SWITCH_2POS << 4) + (SWITCH_2POS << 2) + (SWITCH_2POS << 0)
-  #define DEFAULT_FS_GROUPS             (1 << 10) + (1 << 8) + (1 << 6) + (1 << 4) + (1 << 2) + (1 << 0)  // Set all FS to group 1 to act like a 6pos
-  #define DEFAULT_FS_STARTUP_CONFIG     ((FS_START_PREVIOUS << 10) + (FS_START_PREVIOUS << 8) + (FS_START_PREVIOUS << 6) + (FS_START_PREVIOUS << 4) + (FS_START_PREVIOUS << 2) + (FS_START_PREVIOUS << 0))  // keep last state by default
-  #define DEFAULT_POTS_CONFIG           (POT_WITHOUT_DETENT << 0) + (POT_WITH_DETENT << 2); // S1 = pot without detent, S2 = pot with detent
-#elif defined(RADIO_FAMILY_JUMPER_T12)
-  #define NUM_SWITCHES                  8
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_2POS << 10) + (SWITCH_2POS << 8) + (SWITCH_3POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITHOUT_DETENT << 0) + (POT_WITHOUT_DETENT << 2); // S1 = pot without detent, S2 = pot with detent
-#elif defined(RADIO_TX12)
-  #define NUM_SWITCHES                  8
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_3POS << 10) + (SWITCH_3POS << 8) + (SWITCH_TOGGLE << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_TOGGLE << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0) + (POT_WITH_DETENT << 2);
-#elif defined(RADIO_TX12MK2)
-  #define NUM_SWITCHES                  6
-  #define STORAGE_NUM_SWITCHES          8
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_3POS << 10) + (SWITCH_3POS << 8) + (SWITCH_TOGGLE << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_TOGGLE << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0) + (POT_WITH_DETENT << 2);
-#elif defined(RADIO_BOXER)
-  #define NUM_SWITCHES                  6
-  #define STORAGE_NUM_SWITCHES          8
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 10) + (SWITCH_2POS << 8) + (SWITCH_2POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_2POS << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0) + (POT_WITH_DETENT << 2) + (POT_MULTIPOS_SWITCH << 4);
-#elif defined(RADIO_ZORRO)
-  #define NUM_SWITCHES                  8
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 14) + (SWITCH_TOGGLE << 12) + (SWITCH_2POS << 10) + (SWITCH_2POS << 8) + (SWITCH_TOGGLE << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_TOGGLE << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITHOUT_DETENT << 0) + (POT_WITHOUT_DETENT << 2);
-#elif defined(RADIO_T8) || defined(RADIO_COMMANDO8)
-  #define NUM_SWITCHES                  4
-  #define STORAGE_NUM_SWITCHES          8
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_2POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_2POS << 0);
-  #define DEFAULT_POTS_CONFIG           (0)
-#elif defined(PCBX7ACCESS)
-  #define NUM_SWITCHES                  7
-  #define STORAGE_NUM_SWITCHES          8
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 10) + (SWITCH_2POS << 8) + (SWITCH_3POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITHOUT_DETENT << 0) + (POT_WITH_DETENT << 2); // S1 = pot without detent, S2 = pot with detent
-#elif defined(PCBX7)
-  #define NUM_SWITCHES                  8
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 10) + (SWITCH_2POS << 8) + (SWITCH_3POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITHOUT_DETENT << 0) + (POT_WITH_DETENT << 2); // S1 = pot without detent, S2 = pot with detent
-#elif defined(PCBX9LITES)
-  #define NUM_SWITCHES                  7
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 12) + (SWITCH_TOGGLE << 10) + (SWITCH_TOGGLE << 8) + (SWITCH_2POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0);
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0); // S1 = pot with detent
-#elif defined(PCBX9LITE)
-  #define NUM_SWITCHES                  5
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 8) + (SWITCH_2POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0);
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0); // S1 = pot with detent
-#elif defined(PCBX9E)
-  #define NUM_SWITCHES                  18 // yes, it's perfect like that !
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 14) + (SWITCH_3POS << 12) + (SWITCH_2POS << 10) + (SWITCH_3POS << 8) + (SWITCH_3POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0) + (POT_WITH_DETENT << 2); // S1 = pot without detent, S2 = pot with detent
-  #define DEFAULT_SLIDERS_CONFIG        (SLIDER_WITH_DETENT << 3) + (SLIDER_WITH_DETENT << 2) + (SLIDER_WITH_DETENT << 1) + (SLIDER_WITH_DETENT << 0)
-#elif defined(RADIO_X9DP2019)
-  #define NUM_SWITCHES                  9
-  #define STORAGE_NUM_SWITCHES          NUM_SWITCHES
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 16) + (SWITCH_TOGGLE << 14) + (SWITCH_3POS << 12) + (SWITCH_2POS << 10) + (SWITCH_3POS << 8) + (SWITCH_3POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0);
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0) + (POT_WITH_DETENT << 2); // S1 = pot without detent, S2 = pot with detent
-  #define DEFAULT_SLIDERS_CONFIG        (SLIDER_WITH_DETENT << 1) + (SLIDER_WITH_DETENT << 0)
-#elif defined(PCBX9D) || defined(PCBX9DP)
-  #define NUM_SWITCHES                  8
-  #define STORAGE_NUM_SWITCHES          9
-  #define DEFAULT_SWITCH_CONFIG         (SWITCH_TOGGLE << 14) + (SWITCH_3POS << 12) + (SWITCH_2POS << 10) + (SWITCH_3POS << 8) + (SWITCH_3POS << 6) + (SWITCH_3POS << 4) + (SWITCH_3POS << 2) + (SWITCH_3POS << 0)
-  #define DEFAULT_POTS_CONFIG           (POT_WITH_DETENT << 0) + (POT_WITH_DETENT << 2); // S1 = pot without detent, S2 = pot with detent
-  #define DEFAULT_SLIDERS_CONFIG        (SLIDER_WITH_DETENT << 1) + (SLIDER_WITH_DETENT << 0)
-#endif
+#if defined(RADIO_TPRO)
 
-#if !defined(NUM_FUNCTIONS_SWITCHES)
-  #define NUM_FUNCTIONS_SWITCHES        0
-#endif
+#define NUM_FUNCTIONS_SWITCHES 6
 
-#define STORAGE_NUM_SWITCHES_POSITIONS  (STORAGE_NUM_SWITCHES * 3)
+#define DEFAULT_FS_CONFIG                                         \
+  (SWITCH_2POS << 10) + (SWITCH_2POS << 8) + (SWITCH_2POS << 6) + \
+      (SWITCH_2POS << 4) + (SWITCH_2POS << 2) + (SWITCH_2POS << 0)
+
+#define DEFAULT_FS_GROUPS                                 \
+  (1 << 10) + (1 << 8) + (1 << 6) + (1 << 4) + (1 << 2) + \
+      (1 << 0)  // Set all FS to group 1 to act like a 6pos
+
+#define DEFAULT_FS_STARTUP_CONFIG                         \
+  ((FS_START_PREVIOUS << 10) + (FS_START_PREVIOUS << 8) + \
+   (FS_START_PREVIOUS << 6) + (FS_START_PREVIOUS << 4) +  \
+   (FS_START_PREVIOUS << 2) +                             \
+   (FS_START_PREVIOUS << 0))  // keep last state by default
+
+#else
+
+#define NUM_FUNCTIONS_SWITCHES 0
+
+#endif
 
 #if defined(FUNCTION_SWITCHES)
 extern uint8_t fsPreviousState;
@@ -242,78 +165,11 @@ uint8_t getFSLogicalState(uint8_t index);
 uint8_t getFSPhysicalState(uint8_t index);
 #endif
 
-// ADC driver
-enum Analogs {
-  STICK1,
-  STICK2,
-  STICK3,
-  STICK4,
-  POT_FIRST,
-  POT1 = POT_FIRST,
-#if defined(PCBX9LITE)
-  POT_LAST = POT1,
-#elif defined(RADIO_BOXER)
-  POT2,
-  POT3,
-  POT_LAST = POT3,
-#elif defined(PCBXLITE) || defined(PCBX7)
-  POT2,
-  POT_LAST = POT2,
-#elif defined(PCBX9E)
-  POT2,
-  POT3,
-  POT4,
-  POT_LAST = POT4,
-  SLIDER1,
-  SLIDER2,
-  SLIDER3,
-  SLIDER4,
-#else
-  POT2,
-  POT3,
-  POT_LAST = POT3,
-  SLIDER1,
-  SLIDER2,
-#endif
-  TX_VOLTAGE,
-  TX_RTC_VOLTAGE,
-  NUM_ANALOGS
-};
-
-#define HAS_TX_RTC_VOLTAGE
-
-#define NUM_TRIMS                       4
-#define NUM_MOUSE_ANALOGS               0
-#define STORAGE_NUM_MOUSE_ANALOGS       0
-
-#if defined(PCBXLITE)
-  #define NUM_TRIMS_KEYS                4
-#else
-  #define NUM_TRIMS_KEYS                (NUM_TRIMS * 2)
-#endif
-
 PACK(typedef struct {
   uint8_t pcbrev:2;
-  uint8_t pxx2Enabled:1;
 }) HardwareOptions;
 
 extern HardwareOptions hardwareOptions;
-
-#if !defined(PXX2)
-  #define IS_PXX2_INTERNAL_ENABLED()            (false)
-  #define IS_PXX1_INTERNAL_ENABLED()            (true)
-#elif !defined(PXX1) || defined(PCBXLITES) || defined(PCBX9LITE)
-  #define IS_PXX2_INTERNAL_ENABLED()            (true)
-  #define IS_PXX1_INTERNAL_ENABLED()            (false)
-#elif defined(INTERNAL_MODULE_PXX1)
-  #define IS_PXX2_INTERNAL_ENABLED()            (false)
-  #define IS_PXX1_INTERNAL_ENABLED()            (true)
-#else
-  // TODO #define PXX2_PROBE
-  // TODO #define IS_PXX2_INTERNAL_ENABLED()            (hardwareOptions.pxx2Enabled)
-  #define IS_PXX2_INTERNAL_ENABLED()            (true)
-  #define IS_PXX1_INTERNAL_ENABLED()            (true)
-#endif
 
 // Battery driver
 #if defined(PCBX9E)

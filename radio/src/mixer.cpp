@@ -30,7 +30,7 @@ uint8_t s_mixer_first_run_done = false;
 
 int8_t  virtualInputsTrims[MAX_INPUTS];
 int16_t anas [MAX_INPUTS] = {0};
-int16_t trims[NUM_TRIMS] = {0};
+int16_t trims[MAX_TRIMS] = {0};
 int32_t chans[MAX_OUTPUT_CHANNELS] = {0};
 BeepANACenter bpanaCenter = 0;
 
@@ -396,7 +396,7 @@ getvalue_t getValue(mixsrc_t i, bool* valid)
       return 0;
     }
   } else if (i >= MIXSRC_FIRST_FS_SWITCH && i <= MIXSRC_LAST_SWITCH) {
-    return getFSLogicalState(i - MIXSRC_FIRST_SWITCH - NUM_REGULAR_SWITCHES) ? +1024 : -1024;
+    return getFSLogicalState(i - MIXSRC_FIRST_SWITCH - switchGetMaxSwitches()) ? +1024 : -1024;
   }
 #else
   else if (i >= MIXSRC_FIRST_SWITCH && i <= MIXSRC_LAST_SWITCH) {
@@ -471,7 +471,7 @@ getvalue_t getValue(mixsrc_t i, bool* valid)
 void evalTrims()
 {
   uint8_t phase = mixerCurrentFlightMode;
-  for (uint8_t i=0; i<NUM_TRIMS; i++) {
+  for (uint8_t i=0; i<MAX_TRIMS; i++) {
     // do trim -> throttle trim if applicable
     int16_t trim = getTrimValue(phase, i);
     if (trimsCheckTimer > 0) {

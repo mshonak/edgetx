@@ -43,18 +43,16 @@
 
 uint8_t g_moduleIdx;
 
-#if defined(PCBTARANIS)
 uint8_t getSwitchWarningsCount()
 {
   uint8_t count = 0;
-  for (int i=0; i<NUM_SWITCHES - NUM_FUNCTIONS_SWITCHES; ++i) {
+  for (int i = 0; i < switchGetMaxSwitches(); ++i) {
     if (SWITCH_WARNING_ALLOWED(i)) {
       ++count;
     }
   }
   return count;
 }
-#endif
 
 enum MenuModelSetupItems {
   ITEM_MODEL_SETUP_NAME,
@@ -435,14 +433,9 @@ void editTimerCountdown(int timerIdx, coord_t y, LcdFlags attr, event_t event)
   #define EXTERNAL_MODULE_ROWS
 #endif
 
-#if defined(PCBTARANIS)
-  #define WARN_ROWS \
-    SW_WARN_ROWS, /* Switch warning */ \
-    POT_WARN_ROWS, /* Pot warning */
-#else
-  #define WARN_ROWS \
-    NUM_SWITCHES - 1, /* Switch warning */
-#endif
+#define WARN_ROWS                         \
+  SW_WARN_ROWS,      /* Switch warning */ \
+  POT_WARN_ROWS,     /* Pot warning */
 
 #if defined(FUNCTION_SWITCHES)
 static const char* _fct_sw_start[] = { STR_CHAR_UP, STR_CHAR_DOWN, "=" };
@@ -781,7 +774,7 @@ void menuModelSetup(event_t event)
       case ITEM_MODEL_SETUP_THROTTLE_TRIM_SWITCH:
         lcdDrawTextAlignedLeft(y, STR_TTRIM_SW);
         if (attr)
-          CHECK_INCDEC_MODELVAR_ZERO(event, g_model.thrTrimSw, NUM_TRIMS - 1);
+          CHECK_INCDEC_MODELVAR_ZERO(event, g_model.thrTrimSw, MAX_TRIMS - 1);
         drawSource(MODEL_SETUP_2ND_COLUMN, y, g_model.getThrottleStickTrimSource(), attr);
         break;
 
@@ -860,7 +853,7 @@ void menuModelSetup(event_t event)
                     getMovedSwitch();
                     // Mask switches enabled for warnings
                     swarnstate_t sw_mask = 0;
-                    for(uint8_t i=0; i<NUM_SWITCHES; i++) {
+                    for(uint8_t i = 0; i < switchGetMaxSwitches(); i++) {
                       if (SWITCH_WARNING_ALLOWED(i))
                         if (g_model.switchWarningState & (0x07 << (3 * i)))
                           sw_mask |= (0x07 << (3 * i));

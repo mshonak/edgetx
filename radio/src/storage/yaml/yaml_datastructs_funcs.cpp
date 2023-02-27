@@ -46,25 +46,6 @@ static inline void check_yaml_funcs()
   static_assert(offsetof(ModuleData, ppm) == 4,"");
   check_size<ModuleData, 29>();
   static_assert(MAX_GVARS == 9,"");
-#if defined(PCBHORUS)
-  static_assert(offsetof(FlightModeData, gvars) == 26,"");
-  check_size<FlightModeData, 44>();
-  check_size<CustomFunctionData, 9>();
-#elif defined(PCBNV14)
-  static_assert(offsetof(FlightModeData, gvars) == 22,"");
-  check_size<FlightModeData, 40>();
-  check_size<CustomFunctionData, 9>();
-#elif defined(PCBX7) || defined(PCBXLITE) || defined(PCBX9LITE)
-  static_assert(offsetof(FlightModeData, gvars) == 18,"");
-  check_size<FlightModeData, 36>();
-  check_size<CustomFunctionData, 11>();
-  check_size<TelemetryScreenData, 24>();
-#else
-  static_assert(offsetof(FlightModeData, gvars) == 22,"");
-  check_size<FlightModeData, 40>();
-  check_size<CustomFunctionData, 11>();
-  check_size<TelemetryScreenData, 24>();
-#endif
 }
 
 static bool w_semver(void* user, uint8_t* data, uint32_t bitoffs,
@@ -918,8 +899,8 @@ static bool fmd_is_active(void* user, uint8_t* data, uint32_t bitoffs)
 
   data += bitoffs >> 3UL;
   FlightModeData* fmd = (FlightModeData*)(data);
-  for (uint8_t i=0; i<MAX_GVARS; i++) {
-    is_active |= fmd->gvars[i] != GVAR_MAX+1; // FM0 -> default
+  for (uint8_t i = 0; i < MAX_GVARS; i++) {
+    is_active |= fmd->gvars[i] != GVAR_MAX + 1; // FM0 -> default
   }
 
   return is_active;

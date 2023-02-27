@@ -5,7 +5,6 @@ import jinja2
 import legacy_names
 import json_index
 
-
 MAIN_CONTROL_LUT = {
     # 2 Gimbal radios
     "LH": { "str": "Rud", "local": "STR_STICK_NAMES[0]" },
@@ -16,6 +15,33 @@ MAIN_CONTROL_LUT = {
     "WH": { "str": "Whl", "local": "STR_SURFACE_NAMES[0]" },
     "TR": { "str": "Thr", "local": "STR_SURFACE_NAMES[1]" },
 }
+
+# MUST be the same order as 'EnumKeys'
+KEYS_LUT = [
+  "KEY_MENU",
+  "KEY_EXIT",
+  "KEY_ENTER",
+
+  "KEY_PAGE",
+  "KEY_PAGEUP",
+  "KEY_PAGEDN",
+
+  "KEY_UP",
+  "KEY_DOWN",
+
+  "KEY_LEFT",
+  "KEY_RIGHT",
+
+  "KEY_PLUS",
+  "KEY_MINUS",
+
+  "KEY_MODEL",
+  "KEY_TELE",
+  "KEY_SYS",
+
+  "KEY_SHIFT",
+  "KEY_BIND",
+]
 
 def generate_from_template(json_filename, template_filename, target):
 
@@ -54,4 +80,5 @@ def generate_from_template(json_filename, template_filename, target):
                                   key_gpios=key_gpios,
                                   trim_gpios=trim_gpios,
                                   legacy_inputs=legacy_inputs,
-                                  main_labels=MAIN_CONTROL_LUT))
+                                  main_labels=MAIN_CONTROL_LUT,
+                                  key_index=KEYS_LUT))

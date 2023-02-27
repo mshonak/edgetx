@@ -24,6 +24,8 @@
 #include "stm32_gpio_driver.h"
 
 #include "definitions.h"
+#include "opentx_constants.h"
+#include "myeeprom.h"
 
 // generated switch structs
 #include "stm32_switches.inc"
@@ -35,6 +37,19 @@ void switchInit()
   for (uint8_t i = 0; i < DIM(_switch_GPIOs); i++) {
     stm32_gpio_enable_clock(_switch_GPIOs[i]);
   }
+}
+
+swconfig_t switchGetDefaultConfig()
+{
+  return _switch_default_config;
+}
+
+switch_display_pos_t switchGetDisplayPosition(uint8_t idx)
+{
+  if (idx >= DIM(_switch_display))
+    return {0, 0};
+
+  return _switch_display[idx];
 }
 
 uint8_t switchGetMaxSwitches()

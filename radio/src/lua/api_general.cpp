@@ -381,7 +381,7 @@ const LuaSingleField luaSingleFields[] = {
     {MIXSRC_TrimThr, "trim-thr", "Throttle trim"},
     {MIXSRC_TrimAil, "trim-ail", "Aileron trim"},
 
-#if NUM_TRIMS > 4
+#if MAX_TRIMS > 4
     {MIXSRC_TrimT5, "trim-t5", "Aux trim T5"},
     {MIXSRC_TrimT6, "trim-t6", "Aux trim T6"},
 #endif

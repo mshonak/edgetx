@@ -772,7 +772,7 @@ void checkSwitches()
       int x = SWITCH_WARNING_LIST_X;
       int y = SWITCH_WARNING_LIST_Y;
       int numWarnings = 0;
-      for (int i=0; i<NUM_SWITCHES; ++i) {
+      for (int i = 0; i < switchGetMaxSwitches(); ++i) {
         if (SWITCH_WARNING_ALLOWED(i)) {
           swarnstate_t mask = ((swarnstate_t)0x07 << (i*3));
           if (states & mask) {

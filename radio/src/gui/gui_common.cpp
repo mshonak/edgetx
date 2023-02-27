@@ -20,9 +20,11 @@
  */
 
 #include "opentx.h"
+
 #include "hal/module_port.h"
-#include "switches.h"
 #include "hal/adc_driver.h"
+#include "hal/switch_driver.h"
+#include "switches.h"
 
 
 uint8_t switchToMix(uint8_t source)

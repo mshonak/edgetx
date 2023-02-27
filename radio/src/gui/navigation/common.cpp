@@ -22,6 +22,7 @@
 #include "opentx.h"
 #include "navigation.h"
 
+#include "hal/switch_driver.h"
 #include "switches.h"
 
 #if defined(AUTOSWITCH)

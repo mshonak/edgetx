@@ -59,4 +59,12 @@ uint32_t readKeys();
 // returns a bit field with each trim key
 uint32_t readTrims();
 
+// Init GPIO ports
 void keysInit();
+
+uint32_t keysGetSupported();
+
+uint8_t keysGetMaxKeys();
+uint8_t keysGetMaxTrims();
+
+const char* keysGetLabel(EnumKeys key);

@@ -246,11 +246,6 @@ enum RotaryEncoderMode {
 void memswap(void * a, void * b, uint8_t size);
 
 // TODO: move these config check macros somewhere else
-#define POT_CFG_BITS                   4 // 4 bits per pot
-#define POT_CFG_MASK                   ((1 << POT_CFG_BITS) - 1)
-#define POT_CONFIG_POS(x)              (POT_CFG_BITS * (x))
-#define POT_CONFIG_MASK(x)             (POT_CFG_MASK << POT_CONFIG_POS(x))
-#define POT_CONFIG_DISABLE_MASK(x)     (~POT_CONFIG_MASK(x))
 #define POT_CONFIG(x) \
   ((g_eeGeneral.potsConfig >> POT_CONFIG_POS(x)) & POT_CFG_MASK)
 
@@ -487,7 +482,7 @@ int8_t getMovedSource(uint8_t min);
 #define getTrimFlightMode(phase, idx) (phase)
 
 #if defined(GVARS)
-  extern int8_t trimGvar[NUM_TRIMS];
+  extern int8_t trimGvar[MAX_TRIMS];
   #define TRIM_REUSED(idx) trimGvar[idx] >= 0
 #else
   #define TRIM_REUSED(idx) 0

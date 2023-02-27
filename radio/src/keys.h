@@ -173,6 +173,7 @@ bool isEvent();
 bool keyDown();
 
 uint8_t keysGetState(uint8_t key);
+uint8_t keysGetTrimState(uint8_t trim);
 
 bool keysPollingCycle();
 bool rotaryEncoderPollingCycle();

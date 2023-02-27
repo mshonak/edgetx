@@ -136,12 +136,7 @@ enum CurveType {
   #define MAX_CURVE_POINTS             512
 #endif
 
-// TODO: remove this
-#if defined(PCBFRSKY) || defined(PCBNV14)
-  #define NUM_MODULES                  2
-#else
-  #define NUM_MODULES                  1
-#endif
+#define NUM_MODULES                    2
 
 #define XPOTS_MULTIPOS_COUNT           6
 
@@ -406,6 +401,7 @@ enum PotsWarnMode {
 #define MAX_CALIB_ANALOG_INPUTS (MAX_STICKS + MAX_POTS + MAX_AXIS)
 
 #define MAX_SWITCHES      20
+#define MAX_TRIMS         6
 
 #define MAX_XPOTS_POSITIONS (MAX_POTS * XPOTS_MULTIPOS_COUNT)
 
@@ -419,25 +415,7 @@ enum SwitchSources {
   SWSRC_LAST_MULTIPOS_SWITCH SKIP = SWSRC_FIRST_MULTIPOS_SWITCH + MAX_XPOTS_POSITIONS - 1,
 
   SWSRC_FIRST_TRIM SKIP,
-  SWSRC_TrimRudLeft = SWSRC_FIRST_TRIM,
-  SWSRC_TrimRudRight,
-  SWSRC_TrimEleDown,
-  SWSRC_TrimEleUp,
-
-  // TODO: reserve range via MAX_TRIMS
-#if NUM_TRIMS > 2
-  SWSRC_TrimThrDown,
-  SWSRC_TrimThrUp,
-  SWSRC_TrimAilLeft,
-  SWSRC_TrimAilRight,
-#endif
-
-#if NUM_TRIMS > 4
-  SWSRC_TrimT5Down,
-  SWSRC_TrimT5Up,
-  SWSRC_TrimT6Down,
-  SWSRC_TrimT6Up,
-#endif
+  SWSRC_LAST_TRIM SKIP = SWSRC_FIRST_TRIM + 2 * MAX_TRIMS - 1,
 
   SWSRC_FIRST_LOGICAL_SWITCH SKIP,
   SWSRC_LAST_LOGICAL_SWITCH SKIP = SWSRC_FIRST_LOGICAL_SWITCH + MAX_LOGICAL_SWITCHES - 1,
@@ -474,8 +452,6 @@ enum SwitchSources {
 
   SWSRC_INVERT SKIP = SWSRC_COUNT+1,
 };
-
-#define SWSRC_LAST_TRIM (SWSRC_FIRST_TRIM + 2 * NUM_TRIMS - 1)
 
 enum MixSources {
   MIXSRC_NONE,
@@ -570,7 +546,7 @@ enum MixSources {
 #define MIXSRC_Thr                  (MIXSRC_FIRST_STICK + 2)
 
 #if defined(FUNCTION_SWITCHES)
-#define MIXSRC_LAST_REGULAR_SWITCH  (MIXSRC_FIRST_SWITCH + NUM_REGULAR_SWITCHES - 1)
+#define MIXSRC_LAST_REGULAR_SWITCH  (MIXSRC_FIRST_SWITCH + switchGetMaxSwitches() - 1)
 #define MIXSRC_FIRST_FS_SWITCH      (MIXSRC_LAST_REGULAR_SWITCH + 1)
 #endif
 

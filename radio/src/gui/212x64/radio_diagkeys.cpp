@@ -20,12 +20,36 @@
  */
 
 #include "opentx.h"
+
 #include "hal/rotary_encoder.h"
+#include "hal/switch_driver.h"
 
 void displayKeyState(uint8_t x, uint8_t y, uint8_t key)
 {
   uint8_t t = keysGetState(key);
   lcdDrawChar(x, y, t+'0', t ? INVERS : 0);
+}
+
+void displayTrimState(uint8_t x, uint8_t y, uint8_t trim)
+{
+  uint8_t t = keysGetTrimState(trim);
+  lcdDrawChar(x, y, t+'0', t ? INVERS : 0);
+}
+
+static EnumKeys get_ith_key(uint8_t i)
+{
+  auto max_keys = keysGetMaxKeys();
+  auto supported_keys = keysGetSupported();
+
+  for (uint8_t k = 0; k < max_keys; k++) {
+    if (supported_keys & (1 << k)) {
+      if (i-- == 0) return (EnumKeys)k;
+    }
+  }
+
+  // should not get here,
+  // we assume: i < keysGetMaxKeys()
+  return (EnumKeys)0;
 }
 
 void menuRadioDiagKeys(event_t event)
@@ -34,19 +58,20 @@ void menuRadioDiagKeys(event_t event)
 
   lcdDrawText(24*FW, MENU_HEADER_HEIGHT + 1, STR_VTRIM);
 
-  for (uint8_t i = 0; i < NUM_TRIMS_KEYS; i++) {
+  for (uint8_t i = 0; i < keysGetMaxTrims() * 2; i++) {
     coord_t y = MENU_HEADER_HEIGHT + 1 + FH + FH * (i / 2);
     if (i & 1) lcdDraw1bitBitmap(24 * FW, y, sticks, i / 2, 0);
-    // displayKeyState(i & 1 ? 30 * FW : 28 * FW, y, TRM_BASE + i);
+    displayTrimState(i & 1 ? 30 * FW : 28 * FW, y, i);
   }
 
-  for (uint8_t i = 0; i < MAX_KEYS; i++) {
+  for (uint8_t i = 0; i < keysGetMaxKeys(); i++) {
+    auto k = get_ith_key(i);
     coord_t y = MENU_HEADER_HEIGHT + 1 + FH * i;
-    lcdDrawTextAtIndex(0, y, STR_VKEYS, i, 0);
+    lcdDrawText(0, y, keysGetLabel(k), 0);
     displayKeyState(5 * FW + 2, y, i);
   }
 
-  for (uint8_t i = 0, cnt = 0; i < NUM_SWITCHES; i++) {
+  for (uint8_t i = 0, cnt = 0; i < switchGetMaxSwitches(); i++) {
     if (SWITCH_EXISTS(i)) {
       div_t qr = div(cnt++, 6);
       coord_t x = 4 * FH * qr.quot;

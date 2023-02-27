@@ -30,7 +30,10 @@
 #endif
 
 #include "definitions.h"
+
+#include "myeeprom.h"
 #include "translations.h"
+
 #include <string.h>
 
 // generated files
@@ -74,6 +77,7 @@ static void adc_wait_completion()
 
 const etx_hal_adc_driver_t _adc_driver = {
   _hal_inputs,
+  _pot_default_config,
   adc_init,
   adc_start_read,
   adc_wait_completion

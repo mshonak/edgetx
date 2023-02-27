@@ -134,7 +134,7 @@ void simuSetKey(uint8_t key, bool state)
   keysStates[key] = state;
 }
 
-bool trimsStates[NUM_TRIMS_KEYS] = { false };
+bool trimsStates[MAX_TRIMS * 2] = { false };
 void simuSetTrim(uint8_t trim, bool state)
 {
   // TRACE("simuSetTrim(%d, %d)", trim, state);

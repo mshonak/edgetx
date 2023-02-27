@@ -136,13 +136,13 @@ TEST(evalLogicalSwitches, playFile)
 }
 #endif
 
-#if defined(PCBTARANIS) && NUM_SWITCHES >= 8 && !defined(PCBX7)
-
 #define SWSRC_SA2 (SWSRC_FIRST_SWITCH + 2)
 #define SWSRC_SF2 (SWSRC_FIRST_SWITCH + 5 * 3 + 2)
 
 TEST(getSwitch, edgeInstant)
 {
+  if (switchGetMaxSwitches() < 6) return;
+  
   MODEL_RESET();
   MIXER_RESET();
   // LS1 setup: EDGE SFup  (0:instant)
@@ -260,6 +260,8 @@ TEST(getSwitch, edgeInstant)
 
 TEST(getSwitch, edgeRelease)
 {
+  if (switchGetMaxSwitches() < 6) return;
+
   MODEL_RESET();
   MIXER_RESET();
   // test for issue #2728
@@ -316,4 +318,3 @@ TEST(getSwitch, edgeRelease)
   EXPECT_EQ(getSwitch(SWSRC_SW2), false);
 
 }
-#endif // defined(PCBTARANIS)

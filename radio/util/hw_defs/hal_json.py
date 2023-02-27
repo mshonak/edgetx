@@ -76,11 +76,11 @@ def parse_defines(filename, target):
 
     # parse ADC first, we might have switches using ADC
     legacy_inputs = legacy_names.inputs_by_target(target)
-    adc_parser = ADCInputParser(hw_defs,legacy_inputs)
+    adc_parser = ADCInputParser(target,hw_defs,legacy_inputs)
     adc_inputs = adc_parser.parse_inputs()
     out_defs["adc_inputs"] = adc_inputs
 
-    switches = parse_switches(hw_defs, adc_parser)
+    switches = parse_switches(target, hw_defs, adc_parser)
     out_defs["switches"] = switches
 
     keys = parse_keys(hw_defs)

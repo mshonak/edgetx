@@ -155,14 +155,6 @@ const struct YamlIdStr enum_SwashType[] = {
 };
 const struct YamlIdStr enum_SwitchSources[] = {
   {  SWSRC_NONE, "NONE"  },
-  {  SWSRC_TrimRudLeft, "TrimRudLeft"  },
-  {  SWSRC_TrimRudRight, "TrimRudRight"  },
-  {  SWSRC_TrimEleDown, "TrimEleDown"  },
-  {  SWSRC_TrimEleUp, "TrimEleUp"  },
-  {  SWSRC_TrimThrDown, "TrimThrDown"  },
-  {  SWSRC_TrimThrUp, "TrimThrUp"  },
-  {  SWSRC_TrimAilLeft, "TrimAilLeft"  },
-  {  SWSRC_TrimAilRight, "TrimAilRight"  },
   {  SWSRC_ON, "ON"  },
   {  SWSRC_ONE, "ONE"  },
   {  SWSRC_TELEMETRY_STREAMING, "TELEMETRY_STREAMING"  },
@@ -502,7 +494,7 @@ static const struct YamlNode struct_trim_t[] = {
 };
 static const struct YamlNode struct_FlightModeData[] = {
   YAML_IDX,
-  YAML_ARRAY("trim", 16, 4, struct_trim_t, NULL),
+  YAML_ARRAY("trim", 16, 6, struct_trim_t, NULL),
   YAML_STRING("name", 10),
   YAML_SIGNED_CUST( "swtch", 10, r_swtchSrc, w_swtchSrc ),
   YAML_PADDING( 6 ),
@@ -798,7 +790,7 @@ static const struct YamlNode struct_ModelData[] = {
   YAML_ARRAY("logicalSw", 72, 64, struct_LogicalSwitchData, NULL),
   YAML_ARRAY("customFn", 72, 64, struct_CustomFunctionData, cfn_is_active),
   YAML_STRUCT("swashR", 64, struct_SwashRingData, swash_is_active),
-  YAML_ARRAY("flightModeData", 320, 9, struct_FlightModeData, fmd_is_active),
+  YAML_ARRAY("flightModeData", 352, 9, struct_FlightModeData, fmd_is_active),
   YAML_UNSIGNED_CUST( "thrTraceSrc", 8, r_thrSrc, w_thrSrc ),
   YAML_CUSTOM("switchWarningState",r_swtchWarn,w_swtchWarn),
   YAML_PADDING( 64 ),

@@ -122,9 +122,10 @@ void OpenTxSimulator::init()
   QMutexLocker lckr(&m_mtxSimuMain);
   memset(g_anas, 0, sizeof(g_anas));
 
-#if defined(PCBTARANIS)
-  g_anas[TX_RTC_VOLTAGE] = 800;  // 2,34V
-#endif
+  if (adcGetMaxInputs(ADC_INPUT_RTC_BAT) > 0) {
+    auto idx = adcGetInputOffset(ADC_INPUT_RTC_BAT);
+    setAnalogValue(idx, 800);
+  }
 
   simuInit();
 }

@@ -21,6 +21,8 @@
 
 #include "opentx.h"
 #include "hal/adc_driver.h"
+#include "hal/switch_driver.h"
+
 #include "switches.h"
 
 #define BIGSIZE       DBLSIZE
@@ -495,56 +497,26 @@ void menuMainView(event_t event)
       if (view == VIEW_INPUTS) {
         // Sticks + Pots
         doMainScreenGraphics();
-
+        
         // Switches
-#if defined(PCBX9LITES)
-        static const uint8_t x[NUM_SWITCHES-2] = {2*FW-2, 2*FW-2, 17*FW+1, 2*FW-2, 17*FW+1};
-        static const uint8_t y[NUM_SWITCHES-2] = {4*FH+1, 5*FH+1, 5*FH+1, 6*FH+1, 6*FH+1};
-        int i;
-        for (i=0; i<NUM_SWITCHES - 2; ++i) {
-          if (SWITCH_EXISTS(i)) {
-            getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
-            getvalue_t sw = ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
-            drawSwitch(x[i], y[i], sw, 0, false);
-          }
-        }
-        drawSmallSwitch(29, 5*FH+1, 4, i);
-        drawSmallSwitch(16*FW+1, 5*FH+1, 4, i+1);
-#elif defined(PCBX9LITE)
-        static const uint8_t x[NUM_SWITCHES] = {2 * FW - 2, 2 * FW - 2, 16 * FW + 1, 2 * FW - 2, 16 * FW + 1};
-        static const uint8_t y[NUM_SWITCHES] = {4 * FH + 1, 5 * FH + 1, 5 * FH + 1, 6 * FH + 1, 6 * FH + 1};
-        for (int i = 0; i < NUM_SWITCHES; ++i) {
-          if (SWITCH_EXISTS(i)) {
-            getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
-            getvalue_t sw = ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
-            drawSwitch(x[i], y[i], sw, 0, false);
-          }
-        }
-#elif defined(PCBXLITES)
-        static const uint8_t x[NUM_SWITCHES] = {2*FW-2, 16*FW+1, 2*FW-2, 16*FW+1, 2*FW-2, 16*FW+1};
-        static const uint8_t y[NUM_SWITCHES] = {4*FH+1, 4*FH+1, 6*FH+1, 6*FH+1, 5*FH+1, 5*FH+1};
-        for (int i=0; i<NUM_SWITCHES; ++i) {
-          if (SWITCH_EXISTS(i)) {
-            getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
-            getvalue_t sw = ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
-            drawSwitch(x[i], y[i], sw, 0, false);
-          }
-        }
-#else
-        uint8_t switches = min(NUM_SWITCHES- NUM_FUNCTIONS_SWITCHES, 6);
+        // -> 2 columns: one for each side
+        // -> 4 slots on each side (3 normal / 1 small)
+        uint8_t switches = min(switchGetMaxSwitches(), (uint8_t)8);
         for (int i = 0; i < switches; ++i) {
           if (SWITCH_EXISTS(i)) {
-            uint8_t x = 2 * FW - 2, y = 4 * FH + i * FH + 1;
-            if (i >= switches / 2) {
-              x = 16 * FW + 1;
-              y -= (switches / 2) * FH;
+            auto switch_display = switchGetDisplayPosition(i);
+            if (switch_display.row >= 3) {
+              drawSmallSwitch(switch_display.col == 0 ? 29 : 16 * FW + 1, 5 * FH + 1, 4, i);
             }
-            getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
-            getvalue_t sw = ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
-            drawSwitch(x, y, sw, 0, false);
+            else {
+              coord_t x = switch_display.col == 0 ? 2 * FW - 2 : 16 * FW + 7;
+              coord_t y = 33 + switch_display.row * FH;
+              getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
+              getvalue_t sw = ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
+              drawSwitch(x, y, sw, 0, false);
+            }
           }
         }
-#endif
       }
       else {
         // Logical Switches

@@ -1,3 +1,4 @@
+from switch_config import switch_cfg_by_target
 
 class Switch:
 
@@ -33,8 +34,12 @@ class SwitchADC(Switch):
 def AZ_seq():
     return [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 
+def eprint(*args, **kwargs):
+    from sys import stderr
+    print(*args, file=stderr, **kwargs)
+
 # switches from A to Z
-def parse_switches(hw_defs, adc_parser):
+def parse_switches(target, hw_defs, adc_parser):
 
     switches = []
 
@@ -81,7 +86,13 @@ def parse_switches(hw_defs, adc_parser):
         if switch:
             if inverted in hw_defs:
                 switch.inverted = True
-                # print(switch.inverted)
+
+            cfg = switch_cfg_by_target(target, name)
+            if cfg:
+                switch.default = cfg.get('default')
+                switch.display = cfg.get('display')
+                #eprint(switch.default)
+
             switches.append(switch)
 
     for i in range(1, 6 + 1):

@@ -144,7 +144,7 @@ void evalFunctions(const CustomFunctionData * functions, CustomFunctionsContext 
 #endif
 
 #if defined(GVARS)
-  for (uint8_t i=0; i<NUM_TRIMS; i++) {
+  for (uint8_t i=0; i<MAX_TRIMS; i++) {
     trimGvar[i] = -1;
   }
 #endif

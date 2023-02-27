@@ -84,6 +84,13 @@
 #define MODEL_GVAR_MIN(idx)            (CFN_GVAR_CST_MIN + g_model.gvars[idx].min)
 #define MODEL_GVAR_MAX(idx)            (CFN_GVAR_CST_MAX - g_model.gvars[idx].max)
 
+// pots config
+#define POT_CFG_BITS                   4 // 4 bits per pot
+#define POT_CFG_MASK                   ((1 << POT_CFG_BITS) - 1)
+#define POT_CONFIG_POS(x)              (POT_CFG_BITS * (x))
+#define POT_CONFIG_MASK(x)             (POT_CFG_MASK << POT_CONFIG_POS(x))
+#define POT_CONFIG_DISABLE_MASK(x)     (~POT_CONFIG_MASK(x))
+
 #define SW_CFG_BITS                    2
 #define SW_CFG_MASK                    ((1 << SW_CFG_BITS) - 1)
 #define SWITCH_CONFIG_MASK(x)          ((swconfig_t)SW_CFG_MASK << (SW_CFG_BITS * (x)))
@@ -94,10 +101,10 @@
   #define FSWITCH_CONFIG(x)           (bfGet<swconfig_t>(g_model.functionSwitchConfig, FSW_CFG_BITS * (x), FSW_CFG_BITS))
   #define FSWITCH_GROUP(x)            (bfGet<swconfig_t>(g_model.functionSwitchGroup,  FSW_CFG_BITS * (x), FSW_CFG_BITS))
   #define IS_FSWITCH_GROUP_ON(x)      (bfGet<swconfig_t>(g_model.functionSwitchGroup,  FSW_CFG_BITS * NUM_FUNCTIONS_SWITCHES + x, 1))
-  #define IS_SWITCH_FS(x)             (x >= NUM_REGULAR_SWITCHES)
+  #define IS_SWITCH_FS(x)             (x >= switchGetMaxSwitches())
   #define SWITCH_EXISTS(x)            (IS_SWITCH_FS(x)  ? true : (SWITCH_CONFIG(x) != SWITCH_NONE))
-  #define IS_CONFIG_3POS(x)           (IS_SWITCH_FS(x)  ? (FSWITCH_CONFIG(x - NUM_REGULAR_SWITCHES) == SWITCH_3POS) : (SWITCH_CONFIG(x) == SWITCH_3POS))
-  #define IS_CONFIG_TOGGLE(x)         (IS_SWITCH_FS(x)  ? (FSWITCH_CONFIG(x - NUM_REGULAR_SWITCHES) == SWITCH_TOGGLE) : (SWITCH_CONFIG(x) == SWITCH_TOGGLE))
+  #define IS_CONFIG_3POS(x)           (IS_SWITCH_FS(x)  ? (FSWITCH_CONFIG(x - switchGetMaxSwitches()) == SWITCH_3POS) : (SWITCH_CONFIG(x) == SWITCH_3POS))
+  #define IS_CONFIG_TOGGLE(x)         (IS_SWITCH_FS(x)  ? (FSWITCH_CONFIG(x - switchGetMaxSwitches()) == SWITCH_TOGGLE) : (SWITCH_CONFIG(x) == SWITCH_TOGGLE))
 #else
   #define SWITCH_EXISTS(x)            (SWITCH_CONFIG(x) != SWITCH_NONE)
   #define IS_CONFIG_3POS(x)           (SWITCH_CONFIG(x) == SWITCH_3POS)

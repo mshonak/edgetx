@@ -101,7 +101,7 @@ struct FMTrimSettings : public Dialog {
     FlexGridLayout trim_grid(line_col_dsc, trims_row_dsc);
     auto line = form->newLine(&trim_grid);
 
-    for (int t = 0; t < NUM_TRIMS; t++) {
+    for (int t = 0; t < MAX_TRIMS; t++) {
 
       auto trim = new FormGroup(line, rect_t{});
       trim->setFlexLayout(LV_FLEX_FLOW_ROW, lv_dpx(8));

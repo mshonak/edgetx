@@ -20,3 +20,27 @@
  */
 
 #include "key_driver.h"
+
+#include "definitions.h"
+#include "hal_keys.inc"
+
+uint32_t keysGetSupported()
+{
+  return _defined_keys;
+}
+
+uint8_t keysGetMaxKeys()
+{
+  return _n_keys;
+}
+
+uint8_t keysGetMaxTrims()
+{
+  return _n_trims;
+}
+
+const char* keysGetLabel(EnumKeys key)
+{
+  return _key_labels[key];
+}
+

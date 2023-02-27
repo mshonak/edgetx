@@ -1,12 +1,13 @@
+from pot_config import pot_cfg_by_target
 
 MAX_POTS = 4
 MAX_SLIDERS = 4
 MAX_EXTS = 4
 
-import sys
 
 def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    from sys import stderr
+    print(*args, file=stderr, **kwargs)
 
 class ADCInput:
 
@@ -100,7 +101,8 @@ class ADCInputParser:
     ]
     
 
-    def __init__(self, hw_defs, labels):
+    def __init__(self, target, hw_defs, labels):
+        self.target = target
         self.hw_defs = hw_defs
         self.labels = labels
         self.regs = self._parse_regs()
@@ -230,6 +232,10 @@ class ADCInputParser:
                 input_labels = self.labels[adc_input.name]
                 adc_input.label = input_labels['label']
                 adc_input.short_label = input_labels['short_label']
+                cfg = pot_cfg_by_target(self.target,adc_input.name)
+                if cfg:
+                    adc_input.default = cfg.get('default')
+
             self.inputs.append(adc_input)
 
     def parse_inputs(self):

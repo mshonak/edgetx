@@ -190,7 +190,7 @@ PACK(struct trim_t {
 });
 
 PACK(struct FlightModeData {
-  trim_t trim[NUM_TRIMS];
+  trim_t trim[MAX_TRIMS];
   NOBACKUP(char name[LEN_FLIGHT_MODE_NAME]);
   // swtch of phase[0] is not used
   int16_t swtch:10 ENUM(SwitchSources) CUST(r_swtchSrc,w_swtchSrc);

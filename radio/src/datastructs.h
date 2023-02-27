@@ -53,7 +53,7 @@ static inline void check_struct()
   CHKSIZE(LimitData, 11);
   CHKSIZE(LogicalSwitchData, 9);
   CHKSIZE(CustomFunctionData, 11);
-  CHKSIZE(FlightModeData, 28 + 2*NUM_TRIMS);
+  CHKSIZE(FlightModeData, 28 + 2 * MAX_TRIMS);
   CHKSIZE(TimerData, 12);
   CHKSIZE(SwashRingData, 8);
   CHKSIZE(FrSkyBarData, 6);
@@ -67,7 +67,7 @@ static inline void check_struct()
   CHKSIZE(LimitData, 13);
   CHKSIZE(LogicalSwitchData, 9);
   CHKSIZE(CustomFunctionData, 11);
-  CHKSIZE(FlightModeData, 40);
+  CHKSIZE(FlightModeData, 44);
   CHKSIZE(TimerData, 17);
   CHKSIZE(SwashRingData, 8);
   CHKSIZE(FrSkyBarData, 6);
@@ -118,25 +118,25 @@ static inline void check_struct()
 
 #if defined(PCBXLITES)
   CHKSIZE(RadioData, 870);
-  CHKSIZE(ModelData, 6173);
+  CHKSIZE(ModelData, 6209);
 #elif defined(PCBXLITE)
   CHKSIZE(RadioData, 868);
-  CHKSIZE(ModelData, 6173);
+  CHKSIZE(ModelData, 6209);
 #elif defined(RADIO_TPRO)
   CHKSIZE(RadioData, 857);
-  CHKSIZE(ModelData, 6198);
+  CHKSIZE(ModelData, 6234);
 #elif defined(RADIO_BOXER)
   CHKSIZE(RadioData, 868);
-  CHKSIZE(ModelData, 6173);
+  CHKSIZE(ModelData, 6209);
 #elif defined(PCBX7)
   CHKSIZE(RadioData, 868);
-  CHKSIZE(ModelData, 6173);
+  CHKSIZE(ModelData, 6209);
 #elif defined(PCBX9E)
   CHKSIZE(RadioData, 868);
-  CHKSIZE(ModelData, 6615);
+  CHKSIZE(ModelData, 6651);
 #elif defined(PCBX9D) || defined(PCBX9DP)
   CHKSIZE(RadioData, 868);
-  CHKSIZE(ModelData, 6614);
+  CHKSIZE(ModelData, 6650);
 #elif defined(PCBHORUS)
   #if defined(PCBX10)
     CHKSIZE(RadioData, 888);
@@ -147,7 +147,7 @@ static inline void check_struct()
   #endif
 #elif defined(PCBNV14)
   CHKSIZE(RadioData, 888);
-  CHKSIZE(ModelData, 10957);
+  CHKSIZE(ModelData, 10993);
 #endif
 
 #undef CHKSIZE

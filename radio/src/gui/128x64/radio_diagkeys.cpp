@@ -21,11 +21,35 @@
 
 #include "opentx.h"
 #include "hal/rotary_encoder.h"
+#include "hal/switch_driver.h"
+#include "hal/key_driver.h"
 
 void displayKeyState(uint8_t x, uint8_t y, uint8_t key)
 {
   uint8_t t = keysGetState(key);
   lcdDrawChar(x, y, t+'0', t ? INVERS : 0);
+}
+
+void displayTrimState(uint8_t x, uint8_t y, uint8_t trim)
+{
+  uint8_t t = keysGetTrimState(trim);
+  lcdDrawChar(x, y, t+'0', t ? INVERS : 0);
+}
+
+static EnumKeys get_ith_key(uint8_t i)
+{
+  auto max_keys = keysGetMaxKeys();
+  auto supported_keys = keysGetSupported();
+
+  for (uint8_t k = 0; k < max_keys; k++) {
+    if (supported_keys & (1 << k)) {
+      if (i-- == 0) return (EnumKeys)k;
+    }
+  }
+
+  // should not get here,
+  // we assume: i < keysGetMaxKeys()
+  return (EnumKeys)0;
 }
 
 void menuRadioDiagKeys(event_t event)
@@ -34,47 +58,38 @@ void menuRadioDiagKeys(event_t event)
 
   lcdDrawText(14*FW, MENU_HEADER_HEIGHT + 1, STR_VTRIM);
 
-  for (uint8_t i=0; i<10; i++) {
+  for (uint8_t i = 0; i < 10; i++) {
     coord_t y;
 
-    if (i < NUM_TRIMS_KEYS) {
-      y = MENU_HEADER_HEIGHT + 1 + FH + FH*(i/2);
-      if (i & 1) lcdDraw1bitBitmap(14*FW, y, sticks, i/2, 0);
-      // displayKeyState(i&1? 20*FW : 18*FW, y, TRM_BASE+i);
+    if (i < keysGetMaxTrims() * 2) {
+      y = MENU_HEADER_HEIGHT + 1 + FH + FH * (i / 2);
+      if (i & 1) lcdDraw1bitBitmap(14 * FW, y, sticks, i / 2, 0);
+      displayTrimState(i & 1 ? 20 * FW : 18 * FW, y, i);
     }
 
-    if (i < MAX_KEYS) { // TODO: which keys are really supported?
-      if (i == 7) { // T8 8th key???
+    if (i < keysGetMaxKeys()) {
+      auto k = get_ith_key(i);
+      if (i >= 7) { // max 7 lines on display
         y = MENU_HEADER_HEIGHT + 1 + FH * 6;
-        lcdDrawTextAtIndex(8, y, STR_VKEYS, i, 0);
+        lcdDrawText(8, y, keysGetLabel(k), 0);
         displayKeyState(lcdNextPos + 10, y, i);
       }
       else {
         y = MENU_HEADER_HEIGHT + 1 + FH * i;
-        lcdDrawTextAtIndex(0, y, STR_VKEYS, i, 0);
+        lcdDrawText(0, y, keysGetLabel(k), 0);
         displayKeyState(5 * FW + 2, y, i);
       }
     }
 
-#if   (NUM_SWITCHES > 6)
-    if (i < NUM_SWITCHES) {
+    if (i < switchGetMaxSwitches()) {
       if (SWITCH_EXISTS(i)) {
-        y = (i > 4) ? FH*(i-4)+1 : MENU_HEADER_HEIGHT + FH*i + 1;
-        getvalue_t val = getValue(MIXSRC_FIRST_SWITCH+i);
-        getvalue_t sw = ((val < 0) ? 3*i+1 : ((val == 0) ? 3*i+2 : 3*i+3));
-        drawSwitch(i > 4 ? 11*FW-5: 8*FW-9, y, sw, 0, false);
+        y = (i > 4) ? FH * (i - 4) + 1 : MENU_HEADER_HEIGHT + FH * i + 1;
+        getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
+        getvalue_t sw =
+            ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
+        drawSwitch(i > 4 ? 11 * FW - 5 : 8 * FW - 9, y, sw, 0, false);
       }
     }
-#else
-    if (i < NUM_SWITCHES) {
-      if (SWITCH_EXISTS(i)) {
-        y = (NUM_SWITCHES - NUM_FUNCTIONS_SWITCHES > 6 ? 0 : MENU_HEADER_HEIGHT) + FH*i;
-        getvalue_t val = getValue(MIXSRC_FIRST_SWITCH+i);
-        getvalue_t sw = ((val < 0) ? 3*i+1 : ((val == 0) ? 3*i+2 : 3*i+3));
-        drawSwitch(8*FW+4, y, sw, 0);
-      }
-    }
-#endif
   }
 
 #if defined(FUNCTION_SWITCHES) && defined(DEBUG)

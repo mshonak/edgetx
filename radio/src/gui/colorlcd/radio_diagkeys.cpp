@@ -107,11 +107,11 @@ class RadioKeyDiagsWindow : public Window
       }
 
       // TRIMS
-      for (uint8_t i = 0; i < NUM_TRIMS_KEYS; i++) {
-#if NUM_TRIMS_KEYS == 12
-        const uint8_t trimMap[NUM_TRIMS_KEYS] = {6, 7, 4, 5, 2, 3, 0, 1, 8, 9, 10, 11};
+      for (uint8_t i = 0; i < MAX_TRIMS * 2; i++) {
+#if MAX_TRIMS * 2 == 12
+        const uint8_t trimMap[MAX_TRIMS * 2] = {6, 7, 4, 5, 2, 3, 0, 1, 8, 9, 10, 11};
 #else
-        const uint8_t trimMap[NUM_TRIMS_KEYS] = {6, 7, 4, 5, 2, 3, 0, 1};
+        const uint8_t trimMap[MAX_TRIMS * 2] = {6, 7, 4, 5, 2, 3, 0, 1};
 #endif
         coord_t y = 1 + FH + FH * (i / 2);
         if (i & 1) {

@@ -88,22 +88,6 @@ void setDefaultRSSIValues()
 
 void setVendorSpecificModelDefaults(uint8_t id)
 {
-#if defined(FRSKY_RELEASE)
-  g_model.moduleData[INTERNAL_MODULE].type = IS_PXX2_INTERNAL_ENABLED() ? MODULE_TYPE_ISRM_PXX2 : MODULE_TYPE_XJT_PXX1;
-  g_model.moduleData[INTERNAL_MODULE].channelsCount = defaultModuleChannels_M8(INTERNAL_MODULE);
-  #if defined(EEPROM)
-    g_model.header.modelId[INTERNAL_MODULE] = findNextUnusedModelId(id, INTERNAL_MODULE);
-    modelHeaders[id].modelId[INTERNAL_MODULE] = g_model.header.modelId[INTERNAL_MODULE];
-  #endif
-#endif
-
-    // TODO: we should probably have some default trainer mode
-    //       per radio, depending on what is supported
-    //
-#if defined(PCBXLITE)
-  g_model.trainerData.mode = TRAINER_MODE_MASTER_BLUETOOTH;
-#endif
-
 #if defined(RADIOMASTER_RTF_RELEASE)
   // Those settings are for headless radio
   g_model.trainerData.mode = TRAINER_MODE_SLAVE;

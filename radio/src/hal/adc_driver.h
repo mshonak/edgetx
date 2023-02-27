@@ -22,6 +22,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "opentx_types.h"
 
 // 12-bit values
 #define ADC_MAX_VALUE 4095
@@ -58,6 +59,7 @@ struct etx_hal_adc_inputs_t {
 struct etx_hal_adc_driver_t {
 
   const etx_hal_adc_inputs_t* inputs; // ADC_INPUT_ALL + 1;
+  potconfig_t default_pots_cfg;
   
   bool (*init)();
   bool (*start_conversion)();
@@ -98,6 +100,8 @@ uint16_t getBatteryVoltage();
 void enableVBatBridge();
 void disableVBatBridge();
 bool isVBatBridgeEnabled();
+
+potconfig_t adcGetDefaultPotsConfig();
 
 uint8_t adcGetMaxInputs(uint8_t type);
 uint8_t adcGetInputOffset(uint8_t type);

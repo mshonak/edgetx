@@ -20,7 +20,7 @@
  */
 
 #include "opentx.h"
-#include "../../hal/adc_driver.h"
+#include "hal/adc_driver.h"
 
 #define HOLDANAVALUEFRAMES 4 /* 4* 50ms = 200 ms update rate */
 
@@ -86,7 +86,7 @@ void menuRadioDiagAnalogs(event_t event)
 
   lcdDrawTextAlignedLeft(y, STR_STICKS_POTS_SLIDERS);
 
-  for (uint8_t i = 0; i < MAX_ANALOG_INPUTS; i++) {
+  for (uint8_t i = 0; i < adcGetMaxInputs(ADC_INPUT_ALL); i++) {
     // TODO: if available
     uint8_t x;
     if (i & 1) {

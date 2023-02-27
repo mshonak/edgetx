@@ -80,7 +80,7 @@ extern int32_t act[MAX_MIXERS];
 extern int8_t  virtualInputsTrims[MAX_INPUTS];
 
 extern int16_t anas [MAX_INPUTS];
-extern int16_t trims[NUM_TRIMS];
+extern int16_t trims[MAX_TRIMS];
 extern int32_t chans[MAX_OUTPUT_CHANNELS];
 extern int16_t ex_chans[MAX_OUTPUT_CHANNELS]; // Outputs (before LIMITS) of the last perMain
 extern int16_t channelOutputs[MAX_OUTPUT_CHANNELS];

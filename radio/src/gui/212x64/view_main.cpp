@@ -22,6 +22,8 @@
 #include "opentx.h"
 #include "hal/trainer_driver.h"
 #include "hal/adc_driver.h"
+#include "hal/switch_driver.h"
+
 #include "switches.h"
 
 #define BIGSIZE       MIDSIZE
@@ -438,10 +440,10 @@ void displaySwitch(coord_t x, coord_t y, int width, unsigned int index)
   }
 }
 
-int getSwitchCount()
+static int getSwitchCount()
 {
   int count = 0;
-  for (int i=0; i<NUM_SWITCHES; ++i) {
+  for (int i = 0; i < switchGetMaxSwitches(); ++i) {
     if (SWITCH_EXISTS(i)) {
       ++count;
     }
@@ -535,28 +537,31 @@ void menuMainView(event_t event)
   lcdDrawBitmap(BITMAP_X, BITMAP_Y, modelBitmap);
 
   // Switches
+  // TODO: @3djc please!
   if (getSwitchCount() > 8) {
-    for (int i=0; i<NUM_SWITCHES; ++i) {
+    for (int i = 0; i < switchGetMaxSwitches(); ++i) {
       div_t qr = div(i, 9);
       if (g_model.view == VIEW_INPUTS) {
         div_t qr2 = div(qr.rem, 5);
         if (i >= 14) qr2.rem += 1;
-        const coord_t x[4] = { 50, 142 };
-        const coord_t y[4] = { 25, 42, 25, 42 };
-        displaySwitch(x[qr.quot]+qr2.rem*4, y[qr2.quot], 3, i);
-      }
-      else {
-        displaySwitch(17+qr.rem*6, 25+qr.quot*17, 5, i);
+        const coord_t x[4] = {50, 142};
+        const coord_t y[4] = {25, 42, 25, 42};
+        displaySwitch(x[qr.quot] + qr2.rem * 4, y[qr2.quot], 3, i);
+      } else {
+        displaySwitch(17 + qr.rem * 6, 25 + qr.quot * 17, 5, i);
       }
     }
-  }
-  else {
+  } else {
     int index = 0;
-    for (int i=0; i<NUM_SWITCHES; ++i) {
+    for (int i = 0; i < switchGetMaxSwitches(); ++i) {
       if (SWITCH_EXISTS(i)) {
-        getvalue_t val = getValue(MIXSRC_FIRST_SWITCH+i);
-        getvalue_t sw = ((val < 0) ? 3*i+1 : ((val == 0) ? 3*i+2 : 3*i+3));
-        drawSwitch((g_model.view == VIEW_INPUTS) ? (index<4 ? 8*FW+1 : 23*FW+2) : (index<4 ? 3*FW+1 : 8*FW-2), (index%4)*FH+3*FH, sw, 0, false);
+        getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
+        getvalue_t sw =
+            ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
+        drawSwitch((g_model.view == VIEW_INPUTS)
+                       ? (index < 4 ? 8 * FW + 1 : 23 * FW + 2)
+                       : (index < 4 ? 3 * FW + 1 : 8 * FW - 2),
+                   (index % 4) * FH + 3 * FH, sw, 0, false);
         index++;
       }
     }

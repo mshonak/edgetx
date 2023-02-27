@@ -391,6 +391,12 @@ void getADC()
   }
 }
 
+potconfig_t adcGetDefaultPotsConfig()
+{
+  if (!_hal_adc_driver) return 0;
+  return _hal_adc_driver->default_pots_cfg;
+}
+
 uint8_t adcGetMaxInputs(uint8_t type)
 {
   if (type > ADC_INPUT_ALL) return 0;

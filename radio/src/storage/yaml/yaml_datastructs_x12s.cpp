@@ -163,18 +163,6 @@ const struct YamlIdStr enum_SwashType[] = {
 };
 const struct YamlIdStr enum_SwitchSources[] = {
   {  SWSRC_NONE, "NONE"  },
-  {  SWSRC_TrimRudLeft, "TrimRudLeft"  },
-  {  SWSRC_TrimRudRight, "TrimRudRight"  },
-  {  SWSRC_TrimEleDown, "TrimEleDown"  },
-  {  SWSRC_TrimEleUp, "TrimEleUp"  },
-  {  SWSRC_TrimThrDown, "TrimThrDown"  },
-  {  SWSRC_TrimThrUp, "TrimThrUp"  },
-  {  SWSRC_TrimAilLeft, "TrimAilLeft"  },
-  {  SWSRC_TrimAilRight, "TrimAilRight"  },
-  {  SWSRC_TrimT5Down, "TrimT5Down"  },
-  {  SWSRC_TrimT5Up, "TrimT5Up"  },
-  {  SWSRC_TrimT6Down, "TrimT6Down"  },
-  {  SWSRC_TrimT6Up, "TrimT6Up"  },
   {  SWSRC_ON, "ON"  },
   {  SWSRC_ONE, "ONE"  },
   {  SWSRC_TELEMETRY_STREAMING, "TELEMETRY_STREAMING"  },

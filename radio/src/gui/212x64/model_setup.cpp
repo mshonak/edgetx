@@ -36,7 +36,7 @@ uint8_t g_moduleIdx;
 uint8_t getSwitchWarningsCount()
 {
   uint8_t count = 0;
-  for (int i=0; i<NUM_SWITCHES; ++i) {
+  for (int i = 0; i < switchGetMaxSwitches(); ++i) {
     if (SWITCH_WARNING_ALLOWED(i)) {
       ++count;
     }
@@ -707,7 +707,7 @@ void menuModelSetup(event_t event)
       case ITEM_MODEL_SETUP_THROTTLE_TRIM_SWITCH:
         lcdDrawTextAlignedLeft(y, STR_TTRIM_SW);
         if (attr)
-          CHECK_INCDEC_MODELVAR_ZERO(event, g_model.thrTrimSw, NUM_TRIMS - 1);
+          CHECK_INCDEC_MODELVAR_ZERO(event, g_model.thrTrimSw, MAX_TRIMS - 1);
         drawSource(MODEL_SETUP_2ND_COLUMN, y, g_model.getThrottleStickTrimSource(), attr);
         break;
 
@@ -777,7 +777,7 @@ void menuModelSetup(event_t event)
                   getMovedSwitch();
                   // Mask switches enabled for warnings
                   swarnstate_t sw_mask = 0;
-                  for(uint8_t i=0; i<NUM_SWITCHES; i++) {
+                  for(uint8_t i = 0; i < switchGetMaxSwitches(); i++) {
                     if (SWITCH_WARNING_ALLOWED(i))
                       if (g_model.switchWarningState & (0x07 << (3 * i)))
                         sw_mask |= (0x07 << (3 * i));
@@ -795,7 +795,7 @@ void menuModelSetup(event_t event)
         LcdFlags line = attr;
 
         int current = 0;
-        for (int i=0; i<NUM_SWITCHES; i++) {
+        for (int i = 0; i < switchGetMaxSwitches(); i++) {
           if (SWITCH_WARNING_ALLOWED(i)) {
             div_t qr = div(current, 8);
             if (!READ_ONLY() && event == EVT_KEY_BREAK(KEY_ENTER) && line &&

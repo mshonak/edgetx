@@ -19,9 +19,12 @@
  * GNU General Public License for more details.
  */
 
-#include <opentx.h>
+#include "opentx.h"
+
 #include "hal/adc_driver.h"
 #include "hal/switch_driver.h"
+#include "hal/module_port.h"
+
 #include "analogs.h"
 #include "switches.h"
 
@@ -191,13 +194,16 @@ static void _init_menu_tab_array(uint8_t* tab, size_t len)
   }
   tab[ITEM_RADIO_HARDWARE_SERIAL_PORT_LABEL] = has_serial ? 0 : HIDDEN_ROW;
   tab[ITEM_RADIO_HARDWARE_JITTER_FILTER] = 0;
-  tab[ITEM_RADIO_HARDWARE_RAS] = 0;
-#if defined(SPORT_UPDATE_PWR_GPIO)
-  tab[ITEM_RADIO_HARDWARE_SPORT_UPDATE_POWER] = 0;
-#else
-  tab[ITEM_RADIO_HARDWARE_SPORT_UPDATE_POWER] = HIDDEN_ROW;
-#endif
-  tab[ITEM_RADIO_HARDWARE_DEBUG] = 0;
+  tab[ITEM_RADIO_HARDWARE_RAS] = READONLY_ROW;
+
+  auto mod_desc = modulePortGetModuleDescription(SPORT_MODULE);
+  if (mod_desc && mod_desc->set_pwr) {
+    tab[ITEM_RADIO_HARDWARE_SPORT_UPDATE_POWER] = 0;
+  } else {
+    tab[ITEM_RADIO_HARDWARE_SPORT_UPDATE_POWER] = HIDDEN_ROW;
+  }
+
+  tab[ITEM_RADIO_HARDWARE_DEBUG] = 1;
 
 #if defined(EEPROM)
   tab[ITEM_RADIO_BACKUP_EEPROM] = 0;
@@ -372,7 +378,10 @@ void menuRadioHardware(event_t event)
         break;
 
       case ITEM_RADIO_HARDWARE_JITTER_FILTER:
-        g_eeGeneral.noJitterFilter = 1 - editCheckBox(1 - g_eeGeneral.noJitterFilter, HW_SETTINGS_COLUMN2, y, STR_JITTER_FILTER, attr, event);
+        g_eeGeneral.noJitterFilter =
+            1 - editCheckBox(1 - g_eeGeneral.noJitterFilter,
+                             HW_SETTINGS_COLUMN2, y, STR_JITTER_FILTER, attr,
+                             event);
         break;
 
       case ITEM_RADIO_HARDWARE_RAS:
@@ -393,15 +402,12 @@ void menuRadioHardware(event_t event)
           lcdDrawText(lcdNextPos, y, "---");
         break;
 
-// TODO: this is board specific, do something about it!
-// #if defined(SPORT_UPDATE_PWR_GPIO)
-//       case ITEM_RADIO_HARDWARE_SPORT_UPDATE_POWER:
-//         g_eeGeneral.sportUpdatePower = editChoice(HW_SETTINGS_COLUMN2, y, STR_SPORT_UPDATE_POWER_MODE, STR_SPORT_UPDATE_POWER_MODES, g_eeGeneral.sportUpdatePower, 0, 1, attr, event);
-//         if (attr && checkIncDec_Ret) {
-//           SPORT_UPDATE_POWER_INIT();
-//         }
-//         break;
-// #endif
+      case ITEM_RADIO_HARDWARE_SPORT_UPDATE_POWER:
+        g_eeGeneral.sportUpdatePower = editChoice(HW_SETTINGS_COLUMN2, y, STR_SPORT_UPDATE_POWER_MODE, STR_SPORT_UPDATE_POWER_MODES, g_eeGeneral.sportUpdatePower, 0, 1, attr, event);
+        if (attr && checkIncDec_Ret) {
+          modulePortSetPower(SPORT_MODULE, g_eeGeneral.sportUpdatePower);
+        }
+        break;
 
       case ITEM_RADIO_HARDWARE_DEBUG:
         lcdDrawTextAlignedLeft(y, STR_DEBUG);

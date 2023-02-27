@@ -101,6 +101,8 @@ AddHardwareDefTarget(${HW_DESC_JSON})
 # enable generating JSON definition separately for debugging
 add_custom_target(hardware_defs DEPENDS ${HW_DESC_JSON} ${HW_DESC_JSON}.h)
 
+include(hal/CMakeLists.txt)
+
 add_subdirectory(bitmaps)
 add_subdirectory(fonts)
 
@@ -388,8 +390,6 @@ set(SRC
   serial.cpp
   sbus.cpp
   inactivity_timer.cpp
-  hal/module_port.cpp
-  hal/adc_driver.cpp
   tasks/mixer_task.cpp
   )
 

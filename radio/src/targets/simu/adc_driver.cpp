@@ -21,7 +21,8 @@
 
 #include "hal/adc_driver.h"
 #include "definitions.h"
-#include "dataconstants.h"
+
+#include "myeeprom.h"
 #include "translations.h"
 
 #include "hal_adc_inputs.inc"
@@ -59,6 +60,7 @@ extern const etx_hal_adc_driver_t simu_adc_driver;
 
 const etx_hal_adc_driver_t simu_adc_driver = {
   .inputs = _hal_inputs,
+  .default_pots_cfg = _pot_default_config,
   .init = nullptr,
   .start_conversion = simu_start_conversion,
   .wait_completion = nullptr,
