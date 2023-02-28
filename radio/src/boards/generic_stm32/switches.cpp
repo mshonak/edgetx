@@ -57,6 +57,17 @@ uint8_t switchGetMaxSwitches()
   return n_switches;
 }
 
+uint8_t getSwitchCount()
+{
+  int count = 0;
+  for (int i = 0; i < switchGetMaxSwitches(); ++i) {
+    if (SWITCH_EXISTS(i)) {
+      ++count;
+    }
+  }
+  return count;
+}
+
 uint8_t switchGetMaxFctSwitches()
 {
   return n_fct_switches;

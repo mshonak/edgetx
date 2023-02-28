@@ -47,6 +47,9 @@ swconfig_t switchGetDefaultConfig();
 // returns the maximum number of regular switches supported in hardware
 uint8_t switchGetMaxSwitches();
 
+// returns the number of configured switches
+uint8_t getSwitchCount();
+
 // returns the maximu number of function switches supported in hardware
 uint8_t switchGetMaxFctSwitches();
 

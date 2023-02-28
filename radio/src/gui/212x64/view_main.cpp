@@ -440,17 +440,6 @@ void displaySwitch(coord_t x, coord_t y, int width, unsigned int index)
   }
 }
 
-static int getSwitchCount()
-{
-  int count = 0;
-  for (int i = 0; i < switchGetMaxSwitches(); ++i) {
-    if (SWITCH_EXISTS(i)) {
-      ++count;
-    }
-  }
-  return count;
-}
-
 void menuMainView(event_t event)
 {
   static bool secondPage = false;
@@ -537,32 +526,47 @@ void menuMainView(event_t event)
   lcdDrawBitmap(BITMAP_X, BITMAP_Y, modelBitmap);
 
   // Switches
-  // TODO: @3djc please!
-  if (getSwitchCount() > 8) {
-    for (int i = 0; i < switchGetMaxSwitches(); ++i) {
-      div_t qr = div(i, 9);
+  // Regular radio
+  // -> 2 columns: one for each side
+  // -> 8 slots on each side (2 columns of 4)
+
+  // X9E 'full mode' (18 switches)
+  // -> 2 columns: one for each side
+  // -> 9 slots on each side (1 line of 5 and 1 line of 4)
+
+  uint8_t switches = switchGetMaxSwitches();
+  if (getSwitchCount() > 16) {    // beware, there is a desired col/row swap in this special mode
+    for (int i = 0; i < switches; ++i) {
+      auto switch_display = switchGetDisplayPosition(i);
       if (g_model.view == VIEW_INPUTS) {
-        div_t qr2 = div(qr.rem, 5);
-        if (i >= 14) qr2.rem += 1;
-        const coord_t x[4] = {50, 142};
-        const coord_t y[4] = {25, 42, 25, 42};
-        displaySwitch(x[qr.quot] + qr2.rem * 4, y[qr2.quot], 3, i);
+        coord_t x = 50 + (switch_display.row % 5) * 4 + (switch_display.col == 0 ? 0 : 93) + (switch_display.row < 5 ? 0 : 2);
+        coord_t y = switch_display.row < 5 ? 25 : 40;
+        displaySwitch(x, y, 3, i);
       } else {
-        displaySwitch(17 + qr.rem * 6, 25 + qr.quot * 17, 5, i);
+        displaySwitch(17 + switch_display.row * 6, 25 + switch_display.col * 17, 5, i);
       }
     }
-  } else {
-    int index = 0;
-    for (int i = 0; i < switchGetMaxSwitches(); ++i) {
+  }
+  else {
+    for (int i = 0; i < switches; ++i) {
       if (SWITCH_EXISTS(i)) {
         getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
         getvalue_t sw =
             ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
-        drawSwitch((g_model.view == VIEW_INPUTS)
-                       ? (index < 4 ? 8 * FW + 1 : 23 * FW + 2)
-                       : (index < 4 ? 3 * FW + 1 : 8 * FW - 2),
-                   (index % 4) * FH + 3 * FH, sw, 0, false);
-        index++;
+        auto switch_display = switchGetDisplayPosition(i);
+        if (g_model.view == VIEW_INPUTS) {
+          coord_t x = 50 + (switch_display.row < 4 ? 0 : 18) +
+                      (switch_display.col * 77);
+          coord_t y = 25 + (switch_display.row % 4) * FH;
+          drawSwitch(x, y, sw, 0, false);
+        }
+        else {
+          coord_t x = 15 + (switch_display.row < 4 ? 0 : 18) +
+                      (switch_display.col * 37);
+          coord_t y = 25 + (switch_display.row % 4) * FH;
+          drawSwitch(x, y, sw, 0, false);
+        }
+
       }
     }
   }
