@@ -70,7 +70,7 @@ int checkIncDec(event_t event, int val, int i_min, int i_max,
         newval = val;
         AUDIO_KEY_ERROR();
       }
-    } else if (event == EVT_ROTARY_LEFT || EVT_KEY_FIRST(KEY_MINUS) ||
+    } else if (event == EVT_ROTARY_LEFT || event == EVT_KEY_FIRST(KEY_MINUS) ||
                event == EVT_KEY_REPT(KEY_MINUS)) {
 
       if (IS_KEY_REPT(event) && (i_flags & INCDEC_REP10)) {
