@@ -182,10 +182,10 @@ SWITCH_CONFIG = {
         "SO": { "default": "NONE",   "display": [ 0, 7 ] },
         "SQ": { "default": "NONE",   "display": [ 0, 8 ] },
         # right side
-        "SB": { "default": "3POS",   "display": [ 1, 0 ] },
+        "SC": { "default": "3POS",   "display": [ 1, 0 ] },
         "SD": { "default": "3POS",   "display": [ 1, 1 ] },
-        "SF": { "default": "3POS",   "display": [ 1, 2 ] },
-        "SH": { "default": "TOGGLE", "display": [ 1, 3 ] },
+        "SH": { "default": "3POS",   "display": [ 1, 2 ] },
+        "SG": { "default": "TOGGLE", "display": [ 1, 3 ] },
         # extra
         "SJ": { "default": "NONE",   "display": [ 1, 4 ] },
         "SL": { "default": "NONE",   "display": [ 1, 5 ] },
