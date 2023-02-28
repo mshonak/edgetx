@@ -174,9 +174,9 @@ void evalFunctions(const CustomFunctionData * functions, CustomFunctionsContext 
             uint8_t param = CFN_CH_INDEX(cfn);
             if (param == 0)
               newActiveFunctions |= 0x0F;
-            else if (param <= NUM_STICKS)
+            else if (param <= MAX_STICKS)
               newActiveFunctions |= (1 << (param - 1));
-            else if (param == NUM_STICKS + 1)
+            else if (param == MAX_STICKS + 1)
               newActiveFunctions |= (1u << FUNCTION_TRAINER_CHANNELS);
             break;
           }

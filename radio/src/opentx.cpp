@@ -283,7 +283,8 @@ void generalDefault()
   g_eeGeneral.wavVolume = 2;
   g_eeGeneral.backgroundVolume = 1;
 
-  for (int i=0; i<NUM_STICKS; ++i) {
+  auto controls = adcGetMaxInputs(ADC_INPUT_MAIN);
+  for (int i = 0; i < controls; ++i) {
     g_eeGeneral.trainer.mix[i].mode = 2;
     g_eeGeneral.trainer.mix[i].srcChn = channelOrder(i);
     g_eeGeneral.trainer.mix[i].studWeight = 100;
@@ -1191,7 +1192,8 @@ void instantTrim()
 
   evalInputs(e_perout_mode_notrainer);
 
-  for (uint8_t stick = 0; stick < NUM_STICKS; stick++) {
+  auto controls = adcGetMaxInputs(ADC_INPUT_MAIN);
+  for (uint8_t stick = 0; stick < controls; stick++) {
     if (stick != THR_STICK) { // don't instant trim the throttle stick
       bool addTrim = false;
       int16_t delta = 0;

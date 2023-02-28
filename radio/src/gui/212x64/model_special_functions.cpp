@@ -219,11 +219,11 @@ void menuSpecialFunctions(event_t event, CustomFunctionData * functions, CustomF
           else
 #endif
           if (func == FUNC_TRAINER) {
-            maxParam = NUM_STICKS + 1;
+            maxParam = MAX_STICKS + 1;
             uint8_t param = CFN_CH_INDEX(cfn);
             if (param == 0)
               lcdDrawText(MODEL_SPECIAL_FUNC_3RD_COLUMN, y, STR_STICKS, attr);
-            else if (param == NUM_STICKS + 1)
+            else if (param == MAX_STICKS + 1)
               lcdDrawText(MODEL_SPECIAL_FUNC_3RD_COLUMN, y, STR_CHANS, attr);
             else
               drawSource(MODEL_SPECIAL_FUNC_3RD_COLUMN, y, MIXSRC_FIRST_STICK + param - 1, attr);

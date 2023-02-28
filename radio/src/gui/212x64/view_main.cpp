@@ -90,9 +90,9 @@ void doMainScreenGraphics()
 
 void displayTrims(uint8_t phase)
 {
-  for (unsigned int i=0; i<NUM_STICKS; i++) {
-    coord_t x[4] = { TRIM_LH_X, TRIM_LV_X, TRIM_RV_X, TRIM_RH_X };
-    uint8_t vert[4] = { 0, 1, 1, 0 };
+  for (unsigned int i = 0; i < MAX_STICKS; i++) {
+    coord_t x[] = { TRIM_LH_X, TRIM_LV_X, TRIM_RV_X, TRIM_RH_X };
+    uint8_t vert[] = { 0, 1, 1, 0 };
     coord_t xm, ym;
     unsigned int stickIndex = CONVERT_MODE(i);
     xm = x[stickIndex];

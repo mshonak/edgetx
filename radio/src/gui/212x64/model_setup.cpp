@@ -448,7 +448,7 @@ void menuModelSetup(event_t event)
       SW_WARN_ROWS, // Switch warning
       POT_WARN_ROWS, // Pot warning
 
-    NAVIGATION_LINE_BY_LINE | (NUM_STICKS+MAX_POTS-1), // Center beeps
+    uint8_t(NAVIGATION_LINE_BY_LINE | (adcGetInputOffset(ADC_INPUT_POT + 1) - 1)), // Center beeps
 
     0, // Global functions
 

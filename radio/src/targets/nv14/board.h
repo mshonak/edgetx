@@ -143,7 +143,6 @@ extern HardwareOptions hardwareOptions;
 #define NUM_FUNCTIONS_SWITCHES        0
 #endif
 
-#define NUM_TRIMS                       NUM_STICKS
 #define NUM_TRIMS_KEYS                  (NUM_TRIMS * 2)
 
 #define DEFAULT_STICK_DEADZONE          2

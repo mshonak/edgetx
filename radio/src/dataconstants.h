@@ -25,7 +25,6 @@
 #include "board.h"
 #include "storage/yaml/yaml_defs.h"
 
-#define NUM_STICKS                     4
 
 #if defined(EXPORT)
   #define LUA_EXPORT(...)              LEXP(__VA_ARGS__)

@@ -1267,7 +1267,7 @@ static void r_customFn(void* user, uint8_t* data, uint32_t bitoffs,
                && val[2] == 'a'
                && val[3] == 'n'
                && val[4] == 's') {
-      CFN_CH_INDEX(cfn) = NUM_STICKS + 1;
+      CFN_CH_INDEX(cfn) = MAX_STICKS + 1;
     } else {
       auto stick = analogLookupCanonicalIdx(ADC_INPUT_MAIN, val, val_len);
       if (stick >= 0) {
@@ -1485,7 +1485,7 @@ static bool w_customFn(void* user, uint8_t* data, uint32_t bitoffs,
     case 0:
       if (!wf(opaque, "sticks", 6)) return false;
       break;
-    case NUM_STICKS + 1:
+    case MAX_STICKS + 1:
       if (!wf(opaque, "chans", 5)) return false;
       break;
     default:

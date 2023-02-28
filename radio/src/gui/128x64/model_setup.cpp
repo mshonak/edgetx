@@ -472,7 +472,8 @@ void menuModelSetup(event_t event)
       0, // Custom position for throttle warning value
       WARN_ROWS
 
-    uint8_t(adcGetMaxInputs(ADC_INPUT_MAIN) + adcGetMaxInputs(ADC_INPUT_POT) - 1), // Center beeps
+    uint8_t(NAVIGATION_LINE_BY_LINE | (adcGetInputOffset(ADC_INPUT_POT + 1) - 1)), // Center beeps
+
     0, // Global functions
 
     0, // ADC Jitter filter

@@ -560,7 +560,7 @@ class SpecialFunctionButton : public Button
         int16_t value = CFN_CH_INDEX(cfn);
         if (value == 0)
           strcat(s, STR_STICKS);
-        else if (value == NUM_STICKS + 1)
+        else if (value == MAX_STICKS + 1)
           strcat(s, STR_CHANS);
         else
           strcat(s, getMainControlLabel(value - 1));
