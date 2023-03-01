@@ -50,6 +50,9 @@ uint8_t switchGetMaxSwitches();
 // returns the number of configured switches
 uint8_t getSwitchCount();
 
+// returns the highest row for a specified column
+uint8_t switchGetMaxRow(uint8_t col);
+
 // returns the maximu number of function switches supported in hardware
 uint8_t switchGetMaxFctSwitches();
 

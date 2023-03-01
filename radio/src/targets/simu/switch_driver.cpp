@@ -70,6 +70,19 @@ uint8_t getSwitchCount()
   return count;
 }
 
+uint8_t switchGetMaxRow(uint8_t col)
+{
+  uint8_t lastrow = 0;
+  for (int i = 0; i < switchGetMaxSwitches(); ++i) {
+    if (SWITCH_EXISTS(i)) {
+      auto switch_display = switchGetDisplayPosition(i);
+      if (switch_display.col == col)
+        lastrow = switch_display.row > lastrow ? switch_display.row : lastrow;
+    }
+  }
+  return lastrow;
+}
+
 uint8_t switchGetMaxFctSwitches()
 {
   return n_fct_switches;

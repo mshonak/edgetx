@@ -530,48 +530,48 @@ void menuMainView(event_t event)
   // -> 2 columns: one for each side
   // -> 8 slots on each side (2 columns of 4)
 
-  // X9E 'full mode' (18 switches)
-  // -> 2 columns: one for each side
-  // -> 9 slots on each side (1 line of 5 and 1 line of 4)
-
   uint8_t switches = switchGetMaxSwitches();
   if (getSwitchCount() > 16) {    // beware, there is a desired col/row swap in this special mode
     for (int i = 0; i < switches; ++i) {
-      auto switch_display = switchGetDisplayPosition(i);
-      if (g_model.view == VIEW_INPUTS) {
-        coord_t x = 50 + (switch_display.row % 5) * 4 + (switch_display.col == 0 ? 0 : 93) + (switch_display.row < 5 ? 0 : 2);
-        coord_t y = switch_display.row < 5 ? 25 : 40;
-        displaySwitch(x, y, 3, i);
-      } else {
-        displaySwitch(17 + switch_display.row * 6, 25 + switch_display.col * 17, 5, i);
+      if (SWITCH_EXISTS(i)) {
+        auto switch_display = switchGetDisplayPosition(i);
+        if (g_model.view == VIEW_INPUTS) {
+          coord_t x = 50 + (switch_display.row % 5) * 4 +
+                      (switch_display.col == 0 ? 0 : 93) +
+                      (switch_display.row < 5 ? 0 : 2);
+          coord_t y = switch_display.row < 5 ? 25 : 40;
+          displaySwitch(x, y, 3, i);
+        } else {
+          displaySwitch(17 + switch_display.row * 6,
+                        25 + switch_display.col * 17, 5, i);
+        }
       }
     }
   }
   else {
+    coord_t shiftright = switchGetMaxRow(1) < 4 ? 20 : 0;
     for (int i = 0; i < switches; ++i) {
       if (SWITCH_EXISTS(i)) {
-        getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
-        getvalue_t sw =
-            ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
         auto switch_display = switchGetDisplayPosition(i);
         if (g_model.view == VIEW_INPUTS) {
-          coord_t x = 50 + (switch_display.row < 4 ? 0 : 18) +
-                      (switch_display.col * 77);
+          coord_t x = (switch_display.col == 0 ? 50 : 125) +
+                      (switch_display.row < 4 ? 0 : 20) +
+                      (switch_display.col == 0 ? 0 : shiftright);
           coord_t y = 25 + (switch_display.row % 4) * FH;
+          getvalue_t val = getValue(MIXSRC_FIRST_SWITCH + i);
+          getvalue_t sw =
+              ((val < 0) ? 3 * i + 1 : ((val == 0) ? 3 * i + 2 : 3 * i + 3));
           drawSwitch(x, y, sw, 0, false);
         }
         else {
-          coord_t x = 15 + (switch_display.row < 4 ? 0 : 18) +
-                      (switch_display.col * 37);
-          coord_t y = 25 + (switch_display.row % 4) * FH;
-          drawSwitch(x, y, sw, 0, false);
+          displaySwitch(17 + switch_display.row * 6,
+                        25 + switch_display.col * 17, 5, i);
         }
-
       }
     }
   }
 
-  if (g_model.view == VIEW_TIMERS) {
+    if (g_model.view == VIEW_TIMERS) {
     displayTimers();
   }
   else if (g_model.view == VIEW_INPUTS) {

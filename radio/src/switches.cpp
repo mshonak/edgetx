@@ -252,7 +252,6 @@ SwitchConfig switchGetMaxType(uint8_t idx)
   }
 }
 
-
 static uint64_t checkSwitchPosition(uint8_t idx, bool startup)
 {
   uint64_t result = 0;
