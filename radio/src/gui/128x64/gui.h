@@ -174,6 +174,8 @@ extern const unsigned char sticks[] ;
 void drawSplash();
 void drawScreenIndex(uint8_t index, uint8_t count, uint8_t attr);
 void drawStick(coord_t centrex, int16_t xval, int16_t yval);
+void drawWheel(coord_t centrex, int16_t wval);
+void drawThrottle(coord_t centrex, int16_t tval);
 void drawPotsBars();
 void doMainScreenGraphics();
 

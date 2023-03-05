@@ -96,6 +96,10 @@ void drawPotsBars()
 
 void doMainScreenGraphics()
 {
+#if defined(SURFACE_RADIO)   // ToDo: find a better define
+  drawWheel(LBOX_CENTERX, calibratedAnalogs[0]); // ToDo: use enum
+  drawThrottle(RBOX_CENTERX, calibratedAnalogs[1]);  // ToDo: use enum
+#else
   int16_t calibStickVert = calibratedAnalogs[CONVERT_MODE(1)];
   if (g_model.throttleReversed && CONVERT_MODE(1) == THR_STICK)
     calibStickVert = -calibStickVert;
@@ -105,6 +109,7 @@ void doMainScreenGraphics()
   if (g_model.throttleReversed && CONVERT_MODE(2) == THR_STICK)
     calibStickVert = -calibStickVert;
   drawStick(RBOX_CENTERX, calibratedAnalogs[CONVERT_MODE(3)], calibStickVert);
+#endif
 
   drawPotsBars();
 }
