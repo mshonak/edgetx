@@ -29,6 +29,7 @@
 void keysInit()
 {
   _init_keys();
+  _init_trims();
 }
 
 uint32_t readKeys()

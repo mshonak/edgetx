@@ -21,6 +21,7 @@
 
 #include "stm32_hal_ll.h"
 #include "stm32_exti_driver.h"
+#include "stm32_gpio_driver.h"
 #include "board.h"
 
 #include "hal.h"
@@ -119,6 +120,15 @@ void rotaryEncoderStartDelay()
 
 void rotaryEncoderInit()
 {
+  LL_GPIO_InitTypeDef pinInit;
+  LL_GPIO_StructInit(&pinInit);
+  pinInit.Mode = LL_GPIO_MODE_INPUT;
+  pinInit.Pull = LL_GPIO_PULL_UP;
+  pinInit.Pin = ROTARY_ENCODER_GPIO_PIN_A | ROTARY_ENCODER_GPIO_PIN_B;
+
+  stm32_gpio_enable_clock(ROTARY_ENCODER_GPIO);
+  LL_GPIO_Init(ROTARY_ENCODER_GPIO, &pinInit);
+  
   ROTARY_ENCODER_TIMER->ARR = 99; // 100uS
   ROTARY_ENCODER_TIMER->PSC = (PERI1_FREQUENCY * TIMER_MULT_APB1) / 1000000 - 1; // 1uS
   ROTARY_ENCODER_TIMER->CCER = 0;

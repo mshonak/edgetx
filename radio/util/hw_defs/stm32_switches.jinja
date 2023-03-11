@@ -41,11 +41,18 @@ static const stm32_switch_t _switch_defs[] = {
 {% endfor %}
 };
 
-static GPIO_TypeDef* const _switch_GPIOs[] = {
+static inline void _init_switches()
+{
+  LL_GPIO_InitTypeDef pinInit;
+  LL_GPIO_StructInit(&pinInit);
+  pinInit.Mode = LL_GPIO_MODE_INPUT;
+  pinInit.Pull = LL_GPIO_PULL_UP;
 {% for sw_gpio, pins in switch_gpios.items() | sort %}
-  {{ sw_gpio }},
+  stm32_gpio_enable_clock({{ sw_gpio }});
+  pinInit.Pin = {{ pins | join('|') }};
+  LL_GPIO_Init({{ sw_gpio }}, &pinInit);
 {% endfor %}
-};
+}
 
 constexpr uint8_t n_switches = {{ regular_switches | count }};
 constexpr uint8_t n_fct_switches = {{ function_switches | count }};

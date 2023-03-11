@@ -5,8 +5,14 @@
 
 static inline void _init_keys()
 {
+  LL_GPIO_InitTypeDef pinInit;
+  LL_GPIO_StructInit(&pinInit);
+  pinInit.Mode = LL_GPIO_MODE_INPUT;
+  pinInit.Pull = LL_GPIO_PULL_UP;
 {% for key_gpio, pins in key_gpios.items() | sort %}
   stm32_gpio_enable_clock({{ key_gpio }});
+  pinInit.Pin = {{ pins | join('|') }};
+  LL_GPIO_Init({{ key_gpio }}, &pinInit);
 {% endfor %}
 }
 
@@ -14,7 +20,7 @@ static inline uint32_t _read_keys()
 {
   uint32_t keys = 0;
 {% for key in keys %}
-  if (LL_GPIO_IsInputPinSet({{ key.gpio }}, {{ key.pin }}))
+  if (!LL_GPIO_IsInputPinSet({{ key.gpio }}, {{ key.pin }}))
     keys |= (1 << {{ key.key }});
 {% endfor %}
   return keys;
@@ -22,8 +28,14 @@ static inline uint32_t _read_keys()
 
 static inline void _init_trims()
 {
+  LL_GPIO_InitTypeDef pinInit;
+  LL_GPIO_StructInit(&pinInit);
+  pinInit.Mode = LL_GPIO_MODE_INPUT;
+  pinInit.Pull = LL_GPIO_PULL_UP;
 {% for trim_gpio, pins in trim_gpios.items() | sort %}
   stm32_gpio_enable_clock({{ trim_gpio }});
+  pinInit.Pin = {{ pins | join('|') }};
+  LL_GPIO_Init({{ trim_gpio }}, &pinInit);
 {% endfor %}
 }
 
@@ -31,10 +43,10 @@ static inline uint32_t _read_trims()
 {
   uint32_t trims = 0;
 {% for trim in trims %}
-  if (LL_GPIO_IsInputPinSet({{ trim.dec.gpio }}, {{ trim.dec.pin }}))
-    trims |= (1 << {{ loop.index0 }});
-  if (LL_GPIO_IsInputPinSet({{ trim.inc.gpio }}, {{ trim.inc.pin }}))
-    trims |= (1 << {{ loop.index0 + 1 }});
+  if (!LL_GPIO_IsInputPinSet({{ trim.dec.gpio }}, {{ trim.dec.pin }}))
+    trims |= (1 << {{ loop.index0 * 2 }});
+  if (!LL_GPIO_IsInputPinSet({{ trim.inc.gpio }}, {{ trim.inc.pin }}))
+    trims |= (1 << {{ loop.index0 * 2 + 1 }});
 {% endfor %}
   return trims;
 }

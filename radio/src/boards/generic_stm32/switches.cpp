@@ -34,9 +34,7 @@
 
 void switchInit()
 {
-  for (uint8_t i = 0; i < DIM(_switch_GPIOs); i++) {
-    stm32_gpio_enable_clock(_switch_GPIOs[i]);
-  }
+  _init_switches();
 }
 
 swconfig_t switchGetDefaultConfig()
