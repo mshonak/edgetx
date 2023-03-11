@@ -25,11 +25,19 @@
 
 #include "hal/rotary_encoder.h"
 
-#if defined(KEYS_GPIO_PIN_PGUP)
-constexpr uint8_t KEY_START = 0;
-#else
-constexpr uint8_t KEY_START = 1;
-#endif
+static EnumKeys get_ith_key(uint8_t i)
+{
+  auto supported_keys = keysGetSupported();
+  for (uint8_t k = 0; k < MAX_KEYS; k++) {
+    if (supported_keys & (1 << k)) {
+      if (i-- == 0) return (EnumKeys)k;
+    }
+  }
+
+  // should not get here,
+  // we assume: i < keysGetMaxKeys()
+  return (EnumKeys)0;
+}
 
 class RadioKeyDiagsWindow : public Window
 {
@@ -75,9 +83,10 @@ class RadioKeyDiagsWindow : public Window
 
 #if !defined(PCBNV14)
       // KEYS
-      for (uint8_t i = KEY_START; i <= 6; i++) {
-        coord_t y = 1 + FH * (i - KEY_START);
-        dc->drawTextAtIndex(KEY_COLUMN, y, STR_VKEYS, i, COLOR_THEME_PRIMARY1);
+      for (uint8_t i = 0; i < keysGetMaxKeys(); i++) {
+        coord_t y = 1 + FH * i;
+        auto k = get_ith_key(i);
+        dc->drawText(KEY_COLUMN, y, keysGetLabel(k), COLOR_THEME_PRIMARY1);
         displayKeyState(dc, 70, y, i);
       }
 #if defined(ROTARY_ENCODER_NAVIGATION)
@@ -89,10 +98,10 @@ class RadioKeyDiagsWindow : public Window
       // KEYS
       {
         coord_t y = 1;
-        dc->drawTextAtIndex(KEY_COLUMN, y, STR_VKEYS, KEY_ENTER, COLOR_THEME_PRIMARY1);
+        dc->drawTextAtIndex(KEY_COLUMN, y, keysGetLabel(KEY_ENTER), COLOR_THEME_PRIMARY1);
         displayKeyState(dc, 70, y, KEY_ENTER);
         y += FH;
-        dc->drawTextAtIndex(KEY_COLUMN, y, STR_VKEYS, KEY_EXIT, COLOR_THEME_PRIMARY1);
+        dc->drawTextAtIndex(KEY_COLUMN, y, keysGetLabel(KEY_EXIT), COLOR_THEME_PRIMARY1);
         displayKeyState(dc, 70, y, KEY_EXIT);
       }      
 #endif

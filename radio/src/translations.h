@@ -161,7 +161,6 @@ extern const char* const STR_VTELEMSCREENTYPE[];
 extern const char* const STR_VSWASHTYPE[];
 
 extern const char* const STR_STICK_NAMES[];
-extern const char* const STR_VKEYS[];
 extern const char* const STR_VSWITCHES[];
 #if defined(IMU)
 extern const char* const STR_IMU_VSRCRAW[];

@@ -38,10 +38,8 @@ void displayTrimState(uint8_t x, uint8_t y, uint8_t trim)
 
 static EnumKeys get_ith_key(uint8_t i)
 {
-  auto max_keys = keysGetMaxKeys();
   auto supported_keys = keysGetSupported();
-
-  for (uint8_t k = 0; k < max_keys; k++) {
+  for (uint8_t k = 0; k < MAX_KEYS; k++) {
     if (supported_keys & (1 << k)) {
       if (i-- == 0) return (EnumKeys)k;
     }
