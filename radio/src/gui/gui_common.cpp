@@ -259,15 +259,32 @@ bool isSourceAvailableInCustomSwitches(int source)
 
 bool isSourceAvailableInInputs(int source)
 {
+  if (source >= MIXSRC_FIRST_STICK && source <= MIXSRC_LAST_STICK) {
+    auto idx = source - MIXSRC_FIRST_STICK;
+    return idx < adcGetMaxInputs(ADC_INPUT_MAIN);
+  }
+
   if (source >= MIXSRC_FIRST_POT && source <= MIXSRC_LAST_POT)
     return IS_POT_SLIDER_AVAILABLE(source - MIXSRC_FIRST_POT);
 
 #if MAX_AXIS > 0
-  if (source >= MIXSRC_FIRST_AXIS && source <= MIXSRC_LAST_AXIS)
-    return source - MIXSRC_FIRST_AXIS < adcGetMaxInputs(ADC_INPUT_AXIS);
+  if (source >= MIXSRC_FIRST_AXIS && source <= MIXSRC_LAST_AXIS) {
+    auto idx = source - MIXSRC_FIRST_AXIS;
+    return idx < adcGetMaxInputs(ADC_INPUT_AXIS);
+  }
 #endif
 
-  if (source >= MIXSRC_FIRST_STICK && source <= MIXSRC_MAX)
+#if defined(IMU)
+  if (source == MIXSRC_TILT_X || source == MIXSRC_TILT_Y)
+    return true;
+#endif
+
+#if defined(PCBHORUS) && defined(SPACEMOUSE)
+  if (source >= MIXSRC_FIRST_SPACEMOUSE && source <= MIXSRC_LAST_SPACEMOUSE)
+    return true;
+#endif
+  
+  if (source == MIXSRC_MAX)
     return true;
 
   if (source >= MIXSRC_FIRST_TRIM && source <= MIXSRC_LAST_TRIM)
