@@ -162,6 +162,7 @@ extern const char* const STR_VSWASHTYPE[];
 
 extern const char* const STR_STICK_NAMES[];
 extern const char* const STR_ON_ONE_SWITCHES[];
+extern const char* const STR_SURFACE_NAMES[];
 #if defined(IMU)
 extern const char* const STR_IMU_VSRCRAW[];
 #endif

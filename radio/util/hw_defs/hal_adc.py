@@ -53,7 +53,7 @@ class ADCInputParser:
 
     ADC_INPUTS = [
         {
-            'range': ['LH','LV','RV','RH'],
+            'range': ['LH','LV','RV','RH','WH','TR'],
             'type': ADCInput.TYPE_STICK,
             'suffix': 'STICK_{}',
             'name': '{}',
