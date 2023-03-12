@@ -201,13 +201,6 @@
 #define TR_STICK_NAMES                 "Dir", "Prf", "Gaz", "Ail"
 #define TR_SURFACE_NAMES               "Dir", "Gaz"
 
-
-#if defined(PCBHORUS)
-  #define TR_TRIMS_SWITCHES              STR_CHAR_TRIM "Dg", STR_CHAR_TRIM "Dd", STR_CHAR_TRIM "Pb", STR_CHAR_TRIM "Ph", STR_CHAR_TRIM "Gb", STR_CHAR_TRIM "Gh", STR_CHAR_TRIM "Ag", STR_CHAR_TRIM "Ad", STR_CHAR_TRIM "5d", STR_CHAR_TRIM "5u", STR_CHAR_TRIM "6d", STR_CHAR_TRIM "6u"
-#else
-#define TR_TRIMS_SWITCHES            TR("tDg",STR_CHAR_TRIM "Dg"),TR("tDd",STR_CHAR_TRIM "Dd"),TR("tPb",STR_CHAR_TRIM "Pb"),TR("tPh",STR_CHAR_TRIM "Ph"),TR("tGb",STR_CHAR_TRIM "Gb"),TR("tGh",STR_CHAR_TRIM "Gh"),TR("tAg",STR_CHAR_TRIM "Ag") TR("tAd",STR_CHAR_TRIM "Ad")
-#endif
-
 #if defined(PCBNV14)
 #define  TR_RFPOWER_AFHDS2             "Default","High"
 #endif

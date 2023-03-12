@@ -206,13 +206,6 @@
 #define TR_STICK_NAMES                 "Rod", "Hjd", "Gas", "Ske"
 #define TR_SURFACE_NAMES               "Rod", "Gas"
 
-#if defined(PCBHORUS)
-  #define TR_TRIMS_SWITCHES            STR_CHAR_TRIM "Rv",STR_CHAR_TRIM "Rh",STR_CHAR_TRIM "Hn",STR_CHAR_TRIM "Hu",STR_CHAR_TRIM "Gn",STR_CHAR_TRIM "Gu", STR_CHAR_TRIM "Sv",STR_CHAR_TRIM "Sh",STR_CHAR_TRIM "5d",STR_CHAR_TRIM "5u",STR_CHAR_TRIM "6d",STR_CHAR_TRIM "6u"
-#else
-  #define TRIM_SWITCH_CHAR             TR("t",STR_CHAR_TRIM)
-  #define TR_TRIMS_SWITCHES            TR("tRv",STR_CHAR_TRIM "Rv"),TR("tRh",STR_CHAR_TRIM "Rh"),TR("tHn",STR_CHAR_TRIM "Hn"),TR("tHu",STR_CHAR_TRIM "Hu"),TR("tGn", STR_CHAR_TRIM "Gn"),TR("tGu",STR_CHAR_TRIM "Gu"),TR("tSv",STR_CHAR_TRIM "Sv"),TR("tSh",STR_CHAR_TRIM "Sh")
-#endif
-
 #if defined(PCBNV14)
 #define  TR_RFPOWER_AFHDS2             "Default","Hög"
 #endif

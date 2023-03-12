@@ -30,9 +30,6 @@
 
 #define TR_FUNC_SW                     "SW"
 
-// only special switches here
-#define TR_VSWITCHES                   "---", TR_TRIMS_SWITCHES, TR_ON_ONE_SWITCHES
-
 #define TR_VTRAINERMODES                                                \
         TR_VTRAINER_MASTER_OFF, TR_VTRAINER_MASTER_JACK, TR_VTRAINER_SLAVE_JACK, \
         TR_VTRAINER_MASTER_SBUS_MODULE, TR_VTRAINER_MASTER_CPPM_MODULE, \

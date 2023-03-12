@@ -200,12 +200,6 @@
 #define TR_STICK_NAMES                 "Rud", "Ele", "Thr", "Ail"
 #define TR_SURFACE_NAMES               "Whl", "Thr"
 
-#if defined(PCBHORUS)
-  #define TR_TRIMS_SWITCHES            STR_CHAR_TRIM "Rl",STR_CHAR_TRIM "Rr",STR_CHAR_TRIM "Ed",STR_CHAR_TRIM "Eu",STR_CHAR_TRIM "Td",STR_CHAR_TRIM "Tu",STR_CHAR_TRIM "Al",STR_CHAR_TRIM "Ar",STR_CHAR_TRIM "5d",STR_CHAR_TRIM "5u",STR_CHAR_TRIM "6d",STR_CHAR_TRIM "6u"
-#else
-  #define TR_TRIMS_SWITCHES            TR("tRl",STR_CHAR_TRIM "Rl"),TR("tRr",STR_CHAR_TRIM "Rr"),TR("tEd",STR_CHAR_TRIM "Ed"),TR("tEu",STR_CHAR_TRIM "Eu"),TR("tTd",STR_CHAR_TRIM "Td"),TR("tTu",STR_CHAR_TRIM "Tu"),TR("tAl",STR_CHAR_TRIM "Al"),TR("tAr",STR_CHAR_TRIM "Ar")
-#endif
-
 #if defined(PCBNV14)
 #define  TR_RFPOWER_AFHDS2             "Default","High"
 #endif

@@ -482,36 +482,29 @@ char *getSwitchPositionName(char *dest, swsrc_t idx)
     idx = -idx;
   }
 
-#define IDX_TRIMS_IN_STR_VSWITCHES (1)
-#define IDX_ON_IN_STR_VSWITCHES \
-  (IDX_TRIMS_IN_STR_VSWITCHES + SWSRC_LAST_TRIM - SWSRC_FIRST_TRIM + 1)
-
   if (idx <= SWSRC_LAST_SWITCH) {
     div_t swinfo = switchInfo(idx);
     s = getSwitchName(s, swinfo.quot);
     s = strAppend(s, getSwitchPositionSymbol(swinfo.rem), 2);
     *s = '\0';
   }
-
-#if NUM_XPOTS > 0
   else if (idx <= SWSRC_LAST_MULTIPOS_SWITCH) {
     div_t swinfo =
         div(int(idx - SWSRC_FIRST_MULTIPOS_SWITCH), XPOTS_MULTIPOS_COUNT);
-    char temp[LEN_ANA_NAME + 2];
-    getSourceString(temp, MIXSRC_FIRST_POT + swinfo.quot);
-    strAppendStringWithIndex(s, temp, swinfo.rem + 1);
+    s = strAppendStringWithIndex(s, getPotLabel(swinfo.quot), swinfo.rem + 1);
   }
-#endif
-
   else if (idx <= SWSRC_LAST_TRIM) {
-    getStringAtIndex(s, STR_VSWITCHES,
-                     IDX_TRIMS_IN_STR_VSWITCHES + idx - SWSRC_FIRST_TRIM);
+    idx -= SWSRC_FIRST_TRIM;
+    // TODO: 't' or STR_CHAR_TRIM
+    s = strAppend(s, getTrimLabel(idx / 2));
+    *s++ = idx & 1 ? '+' : '-';
+    *s = '\0';
   } else if (idx <= SWSRC_LAST_LOGICAL_SWITCH) {
     *s++ = 'L';
     strAppendUnsigned(s, idx - SWSRC_FIRST_LOGICAL_SWITCH + 1, 2);
   } else if (idx <= SWSRC_ONE) {
-    getStringAtIndex(s, STR_VSWITCHES,
-                     IDX_ON_IN_STR_VSWITCHES + idx - SWSRC_ON);
+    idx -= SWSRC_ON;
+    getStringAtIndex(s, STR_ON_ONE_SWITCHES, idx);
   } else if (idx <= SWSRC_LAST_FLIGHT_MODE) {
     strAppendStringWithIndex(s, STR_FM, idx - SWSRC_FIRST_FLIGHT_MODE);
   } else if (idx == SWSRC_TELEMETRY_STREAMING) {

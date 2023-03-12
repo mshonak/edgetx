@@ -196,12 +196,6 @@
 #define TR_STICK_NAMES                 "Smě", "Výš", "Pln", "Kři"
 #define TR_SURFACE_NAMES               "Smě", "Pln"
 
-#if defined(PCBHORUS)
-  #define TR_TRIMS_SWITCHES            STR_CHAR_TRIM "Sl", STR_CHAR_TRIM "Sp", STR_CHAR_TRIM "Vd", STR_CHAR_TRIM "Vn", STR_CHAR_TRIM "Pd", STR_CHAR_TRIM "Pn", STR_CHAR_TRIM "Kl", STR_CHAR_TRIM "Kp", STR_CHAR_TRIM "5d", STR_CHAR_TRIM "5n", STR_CHAR_TRIM "6d", STR_CHAR_TRIM "6n"
-#else
-  #define TR_TRIMS_SWITCHES            TR("tSl",STR_CHAR_TRIM "Sl"),TR("tSp",STR_CHAR_TRIM "Sp"),TR("tVd",STR_CHAR_TRIM "Vd"),TR("tVn",STR_CHAR_TRIM "Vn"),TR("tPd",STR_CHAR_TRIM "Pd"),TR("tPn",STR_CHAR_TRIM "Pn"),TR("tKl",STR_CHAR_TRIM "Kl"),TR("tKp",STR_CHAR_TRIM "Kp")
-#endif
-
 #if defined(PCBNV14)
 #define  TR_RFPOWER_AFHDS2             "Defaultní","Vysoký"
 #endif
