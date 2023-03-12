@@ -26,6 +26,7 @@
 #include "diskio.h"
 #include "timers_driver.h"
 #include "watchdog_driver.h"
+#include "hal/adc_driver.h"
 
 #include "hal/module_port.h"
 
@@ -1251,6 +1252,9 @@ void printAudioVars()
 #endif
 
 #if defined(DEBUG)
+
+#include "hal/switch_driver.h"
+
 int cliDisplay(const char ** argv)
 {
   long long int address = 0;
@@ -1263,27 +1267,32 @@ int cliDisplay(const char ** argv)
   }
 
   if (!strcmp(argv[1], "keys")) {
-    // for (int i=0; i<TRM_BASE; i++) {
-    //   cliSerialPrint("[%s] = %s", STR_VKEYS[i]+1, keys[i].state() ? "on" : "off");
-    // }
-    // for (int i=TRM_BASE; i<=TRM_LAST; i++) {
-    //   cliSerialPrint("[Trim%d] = %s", i-TRM_BASE, keys[i].state() ? "on" : "off");
-    // }
-    for (int i=MIXSRC_FIRST_SWITCH; i<=MIXSRC_LAST_SWITCH; i++) {
-      mixsrc_t sw = i - MIXSRC_FIRST_SWITCH;
-      if (SWITCH_EXISTS(sw)) {
-        static const char * const SWITCH_POSITIONS[] = { "down", "mid", "up" };
-        cliSerialPrint("[%s] = %s", STR_VSWITCHES[sw]+1, SWITCH_POSITIONS[1 + getValue(i) / 1024]);
+    for (int i = 0; i <= MAX_KEYS; i++) {
+      if (keysGetSupported() & (1 << i)) {
+        cliSerialPrint("[Key %s] = %s",
+                       keysGetLabel((EnumKeys)i),
+                       keysGetState(i) ? "on" : "off");
+      }
+    }
+    for (int i = 0; i < keysGetMaxTrims(); i++) {
+      cliSerialPrint("[Trim %s] = %s", getTrimLabel(i),
+                     keysGetTrimState(i) ? "on" : "off");
+    }
+    for (int i = 0; i < switchGetMaxSwitches(); i++) {
+      if (SWITCH_EXISTS(i)) {
+        static const char * const SWITCH_POSITIONS[] = { "up", "mid", "down" };
+        auto pos = switchGetPosition(i);
+        cliSerialPrint("[%s] = %s", switchGetName(i), SWITCH_POSITIONS[pos]);
       }
     }
   }
   else if (!strcmp(argv[1], "adc")) {
-    for (int i=0; i<NUM_ANALOGS; i++) {
-      cliSerialPrint("adc[%d] = %04X", i, (int)adcValues[i]);
+    for (int i = 0; i < adcGetMaxInputs(ADC_INPUT_ALL); i++) {
+      cliSerialPrint("adc[%d] = %04X", i, getAnalogValue(i));
     }
   }
   else if (!strcmp(argv[1], "outputs")) {
-    for (int i=0; i<MAX_OUTPUT_CHANNELS; i++) {
+    for (int i = 0; i < MAX_OUTPUT_CHANNELS; i++) {
       cliSerialPrint("outputs[%d] = %04d", i, (int)channelOutputs[i]);
     }
   }
@@ -1390,7 +1399,7 @@ int cliDebugVars(const char ** argv)
   cliSerialPrint("authenticateFrames=%d", authenticateFrames);
 #endif
 #elif defined(PCBTARANIS)
-  cliSerialPrint("telemetryErrors=%d", telemetryErrors);
+  //cliSerialPrint("telemetryErrors=%d", telemetryErrors);
 #endif
 
   return 0;
