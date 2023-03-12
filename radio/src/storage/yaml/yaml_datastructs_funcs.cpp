@@ -214,6 +214,21 @@ static uint32_t r_mixSrcRaw(const YamlNode* node, const char* val, uint8_t val_l
 
       // parse int and ignore closing ')'
       return yaml_str2uint(val, val_len) * 3 + sign + MIXSRC_FIRST_TELEM;
+
+    } else if (val_len > 3 &&
+               val[0] == 'C' &&
+               val[1] == 'Y' &&
+               val[2] == 'C' &&
+               val[3] >= '1' &&
+               val[3] <= '3') {
+
+      return MIXSRC_FIRST_HELI + (val[3] - '1');
+
+    } else if (val_len > 1 &&
+               val[0] == 'T' &&
+               val[1] >= '1' &&
+               val[1] <= '9') {
+      return yaml_str2uint(val + 1, val_len - 1) + MIXSRC_FIRST_TRIM - 1;
     }
 
     auto idx = analogLookupCanonicalIdx(ADC_INPUT_MAIN, val, val_len);
@@ -226,6 +241,9 @@ static uint32_t r_mixSrcRaw(const YamlNode* node, const char* val, uint8_t val_l
     idx = analogLookupCanonicalIdx(ADC_INPUT_AXIS, val, val_len);
     if (idx >= 0) return idx + MIXSRC_FIRST_POT;
 #endif
+
+    idx = switchLookupIdx(val, val_len);
+    if (idx >= 0) return idx + MIXSRC_FIRST_SWITCH;
     
     idx = _legacy_mix_src(val, val_len);
     if (idx >= 0) return idx;
@@ -287,6 +305,20 @@ static bool w_mixSrcRaw(const YamlNode* node, uint32_t val, yaml_writer_func wf,
         str = analogGetCanonicalName(ADC_INPUT_AXIS, val - MIXSRC_FIRST_AXIS);
     }
 #endif
+    else if (val >= MIXSRC_FIRST_HELI
+             && val <= MIXSRC_LAST_HELI) {
+        if (!wf(opaque, "CYC", 3)) return false;
+        str = yaml_unsigned2str(val - MIXSRC_FIRST_HELI + 1);
+    }
+    else if (val >= MIXSRC_FIRST_TRIM
+             && val <= MIXSRC_LAST_TRIM) {
+        if (!wf(opaque, "T", 1)) return false;
+        str = yaml_unsigned2str(val - MIXSRC_FIRST_TRIM + 1);
+    }
+    else if (val >= MIXSRC_FIRST_SWITCH
+             && val <= MIXSRC_LAST_SWITCH) {
+        str = switchGetCanonicalName(val - MIXSRC_FIRST_SWITCH);
+    }
     else if (val >= MIXSRC_FIRST_LOGICAL_SWITCH
              && val <= MIXSRC_LAST_LOGICAL_SWITCH) {
 
@@ -777,11 +809,15 @@ static uint32_t r_swtchSrc(const YamlNode* node, const char* val, uint8_t val_le
         val_len--;
     }
 
-    if (val_len >= 2
-             && val[0] == 'L'
-             && (val[1] >= '0' && val[1] <= '9')) {
+    // TODO: check function switches
+    if (val_len > 2 && val[0] == 'S'
+        && val[1] >= 'A' && val[1] <= 'Z'
+        && val[2] >= '0' && val[2] <= '2') {
 
-        ival = SWSRC_FIRST_LOGICAL_SWITCH + yaml_str2int(val+1, val_len-1) - 1;
+      ival = switchLookupIdx(val, 2) * 3;
+      ival += yaml_str2int(val + 2, val_len - 2);
+      ival += SWSRC_FIRST_SWITCH;
+      
     }
     else if (val_len > 3
         && val[0] == '6'
@@ -789,8 +825,22 @@ static uint32_t r_swtchSrc(const YamlNode* node, const char* val, uint8_t val_le
         && (val[2] >= '0' && val[2] <= '9')
         && (val[3] >= '0' && val[3] < (XPOTS_MULTIPOS_COUNT + '0'))) {
 
-        ival = (val[2] - '0') * XPOTS_MULTIPOS_COUNT + (val[3] - '0')
-            + SWSRC_FIRST_MULTIPOS_SWITCH;
+      ival = (val[2] - '0') * XPOTS_MULTIPOS_COUNT + (val[3] - '0')
+        + SWSRC_FIRST_MULTIPOS_SWITCH;
+    }
+    else if (val_len > 3
+             && val[0] == 'T' && val[1] == 'R'
+             && val[2] >= '1' && val[2] <= '9') {
+
+      ival = SWSRC_FIRST_TRIM + yaml_str2int(val + 2, val_len - 3) * 2;
+      if (val[val_len - 1] == '+') ival++;
+
+    }
+    else if (val_len >= 2
+             && val[0] == 'L'
+             && (val[1] >= '0' && val[1] <= '9')) {
+
+      ival = SWSRC_FIRST_LOGICAL_SWITCH + yaml_str2int(val+1, val_len-1) - 1;
     }
     else if (val_len == 3
              && val[0] == 'F'
@@ -822,44 +872,59 @@ static bool w_swtchSrc_unquoted(const YamlNode* node, uint32_t val,
     }
 
     const char* str = NULL;
-    if (sval >= SWSRC_FIRST_LOGICAL_SWITCH
-             && sval <= SWSRC_LAST_LOGICAL_SWITCH) {
 
-        wf(opaque, "L", 1);
-        str = yaml_unsigned2str(sval - SWSRC_FIRST_LOGICAL_SWITCH + 1);
-        return wf(opaque,str, strlen(str));
-    }
-    else if (sval >= SWSRC_FIRST_MULTIPOS_SWITCH
-             && sval <= SWSRC_LAST_MULTIPOS_SWITCH) {
-
-        wf(opaque, "6P", 2);
-
-        // pot #: start with 6P1
-        sval -= SWSRC_FIRST_MULTIPOS_SWITCH;
-        str = yaml_unsigned2str(sval / XPOTS_MULTIPOS_COUNT);
-        wf(opaque,str, strlen(str));
-
-        // position
-        str = yaml_unsigned2str(sval % XPOTS_MULTIPOS_COUNT);
-        return wf(opaque,str, strlen(str));
-    }
-    else if (sval >= SWSRC_FIRST_FLIGHT_MODE
-             && sval <= SWSRC_LAST_FLIGHT_MODE) {
-
-        wf(opaque, "FM", 2);
-        str = yaml_unsigned2str(sval - SWSRC_FIRST_FLIGHT_MODE);
-        return wf(opaque,str, strlen(str));
-    }
-    else if (sval >= SWSRC_FIRST_SENSOR
-             && sval <= SWSRC_LAST_SENSOR) {
-
-        wf(opaque, "T", 1);
-        str = yaml_unsigned2str(sval - SWSRC_FIRST_SENSOR + 1);
-        return wf(opaque,str, strlen(str));
-    }
-    
     str = yaml_output_enum(sval, enum_SwitchSources);
-    return wf(opaque, str, strlen(str));
+    if (str) return wf(opaque, str, strlen(str));
+
+    if (sval <= SWSRC_LAST_SWITCH) {
+
+      auto sw_info = switchInfo(sval);
+      str = switchGetCanonicalName(sw_info.quot);
+      wf(opaque, str, strlen(str));
+      str = yaml_unsigned2str(sw_info.rem);
+      return wf(opaque, str, strlen(str));
+
+    } else if (sval <= SWSRC_LAST_MULTIPOS_SWITCH) {
+
+      wf(opaque, "6P", 2);
+
+      // pot #: start with 6P1
+      sval -= SWSRC_FIRST_MULTIPOS_SWITCH;
+      str = yaml_unsigned2str(sval / XPOTS_MULTIPOS_COUNT);
+      wf(opaque,str, strlen(str));
+
+      // position
+      str = yaml_unsigned2str(sval % XPOTS_MULTIPOS_COUNT);
+      return wf(opaque,str, strlen(str));
+
+    } else if (sval <= SWSRC_LAST_TRIM) {
+      
+      wf(opaque, "TR", 2);
+      auto trim = (sval - SWSRC_FIRST_TRIM) / 2;
+      str = yaml_unsigned2str(trim + 1);
+      wf(opaque, str, strlen(str));
+      return wf(opaque, sval & 1 ? "+" : "-", 1);
+        
+    } else if (sval <= SWSRC_LAST_LOGICAL_SWITCH) {
+
+      wf(opaque, "L", 1);
+      str = yaml_unsigned2str(sval - SWSRC_FIRST_LOGICAL_SWITCH + 1);
+      return wf(opaque,str, strlen(str));
+    }
+    else if (sval <= SWSRC_LAST_FLIGHT_MODE) {
+
+      wf(opaque, "FM", 2);
+      str = yaml_unsigned2str(sval - SWSRC_FIRST_FLIGHT_MODE);
+      return wf(opaque,str, strlen(str));
+    }
+    else if (sval <= SWSRC_LAST_SENSOR) {
+
+      wf(opaque, "T", 1);
+      str = yaml_unsigned2str(sval - SWSRC_FIRST_SENSOR + 1);
+      return wf(opaque,str, strlen(str));
+    }
+
+    return true; // ignore error
 }
 
 bool w_swtchSrc(const YamlNode* node, uint32_t val, yaml_writer_func wf, void* opaque)
@@ -868,6 +933,7 @@ bool w_swtchSrc(const YamlNode* node, uint32_t val, yaml_writer_func wf, void* o
       || !w_swtchSrc_unquoted(node, val, wf, opaque)
       || !wf(opaque,"\"",1))
     return false;
+
   return true;
 }
 
