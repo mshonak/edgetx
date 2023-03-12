@@ -333,12 +333,10 @@ bool isSwitchAvailable(int swtch, SwitchContext context)
     return true;
   }
 
-#if NUM_XPOTS > 0
   if (swtch >= SWSRC_FIRST_MULTIPOS_SWITCH && swtch <= SWSRC_LAST_MULTIPOS_SWITCH) {
     int index = (swtch - SWSRC_FIRST_MULTIPOS_SWITCH) / XPOTS_MULTIPOS_COUNT;
     return IS_POT_MULTIPOS(index);
   }
-#endif
 
   if (swtch >= SWSRC_FIRST_LOGICAL_SWITCH && swtch <= SWSRC_LAST_LOGICAL_SWITCH) {
     if (context == GeneralCustomFunctionsContext) {
