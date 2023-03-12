@@ -98,10 +98,10 @@ class RadioKeyDiagsWindow : public Window
       // KEYS
       {
         coord_t y = 1;
-        dc->drawTextAtIndex(KEY_COLUMN, y, keysGetLabel(KEY_ENTER), COLOR_THEME_PRIMARY1);
+        dc->drawText(KEY_COLUMN, y, keysGetLabel(KEY_ENTER), COLOR_THEME_PRIMARY1);
         displayKeyState(dc, 70, y, KEY_ENTER);
         y += FH;
-        dc->drawTextAtIndex(KEY_COLUMN, y, keysGetLabel(KEY_EXIT), COLOR_THEME_PRIMARY1);
+        dc->drawText(KEY_COLUMN, y, keysGetLabel(KEY_EXIT), COLOR_THEME_PRIMARY1);
         displayKeyState(dc, 70, y, KEY_EXIT);
       }      
 #endif

@@ -23,6 +23,8 @@
 #include "opentx.h"
 #include "switches.h"
 
+#include "hal/adc_driver.h"
+
 enum slider_type {
   SLIDER_HORIZ,
   SLIDER_6POS,
@@ -41,6 +43,23 @@ static void slider_self_size(lv_event_t* e)
     s->x = MULTIPOS_W;
     s->y = MULTIPOS_H;
     break;
+  }
+}
+
+MainViewSlider::MainViewSlider(Window* parent, const rect_t& rect,
+                               uint8_t idx) :
+    Window(parent, rect), idx(idx)
+{
+}
+
+void MainViewSlider::checkEvents()
+{
+  Window::checkEvents();
+  auto pot_idx = adcGetInputOffset(ADC_INPUT_POT) + idx;
+  int16_t newValue = calibratedAnalogs[pot_idx];
+  if (value != newValue) {
+  value = newValue;
+  invalidate();
   }
 }
 
