@@ -147,7 +147,7 @@ PreflightChecks::PreflightChecks() : Page(ICON_MODEL_SETUP)
   if (adcGetMaxInputs(ADC_INPUT_POT) > 0) {
     line = form->newLine(&grid);
     new StaticText(line, rect_t{}, STR_POTWARNINGSTATE, 0, COLOR_THEME_PRIMARY1);
-    auto pots_wm = new Choice(line, rect_t{}, {STR_PREFLIGHT_POTSLIDER_CHECK}, 0, 2,
+    auto pots_wm = new Choice(line, rect_t{}, STR_PREFLIGHT_POTSLIDER_CHECK, 0, 2,
                               GET_SET_DEFAULT(g_model.potsWarnMode));
 
     // Pot warnings

@@ -676,7 +676,7 @@ void checkAll()
     std::string strKeys;
     for (int i = 0; i < (int)MAX_KEYS; i++) {
       if (keys & (1 << i)) {
-        strKeys += std::string(keysGetLabel(i));
+        strKeys += std::string(keysGetLabel(EnumKeys(i)));
       }
     }
 

@@ -83,14 +83,15 @@ class RadioKeyDiagsWindow : public Window
 
 #if !defined(PCBNV14)
       // KEYS
+      coord_t y = 1;
       for (uint8_t i = 0; i < keysGetMaxKeys(); i++) {
-        coord_t y = 1 + FH * i;
         auto k = get_ith_key(i);
+        y += FH;
         dc->drawText(KEY_COLUMN, y, keysGetLabel(k), COLOR_THEME_PRIMARY1);
         displayKeyState(dc, 70, y, i);
       }
 #if defined(ROTARY_ENCODER_NAVIGATION)
-      coord_t y = FH * (8 - KEY_START);
+      y += FH;
       dc->drawText(KEY_COLUMN, y, STR_ROTARY_ENCODER, COLOR_THEME_PRIMARY1);
       dc->drawNumber(70, y, rotaryEncoderGetValue(), COLOR_THEME_PRIMARY1);
 #endif
