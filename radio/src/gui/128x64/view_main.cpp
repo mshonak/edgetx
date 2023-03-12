@@ -96,19 +96,19 @@ void drawPotsBars()
 
 void doMainScreenGraphics()
 {
-#if defined(SURFACE_RADIO)   // ToDo: find a better define
-  drawWheel(LBOX_CENTERX, calibratedAnalogs[0]); // ToDo: use enum
-  drawThrottle(RBOX_CENTERX, calibratedAnalogs[1]);  // ToDo: use enum
+#if defined(ADC_GPIO_PIN_STICK_WH)
+  drawWheel(LBOX_CENTERX, calibratedAnalogs[ADC_MAIN_WH]);
+  drawThrottle(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_TR]);
 #else
-  int16_t calibStickVert = calibratedAnalogs[CONVERT_MODE(1)];
-  if (g_model.throttleReversed && CONVERT_MODE(1) == THR_STICK)
+  int16_t calibStickVert = calibratedAnalogs[ADC_MAIN_LV];
+  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_LV) == THR_STICK)
     calibStickVert = -calibStickVert;
-  drawStick(LBOX_CENTERX, calibratedAnalogs[CONVERT_MODE(0)], calibStickVert);
+  drawStick(LBOX_CENTERX, calibratedAnalogs[ADC_MAIN_LH], calibStickVert);
 
-  calibStickVert = calibratedAnalogs[CONVERT_MODE(2)];
-  if (g_model.throttleReversed && CONVERT_MODE(2) == THR_STICK)
+  calibStickVert = calibratedAnalogs[ADC_MAIN_RV];
+  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_RV) == THR_STICK)
     calibStickVert = -calibStickVert;
-  drawStick(RBOX_CENTERX, calibratedAnalogs[CONVERT_MODE(3)], calibStickVert);
+  drawStick(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_RH], calibStickVert);
 #endif
 
   drawPotsBars();
@@ -116,7 +116,7 @@ void doMainScreenGraphics()
 
 void displayTrims(uint8_t phase)
 {
-  for (uint8_t i = 0; i < 4; i++) {
+  for (uint8_t i = 0; i < MAX_STICKS; i++) {
     static coord_t x[4] = {TRIM_LH_X, TRIM_LV_X, TRIM_RV_X, TRIM_RH_X};
     static uint8_t vert[4] = {0, 1, 1, 0};
     coord_t xm, ym;

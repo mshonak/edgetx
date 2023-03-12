@@ -111,7 +111,7 @@ void menuRadioDiagAnalogs(event_t event)
         break;
     }
     lcdDrawNumber(x+10*FW-1, y,
-                  (int16_t)calibratedAnalogs[CONVERT_MODE(i)]*25/256,
+                  (int16_t)calibratedAnalogs[i]*25/256,
                   RIGHT);
   }
 

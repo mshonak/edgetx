@@ -77,15 +77,15 @@ const unsigned char icons[]  = {
 
 void doMainScreenGraphics()
 {
-  int16_t calibStickVert = calibratedAnalogs[CONVERT_MODE(1)];
-  if (g_model.throttleReversed && CONVERT_MODE(1) == THR_STICK)
+  int16_t calibStickVert = calibratedAnalogs[ADC_MAIN_LV];
+  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_LV) == THR_STICK)
     calibStickVert = -calibStickVert;
-  drawStick(LBOX_CENTERX, calibratedAnalogs[CONVERT_MODE(0)], calibStickVert);
+  drawStick(LBOX_CENTERX, calibratedAnalogs[ADC_MAIN_LH], calibStickVert);
 
-  calibStickVert = calibratedAnalogs[CONVERT_MODE(2)];
-  if (g_model.throttleReversed && CONVERT_MODE(2) == THR_STICK)
+  calibStickVert = calibratedAnalogs[ADC_MAIN_RV];
+  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_RV) == THR_STICK)
     calibStickVert = -calibStickVert;
-  drawStick(RBOX_CENTERX, calibratedAnalogs[CONVERT_MODE(3)], calibStickVert);
+  drawStick(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_RH], calibStickVert);
 }
 
 void displayTrims(uint8_t phase)

@@ -48,7 +48,8 @@ class MainViewSlider : public Window
     void checkEvents() override
     {
       Window::checkEvents();
-      int16_t newValue = calibratedAnalogs[MAX_STICKS + idx];
+      auto pot_idx = adcGetInputOffset(ADC_INPUT_POT) + idx;
+      int16_t newValue = calibratedAnalogs[pot_idx];
       if (value != newValue) {
         value = newValue;
         invalidate();

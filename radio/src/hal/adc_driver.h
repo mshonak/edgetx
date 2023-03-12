@@ -44,6 +44,20 @@ enum {
   ADC_INPUT_ALL,
 };
 
+// Air radios
+enum {
+  ADC_MAIN_LH,
+  ADC_MAIN_LV,
+  ADC_MAIN_RV,
+  ADC_MAIN_RH,
+};
+
+// Surface radios
+enum {
+  ADC_MAIN_WH,
+  ADC_MAIN_TR,
+};
+
 struct etx_hal_adc_input_t {
   const char* name;
   const char* label;

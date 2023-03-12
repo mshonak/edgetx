@@ -330,7 +330,7 @@ getvalue_t getValue(mixsrc_t i, bool* valid)
       if (valid != nullptr) *valid = false;
       return 0;
     }
-    return calibratedAnalogs[i];
+    return calibratedAnalogs[CONVERT_MODE(i)];
   }
   else if (i <= MIXSRC_LAST_POT) {
     i -= MIXSRC_FIRST_POT;
@@ -551,9 +551,9 @@ void evalInputs(uint8_t mode)
       v = -v;
     }
 
-    BeepANACenter mask = (BeepANACenter)1 << ch;
+    BeepANACenter mask = (BeepANACenter)1 << ch; // TODO
 
-    calibratedAnalogs[ch] = v; // for show in expo
+    calibratedAnalogs[i] = v; // for show in expo
 
     // filtering for center beep
     uint8_t tmp = (uint16_t)abs(v) / 16;
@@ -597,7 +597,7 @@ void evalInputs(uint8_t mode)
           }
         }
       }
-      calibratedAnalogs[ch] = v;
+      calibratedAnalogs[i] = v;
     }
   }
 
