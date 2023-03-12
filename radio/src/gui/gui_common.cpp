@@ -182,6 +182,11 @@ bool isSourceAvailable(int source)
     return false;
 #endif
 
+  if (source >= MIXSRC_FIRST_STICK && source <= MIXSRC_LAST_STICK) {
+    auto idx = source - MIXSRC_FIRST_STICK;
+    return idx < adcGetMaxInputs(ADC_INPUT_MAIN);
+  }
+
   if (source >= MIXSRC_FIRST_POT && source <= MIXSRC_LAST_POT) {
     return IS_POT_SLIDER_AVAILABLE(source - MIXSRC_FIRST_POT);
   }
