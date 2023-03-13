@@ -28,6 +28,7 @@
 #include "input_edit.h"
 #include "input_mix_group.h"
 #include "input_mix_button.h"
+#include "input_mapping.h"
 
 #include "tasks/mixer_task.h"
 #include "hal/adc_driver.h"
@@ -95,7 +96,7 @@ void insertExpo(uint8_t idx, uint8_t input)
   if (input >= adcGetMaxInputs(ADC_INPUT_MAIN)) {
     expo->srcRaw = MIXSRC_FIRST_STICK + input;
   } else {
-    expo->srcRaw = MIXSRC_FIRST_STICK + channelOrder(input);
+    expo->srcRaw = MIXSRC_FIRST_STICK + inputMappingChannelOrder(input);
   } 
   expo->curve.type = CURVE_REF_EXPO;
   expo->mode = 3; // pos+neg

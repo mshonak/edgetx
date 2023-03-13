@@ -31,6 +31,7 @@
 #include "hal/adc_driver.h"
 #include "hal/rotary_encoder.h"
 #include "switches.h"
+#include "input_mapping.h"
 
 #if defined(LIBOPENUI)
   #include "libopenui.h"
@@ -1830,7 +1831,7 @@ Get stick that is assigned to a channel. See Default Channel Order in General Se
 static int luaDefaultStick(lua_State * L)
 {
   uint8_t channel = luaL_checkinteger(L, 1);
-  lua_pushinteger(L, channelOrder(channel));
+  lua_pushinteger(L, inputMappingChannelOrder(channel));
   return 1;
 }
 
@@ -1915,7 +1916,7 @@ static int luaDefaultChannel(lua_State * L)
 {
   uint8_t stick = luaL_checkinteger(L, 1);
   for (int i = 0; i < adcGetMaxInputs(ADC_INPUT_MAIN); i++) {
-    int tmp = channelOrder(i);
+    int tmp = inputMappingChannelOrder(i);
     if (tmp == stick) {
       lua_pushinteger(L, i);
       return 1;

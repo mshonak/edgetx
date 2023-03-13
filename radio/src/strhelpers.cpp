@@ -551,7 +551,7 @@ const char* getAnalogShortLabel(uint8_t idx)
     auto label = adcGetInputShortLabel(ADC_INPUT_MAIN, idx);
     if (label) {
       static char _str_buffer[2];
-      _str_buffer[0] = STR_STICK_NAMES[idx][0];
+      _str_buffer[0] = label[0];
       _str_buffer[1] = '\0';
       return _str_buffer;
     } else {

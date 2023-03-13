@@ -24,6 +24,7 @@
 
 #include "opentx.h"
 #include "switches.h"
+#include "input_mapping.h"
 
 #include "tasks/mixer_task.h"
 
@@ -582,7 +583,7 @@ bool getSwitch(swsrc_t swtch, uint8_t flags)
   }
   else if (cs_idx <= SWSRC_LAST_TRIM) {
     uint8_t idx = cs_idx - SWSRC_FIRST_TRIM;
-    idx = (CONVERT_MODE_TRIMS(idx/2) << 1) + (idx & 1);
+    idx = (inputMappingConvertMode(idx/2) << 1) + (idx & 1);
     result = trimDown(idx);
   }
   else if (cs_idx == SWSRC_RADIO_ACTIVITY) {

@@ -21,6 +21,7 @@
 
 #include "opentx.h"
 #include "hal/adc_driver.h"
+#include "input_mapping.h"
 
 void clearInputs()
 {
@@ -31,7 +32,7 @@ void setDefaultInputs()
 {
   auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = 0; i < max_sticks; i++) {
-    uint8_t stick_index = channelOrder(i);
+    uint8_t stick_index = inputMappingChannelOrder(i);
     ExpoData *expo = expoAddress(i);
     expo->srcRaw = MIXSRC_FIRST_STICK + stick_index;
     expo->curve.type = CURVE_REF_EXPO;

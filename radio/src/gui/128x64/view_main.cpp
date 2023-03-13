@@ -24,6 +24,7 @@
 #include "hal/switch_driver.h"
 
 #include "switches.h"
+#include "input_mapping.h"
 
 #define BIGSIZE       DBLSIZE
 #if defined (PCBTARANIS)
@@ -101,12 +102,12 @@ void doMainScreenGraphics()
   drawThrottle(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_TR]);
 #else
   int16_t calibStickVert = calibratedAnalogs[ADC_MAIN_LV];
-  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_LV) == THR_STICK)
+  if (g_model.throttleReversed && inputMappingConvertMode(ADC_MAIN_LV) == THR_STICK)
     calibStickVert = -calibStickVert;
   drawStick(LBOX_CENTERX, calibratedAnalogs[ADC_MAIN_LH], calibStickVert);
 
   calibStickVert = calibratedAnalogs[ADC_MAIN_RV];
-  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_RV) == THR_STICK)
+  if (g_model.throttleReversed && inputMappingConvertMode(ADC_MAIN_RV) == THR_STICK)
     calibStickVert = -calibStickVert;
   drawStick(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_RH], calibStickVert);
 #endif
@@ -120,7 +121,7 @@ void displayTrims(uint8_t phase)
     static coord_t x[4] = {TRIM_LH_X, TRIM_LV_X, TRIM_RV_X, TRIM_RH_X};
     static uint8_t vert[4] = {0, 1, 1, 0};
     coord_t xm, ym;
-    uint8_t stickIndex = CONVERT_MODE(i);
+    uint8_t stickIndex = inputMappingConvertMode(i);
     xm = x[stickIndex];
     uint8_t att = ROUND;
     int16_t val = getTrimValue(phase, i);

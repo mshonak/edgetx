@@ -30,6 +30,7 @@
 #include "input_mix_group.h"
 #include "input_mix_button.h"
 #include "mixer_edit.h"
+#include "input_mapping.h"
 
 #include "tasks/mixer_task.h"
 #include "hal/adc_driver.h"
@@ -79,7 +80,7 @@ void insertMix(uint8_t idx, uint8_t channel)
     if (channel >= adcGetMaxInputs(ADC_INPUT_MAIN)) {
       mix->srcRaw = MIXSRC_FIRST_STICK + channel;
     } else {
-      mix->srcRaw = MIXSRC_FIRST_STICK + channelOrder(channel);
+      mix->srcRaw = MIXSRC_FIRST_STICK + inputMappingChannelOrder(channel);
     }
     while (!isSourceAvailable(mix->srcRaw)) {
       mix->srcRaw += 1;

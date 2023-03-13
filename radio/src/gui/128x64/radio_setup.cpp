@@ -24,6 +24,7 @@
 #include "opentx.h"
 #include "tasks/mixer_task.h"
 #include "hal/adc_driver.h"
+#include "input_mapping.h"
 
 const unsigned char sticks[]  = {
 #include "sticks.lbm"
@@ -639,12 +640,13 @@ void menuRadioSetup(event_t event)
       case ITEM_RADIO_SETUP_RX_CHANNEL_ORD:
         lcdDrawTextAlignedLeft(y, STR_RXCHANNELORD); // RAET->AETR
         {
-          int permutations = 1;
           for (uint8_t i = 0; i < adcGetMaxInputs(ADC_INPUT_MAIN); i++) {
-            putsChnLetter(RADIO_SETUP_2ND_COLUMN - FW + i*FW, y, channelOrder(i), attr);
-            permutations *= i + 1;
+            putsChnLetter(RADIO_SETUP_2ND_COLUMN - FW + i*FW, y, inputMappingChannelOrder(i), attr);
           }
-          if (attr) CHECK_INCDEC_GENVAR(event, g_eeGeneral.templateSetup, 0, permutations - 1);
+          if (attr) {
+            auto max_order = inputMappingGetMaxChannelOrder() - 1;
+            CHECK_INCDEC_GENVAR(event, g_eeGeneral.templateSetup, 0, max_order);
+          }
         }
         break;
 
@@ -680,7 +682,7 @@ void menuRadioSetup(event_t event)
           auto controls = adcGetMaxInputs(ADC_INPUT_MAIN);
           auto mode = reusableBuffer.generalSettings.stickMode;
           for (uint8_t i = 0; i < controls; i++) {
-            source_t src = MIXSRC_FIRST_STICK + modn12x3[4 * mode + i];
+            source_t src = MIXSRC_FIRST_STICK + inputMappingConvertMode(mode, i);
             drawSource((5 * FW - 3) + i * (4 * FW + 2), y, src, 0);
           }
         }

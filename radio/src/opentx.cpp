@@ -28,6 +28,7 @@
 
 #include "switches.h"
 #include "inactivity_timer.h"
+#include "input_mapping.h"
 
 #include "tasks.h"
 #include "tasks/mixer_task.h"
@@ -67,35 +68,6 @@ uint8_t* MSC_BOT_Data = reusableBuffer.MSC_BOT_Data;
 #if defined(DEBUG_LATENCY)
 uint8_t latencyToggleSwitch = 0;
 #endif
-
-const uint8_t bchout_ar[]  = {
-    0x1B, 0x1E, 0x27, 0x2D, 0x36, 0x39,
-    0x4B, 0x4E, 0x63, 0x6C, 0x72, 0x78,
-    0x87, 0x8D, 0x93, 0x9C, 0xB1, 0xB4,
-    0xC6, 0xC9, 0xD2, 0xD8, 0xE1, 0xE4 };
-
-uint8_t channelOrder(uint8_t setup, uint8_t x)
-{
-  if (setup >= sizeof(bchout_ar)) return x;
-  return (bchout_ar[setup] >> (6 - x * 2)) & 3;
-}
-
-uint8_t channelOrder(uint8_t x)
-{
-  return channelOrder(g_eeGeneral.templateSetup, x);
-}
-
-/*
-mode1 rud ele thr ail
-mode2 rud thr ele ail
-mode3 ail ele thr rud
-mode4 ail thr ele rud
-*/
-const uint8_t modn12x3[]  = {
-    0, 1, 2, 3,
-    0, 2, 1, 3,
-    3, 1, 2, 0,
-    3, 2, 1, 0 };
 
 volatile uint8_t rtc_count = 0;
 
@@ -268,11 +240,14 @@ void generalDefault()
   if (BATTERY_MAX != 120)
     g_eeGeneral.vBatMax = BATTERY_MAX - 120;
 
-#if defined(DEFAULT_MODE)
+#if defined(SURFACE_RADIO)
+  g_eeGeneral.stickMode = 0;
+  g_eeGeneral.templateSetup = 0;
+#elif defined(DEFAULT_MODE)
   g_eeGeneral.stickMode = DEFAULT_MODE - 1;
+  g_eeGeneral.templateSetup = DEFAULT_TEMPLATE_SETUP;
 #endif
 
-  g_eeGeneral.templateSetup = DEFAULT_TEMPLATE_SETUP;
 
   g_eeGeneral.backlightMode = e_backlight_mode_all;
   g_eeGeneral.lightAutoOff = 2;
@@ -286,7 +261,7 @@ void generalDefault()
   auto controls = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (int i = 0; i < controls; ++i) {
     g_eeGeneral.trainer.mix[i].mode = 2;
-    g_eeGeneral.trainer.mix[i].srcChn = channelOrder(i);
+    g_eeGeneral.trainer.mix[i].srcChn = inputMappingChannelOrder(i);
     g_eeGeneral.trainer.mix[i].studWeight = 100;
   }
 
@@ -384,7 +359,7 @@ int8_t getMovedSource(uint8_t min)
           break;
         }
 #endif
-        result = MIXSRC_FIRST_STICK + CONVERT_MODE(i);
+        result = MIXSRC_FIRST_STICK + inputMappingConvertMode(i);
         break;
       }
     }
@@ -898,9 +873,8 @@ void checkTrims()
 {
   event_t event = getTrimEvent();
   if (event && !IS_KEY_BREAK(event)) {
-    int8_t k = EVT_KEY_MASK(event);// - TRM_BASE;
-    // LH_DWN LH_UP LV_DWN LV_UP RV_DWN RV_UP RH_DWN RH_UP
-    uint8_t idx = CONVERT_MODE_TRIMS((uint8_t)k/2);
+    int8_t k = EVT_KEY_MASK(event);
+    uint8_t idx = inputMappingConvertMode(uint8_t(k / 2));
     uint8_t phase;
     int before;
     bool thro;

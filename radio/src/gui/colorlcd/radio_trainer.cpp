@@ -22,6 +22,7 @@
 #include "radio_trainer.h"
 #include "opentx.h"
 #include "libopenui.h"
+#include "input_mapping.h"
 
 #include "hal/adc_driver.h"
 #include "strhelpers.h"
@@ -64,7 +65,7 @@ void RadioTrainerPage::build(FormWindow * form)
 
   auto max_sticks = adcGetMaxInputs(ADC_INPUT_MAIN);
   for (uint8_t i = 0; i < max_sticks; i++) {
-    uint8_t chan = channelOrder(i);
+    uint8_t chan = inputMappingChannelOrder(i);
     TrainerMix* td = &g_eeGeneral.trainer.mix[chan];
 
     auto line = form->newLine(&grid);

@@ -21,6 +21,7 @@
 
 #include "trims.h"
 #include "sliders.h"
+#include "input_mapping.h"
 
 #include "opentx.h"
 
@@ -48,7 +49,7 @@ static void trim_self_size(lv_event_t* e)
 void MainViewTrim::checkEvents()
 {
   Window::checkEvents();
-  int8_t stickIndex = CONVERT_MODE(idx);
+  int8_t stickIndex = inputMappingConvertMode(idx);
   int newValue = getTrimValue(mixerCurrentFlightMode, stickIndex);
   if (value != newValue) {
     value = newValue;

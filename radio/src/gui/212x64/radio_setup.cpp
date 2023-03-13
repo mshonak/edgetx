@@ -25,6 +25,7 @@
 
 #include "opentx.h"
 #include "tasks/mixer_task.h"
+#include "input_mapping.h"
 
 const unsigned char sticks[]  = {
 #include "sticks.lbm"
@@ -586,12 +587,13 @@ void menuRadioSetup(event_t event)
       case ITEM_RADIO_SETUP_RX_CHANNEL_ORD:
         lcdDrawTextAlignedLeft(y, STR_RXCHANNELORD); // RAET->AETR
         {
-          int permutations = 1;
           for (uint8_t i = 0; i < adcGetMaxInputs(ADC_INPUT_MAIN); i++) {
-            putsChnLetter(RADIO_SETUP_2ND_COLUMN - FW + i*FW, y, channelOrder(i), attr);
-            permutations *= i + 1;
+            putsChnLetter(RADIO_SETUP_2ND_COLUMN - FW + i*FW, y, inputMappingChannelOrder(i), attr);
           }
-          if (attr) CHECK_INCDEC_GENVAR(event, g_eeGeneral.templateSetup, 0, permutations - 1);
+          if (attr) {
+            auto max_order = inputMappingGetMaxChannelOrder() - 1;
+            CHECK_INCDEC_GENVAR(event, g_eeGeneral.templateSetup, 0, max_order);
+          }
         }
         break;
 
@@ -622,19 +624,23 @@ void menuRadioSetup(event_t event)
 #endif
 
       case ITEM_RADIO_SETUP_STICK_MODE:
-        lcdDrawChar(2*FW, y, '1'+reusableBuffer.generalSettings.stickMode, attr);
-        for (uint8_t i=0; i<4; i++) {
-          drawMainControlLabel((6+4*i)*FW, y, *(modn12x3 + 4*reusableBuffer.generalSettings.stickMode + i), 0);
-        }
-        if (attr && s_editMode>0) {
-          CHECK_INCDEC_GENVAR(event, reusableBuffer.generalSettings.stickMode, 0, 3);
-        }
-        else if (reusableBuffer.generalSettings.stickMode != g_eeGeneral.stickMode) {
-          mixerTaskStop();
-          g_eeGeneral.stickMode = reusableBuffer.generalSettings.stickMode;
-          checkThrottleStick();
-          mixerTaskStart();
-          waitKeysReleased();
+        {
+          auto& mode = reusableBuffer.generalSettings.stickMode;
+          lcdDrawChar(2*FW, y, '1' + mode, attr);
+          for (uint8_t i=0; i<4; i++) {
+            auto ctrl = inputMappingConvertMode(mode, i);
+            drawMainControlLabel((6+4*i)*FW, y, ctrl, 0);
+          }
+          if (attr && s_editMode > 0) {
+            CHECK_INCDEC_GENVAR(event, mode, 0, 3);
+          }
+          else if (mode != g_eeGeneral.stickMode) {
+            mixerTaskStop();
+            g_eeGeneral.stickMode = mode;
+            checkThrottleStick();
+            mixerTaskStart();
+            waitKeysReleased();
+          }
         }
         break;
     }

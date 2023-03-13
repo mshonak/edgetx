@@ -25,6 +25,7 @@
 #include "hal/switch_driver.h"
 
 #include "switches.h"
+#include "input_mapping.h"
 
 #define BIGSIZE       MIDSIZE
 #define LBOX_CENTERX  (BOX_WIDTH/2 + 16)
@@ -78,12 +79,12 @@ const unsigned char icons[]  = {
 void doMainScreenGraphics()
 {
   int16_t calibStickVert = calibratedAnalogs[ADC_MAIN_LV];
-  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_LV) == THR_STICK)
+  if (g_model.throttleReversed && inputMappingConvertMode(ADC_MAIN_LV) == THR_STICK)
     calibStickVert = -calibStickVert;
   drawStick(LBOX_CENTERX, calibratedAnalogs[ADC_MAIN_LH], calibStickVert);
 
   calibStickVert = calibratedAnalogs[ADC_MAIN_RV];
-  if (g_model.throttleReversed && CONVERT_MODE(ADC_MAIN_RV) == THR_STICK)
+  if (g_model.throttleReversed && inputMappingConvertMode(ADC_MAIN_RV) == THR_STICK)
     calibStickVert = -calibStickVert;
   drawStick(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_RH], calibStickVert);
 }
@@ -94,7 +95,7 @@ void displayTrims(uint8_t phase)
     coord_t x[] = { TRIM_LH_X, TRIM_LV_X, TRIM_RV_X, TRIM_RH_X };
     uint8_t vert[] = { 0, 1, 1, 0 };
     coord_t xm, ym;
-    unsigned int stickIndex = CONVERT_MODE(i);
+    unsigned int stickIndex = inputMappingConvertMode(i);
     xm = x[stickIndex];
 
     uint32_t att = ROUND;

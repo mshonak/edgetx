@@ -24,6 +24,7 @@
 #include "radio_setup.h"
 #include "opentx.h"
 #include "libopenui.h"
+#include "input_mapping.h"
 
 #include "tasks/mixer_task.h"
 #include "hal/adc_driver.h"
@@ -747,14 +748,13 @@ void RadioSetupPage::build(FormWindow * window)
   grid.setColSpan(2);
 
   uint8_t mains = adcGetMaxInputs(ADC_INPUT_MAIN);
-  int permutations = 1;
-  for (int i = 1; i <= mains; i++) permutations *= i;
-  choice = new Choice(line, rect_t{}, 0, permutations - 1,
+  auto max_order = inputMappingGetMaxChannelOrder() - 1;
+  choice = new Choice(line, rect_t{}, 0, max_order,
                       GET_SET_DEFAULT(g_eeGeneral.templateSetup));
   choice->setTextHandler([](uint8_t value) {
     std::string s;
     for (uint8_t i = 0; i < adcGetMaxInputs(ADC_INPUT_MAIN); i++) {
-      s += getAnalogShortLabel(channelOrder(value, i));
+      s += getAnalogShortLabel(inputMappingChannelOrder(value, i));
     }
     return s;
   });
@@ -773,11 +773,11 @@ void RadioSetupPage::build(FormWindow * window)
                         mixerTaskStart();
                       });
   choice->setTextHandler([](uint8_t value) {
+    auto stick0 = inputMappingConvertMode(value, 0);
+    auto stick1 = inputMappingConvertMode(value, 1);
     return std::to_string(1 + value) + ": " + STR_LEFT_STICK + " = " +
-           std::string(&getSourceString(MIXSRC_FIRST_STICK + modn12x3[4 * value])[1]) +
-           "+" +
-           std::string(
-               &getSourceString(MIXSRC_FIRST_STICK + modn12x3[4 * value + 1])[1]);
+           std::string(getMainControlLabel(stick0)) + "+" +
+           std::string(getMainControlLabel(stick1));
   });
   grid.setColSpan(1);
 

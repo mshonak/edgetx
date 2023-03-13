@@ -316,26 +316,6 @@ struct CustomFunctionsContext {
   #endif
 #endif
 
-extern const uint8_t bchout_ar[];
-extern const uint8_t modn12x3[];
-
-//convert from mode 1 to mode stickMode
-//NOTICE!  =>  0..3 -> 0..3
-#define RUD_STICK 0
-#define ELE_STICK 1
-#define THR_STICK 2
-#define AIL_STICK 3
-#define CONVERT_MODE(x)          (((x)<=AIL_STICK) ? *(modn12x3 + 4*g_eeGeneral.stickMode + (x)) : (x) )
-
-#if defined(PCBXLITE)
-  #define CONVERT_MODE_TRIMS(x)  (((x) == RUD_STICK) ? AIL_STICK : ((x) == AIL_STICK) ? RUD_STICK : (x))
-#else
-  #define CONVERT_MODE_TRIMS(x)  CONVERT_MODE(x)
-#endif
-
-extern uint8_t channelOrder(uint8_t x);
-extern uint8_t channelOrder(uint8_t setup, uint8_t x);
-
 #define THRCHK_DEADBAND                16
 
 inline bool SPLASH_NEEDED()

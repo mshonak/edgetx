@@ -22,6 +22,7 @@
 #include "opentx.h"
 #include "timers.h"
 #include "switches.h"
+#include "input_mapping.h"
 
 #include "hal/adc_driver.h"
 #include "hal/switch_driver.h"
@@ -330,7 +331,7 @@ getvalue_t getValue(mixsrc_t i, bool* valid)
       if (valid != nullptr) *valid = false;
       return 0;
     }
-    return calibratedAnalogs[CONVERT_MODE(i)];
+    return calibratedAnalogs[inputMappingConvertMode(i)];
   }
   else if (i <= MIXSRC_LAST_POT) {
     i -= MIXSRC_FIRST_POT;
@@ -511,7 +512,7 @@ void evalInputs(uint8_t mode)
   for (uint8_t i = 0; i < max_calib_analogs; i++) {
     // normalization [0..2048] -> [-1024..1024]
     int16_t v = anaIn(i);
-    uint8_t ch = (i < pots_offset ? CONVERT_MODE(i) : i);
+    uint8_t ch = (i < pots_offset ? inputMappingConvertMode(i) : i);
 
     if (i >= pots_offset && IS_POT_MULTIPOS(i - pots_offset)) {
       v -= RESX;
