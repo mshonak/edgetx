@@ -702,28 +702,30 @@ bool isThrottleWarningAlertNeeded()
     return false;
   }
 
-  // throttle channel is either the stick according stick mode (already handled in evalInputs)
-  // or P1 to P3;
-  // in case an output channel is choosen as throttle source (thrTraceSrc > MAX_POTS) we assume the throttle stick is the input
-  // no other information available at the moment, and good enough to my option (otherwise too many exceptions...)
-  uint8_t thrchn =
-      ((g_model.thrTraceSrc == 0) || (g_model.thrTraceSrc > MAX_POTS))
-          ? THR_STICK
-          : g_model.thrTraceSrc + MAX_STICKS - 1;
+  uint8_t thr_src = throttleSource2Source(g_model.thrTraceSrc);
+
+  // in case an output channel is choosen as throttle source
+  // we assume the throttle stick is the input (no computed channels yet)
+  if (thr_src >= MIXSRC_FIRST_CH) {
+    thr_src = throttleSource2Source(0);
+  }
 
   if (!mixerTaskRunning()) getADC();
   evalInputs(e_perout_mode_notrainer); // let do evalInputs do the job
 
-  int16_t v = calibratedAnalogs[thrchn];
-  if (g_model.thrTraceSrc && g_model.throttleReversed) { // TODO : proper review of THR source definition and handling
+  int16_t v = getValue(thr_src);
+
+  // TODO: this looks fishy....
+  if (g_model.thrTraceSrc && g_model.throttleReversed) {
     v = -v;
   }
 
   if (g_model.enableCustomThrottleWarning) {
-    int16_t idleValue = (int32_t)RESX * (int32_t)g_model.customThrottleWarningPosition / (int32_t)100;
+    int16_t idleValue = (int32_t)RESX *
+                        (int32_t)g_model.customThrottleWarningPosition /
+                        (int32_t)100;
     return abs(v - idleValue) > THRCHK_DEADBAND;
-  }
-  else {
+  } else {
 #if defined(SURFACE_RADIO) // surface radio, stick centered
     return v > THRCHK_DEADBAND;
 #else
