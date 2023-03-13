@@ -12,8 +12,8 @@ MAIN_CONTROL_LUT = {
     "RV": { "str": "Thr", "local": "STR_STICK_NAMES[2]" },
     "RH": { "str": "Ail", "local": "STR_STICK_NAMES[3]" },
     # Surface radios
-    "WH": { "str": "Whl", "local": "STR_SURFACE_NAMES[0]" },
-    "TR": { "str": "Thr", "local": "STR_SURFACE_NAMES[1]" },
+    "ST": { "str": "ST", "local": "STR_SURFACE_NAMES[0]" },
+    "TH": { "str": "TH", "local": "STR_SURFACE_NAMES[1]" },
 }
 
 # MUST be the same order as 'EnumKeys'

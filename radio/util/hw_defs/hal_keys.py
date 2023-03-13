@@ -22,8 +22,8 @@ TRIMS = [
     { "name": "T5", "dec": "LSD", "inc": "LSU" },
     { "name": "T6", "dec": "RSD", "inc": "RSU" },
     # Surface
-    { "name": "T1", "dec": "T1L", "inc": "T1R", "input": "WH" },
-    { "name": "T2", "dec": "T2L", "inc": "T2R", "input": "TR" },
+    { "name": "T1", "dec": "T1L", "inc": "T1R", "input": "ST" },
+    { "name": "T2", "dec": "T2L", "inc": "T2R", "input": "TH" },
     { "name": "T3", "dec": "T3L", "inc": "T3R"},
     { "name": "T4", "dec": "T4L", "inc": "T4R"},
     { "name": "T5", "dec": "T5L", "inc": "T5R" },

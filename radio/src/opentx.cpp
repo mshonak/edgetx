@@ -724,7 +724,11 @@ bool isThrottleWarningAlertNeeded()
     return abs(v - idleValue) > THRCHK_DEADBAND;
   }
   else {
+#if defined(SURFACE_RADIO) // surface radio, stick centered
+    return v > THRCHK_DEADBAND;
+#else
     return v > THRCHK_DEADBAND - RESX;
+#endif
   }
 }
 

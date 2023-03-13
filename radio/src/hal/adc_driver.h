@@ -54,8 +54,8 @@ enum {
 
 // Surface radios
 enum {
-  ADC_MAIN_WH,
-  ADC_MAIN_TR,
+  ADC_MAIN_ST,
+  ADC_MAIN_TH,
 };
 
 struct etx_hal_adc_input_t {

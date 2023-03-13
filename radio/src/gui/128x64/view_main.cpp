@@ -97,9 +97,9 @@ void drawPotsBars()
 
 void doMainScreenGraphics()
 {
-#if defined(ADC_GPIO_PIN_STICK_WH)
-  drawWheel(LBOX_CENTERX, calibratedAnalogs[ADC_MAIN_WH]);
-  drawThrottle(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_TR]);
+#if defined(SURFACE_RADIO)
+  drawWheel(LBOX_CENTERX, calibratedAnalogs[ADC_MAIN_ST]);
+  drawThrottle(RBOX_CENTERX, calibratedAnalogs[ADC_MAIN_TH]);
 #else
   int16_t calibStickVert = calibratedAnalogs[ADC_MAIN_LV];
   if (g_model.throttleReversed && inputMappingConvertMode(ADC_MAIN_LV) == THR_STICK)
