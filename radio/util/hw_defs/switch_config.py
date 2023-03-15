@@ -75,10 +75,10 @@ SWITCH_CONFIG = {
     "tpro": {
         # left side
         "SA": { "default": "3POS",   "display": [ 0, 0 ] },
-        "SC": { "default": "3POS",   "display": [ 0, 1 ] },
+        "SC": { "default": "TOGGLE",   "display": [ 0, 1 ] },
         # right side
-        "SB": { "default": "2POS",   "display": [ 1, 0 ] },
-        "SD": { "default": "2POS",   "display": [ 1, 1 ] }
+        "SB": { "default": "3POS",   "display": [ 1, 0 ] },
+        "SD": { "default": "TOGGLE",   "display": [ 1, 1 ] }
     },
     "tx12": {
         # left side

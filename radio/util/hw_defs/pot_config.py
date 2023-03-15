@@ -6,7 +6,7 @@ POT_CONFIG = {
         "P3": { "default": "MULTIPOS_SWITCH" }
     },
     "tpro": {
-        "P1": { "default": "WITHOUT_DETENT" },
+        "P1": { "default": "WITH_DETENT" },
         "P2": { "default": "WITH_DETENT" }
     },
     "t12": {
