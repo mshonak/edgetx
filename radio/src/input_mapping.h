@@ -23,7 +23,7 @@
 
 #include <stdint.h>
 
-// input order in mode 1
+// Air radios / input order in mode 1
 #define RUD_STICK 0
 #define ELE_STICK 1
 #define THR_STICK 2
@@ -33,6 +33,9 @@
 
 // Is mapping of main controls used? (aka. "Modes")
 bool inputMappingModesUsed();
+
+// Return the throttle input regardless of radio type
+uint8_t inputMappingGetThrottle();
 
 // Map first 4 channels from/to Mode 1
 // according to radio settings

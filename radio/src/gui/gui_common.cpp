@@ -292,8 +292,10 @@ bool isSourceAvailableInInputs(int source)
   if (source == MIXSRC_MAX)
     return true;
 
-  if (source >= MIXSRC_FIRST_TRIM && source <= MIXSRC_LAST_TRIM)
-    return true;
+  if (source >= MIXSRC_FIRST_TRIM && source <= MIXSRC_LAST_TRIM) {
+    auto idx = source - MIXSRC_FIRST_TRIM;
+    return idx < keysGetMaxTrims();
+  }
 
   if (source >= MIXSRC_FIRST_SWITCH && source <= MIXSRC_LAST_SWITCH)
     return SWITCH_EXISTS(source - MIXSRC_FIRST_SWITCH);
@@ -360,6 +362,11 @@ bool isSwitchAvailable(int swtch, SwitchContext context)
     return IS_POT_MULTIPOS(index);
   }
 
+  if (swtch >= SWSRC_FIRST_TRIM && swtch <= SWSRC_LAST_TRIM) {
+    int index = (swtch - SWSRC_FIRST_TRIM) / 2;
+    return index < keysGetMaxTrims();
+  }
+  
   if (swtch >= SWSRC_FIRST_LOGICAL_SWITCH && swtch <= SWSRC_LAST_LOGICAL_SWITCH) {
     if (context == GeneralCustomFunctionsContext) {
       return false;
@@ -511,7 +518,7 @@ bool isThrottleSourceAvailable(int src)
   src = throttleSource2Source(src);
 #endif
   return isSourceAvailable(src) &&
-    ((src == MIXSRC_Thr) ||
+    ((src == MIXSRC_FIRST_STICK + inputMappingGetThrottle()) ||
      ((src >= MIXSRC_FIRST_POT) && (src <= MIXSRC_LAST_POT)) ||
      ((src >= MIXSRC_FIRST_CH) && (src <= MIXSRC_LAST_CH)));
 }

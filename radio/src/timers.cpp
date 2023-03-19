@@ -183,7 +183,7 @@ void evalTimers(int16_t throttle, uint8_t tick10ms)
 int16_t throttleSource2Source(int16_t thrSrc)
 {
   if (thrSrc == 0) {
-    return (int16_t)MIXSRC_Thr;
+    return int16_t(MIXSRC_FIRST_STICK + inputMappingGetThrottle());
   }
   if (--thrSrc < MAX_POTS)
     return (int16_t)(thrSrc + MIXSRC_FIRST_POT);
@@ -192,11 +192,12 @@ int16_t throttleSource2Source(int16_t thrSrc)
 
 int16_t source2ThrottleSource(int16_t src)
 {
-  if (src == MIXSRC_Thr)
+  if (src == MIXSRC_FIRST_STICK + inputMappingGetThrottle()) {
     return 0;
-  else if (src <= MIXSRC_LAST_POT)
+  } else if (src <= MIXSRC_LAST_POT) {
     return src - MIXSRC_FIRST_POT + 1;
-  else if (src <= MIXSRC_LAST_CH)
+  } else if (src <= MIXSRC_LAST_CH) {
     return src - MIXSRC_FIRST_CH + MAX_POTS + 1;
+  }
   return -1;
 }

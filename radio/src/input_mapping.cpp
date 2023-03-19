@@ -24,43 +24,6 @@
 
 #include "opentx.h"
 
-bool inputMappingModesUsed()
-{
-#if defined(SURFACE_RADIO)
-  return false;
-#else
-  return true;
-#endif
-}
-
-/*
-mode1 rud ele thr ail
-mode2 rud thr ele ail
-mode3 ail ele thr rud
-mode4 ail thr ele rud
-*/
-const uint8_t _input_mode_lut[]  = {
-    0, 1, 2, 3,
-    0, 2, 1, 3,
-    3, 1, 2, 0,
-    3, 2, 1, 0
-};
-
-uint8_t inputMappingConvertMode(uint8_t mode, uint8_t ch)
-{
-  if (inputMappingModesUsed() && ch < adcGetMaxInputs(ADC_INPUT_MAIN)) {
-    mode = min(mode, uint8_t(MAX_INPUT_MODES - 1));
-    return _input_mode_lut[mode * MAX_STICKS + ch];
-  }
-
-  return ch;
-}
-
-uint8_t inputMappingConvertMode(uint8_t ch)
-{
-  return inputMappingConvertMode(g_eeGeneral.stickMode, ch);
-}
-
 #define _CHANNEL_ORDER(a,b,c,d) \
   (((a) & 0x3) | (((b) & 0x3) << 2) | (((c) & 0x3) << 4) | (((c) & 0x3) << 6))
 
@@ -108,6 +71,58 @@ const uint8_t _channel_order_lut[] = {
   _CHANNEL_ORDER(AIL,THR,ELE,RUD),
 };
 #endif
+
+#if !defined(SURFACE_RADIO)
+
+/*
+mode1 rud ele thr ail
+mode2 rud thr ele ail
+mode3 ail ele thr rud
+mode4 ail thr ele rud
+*/
+
+const uint8_t _input_mode_lut[]  = {
+    RUD, ELE, THR, AIL,
+    RUD, THR, ELE, RUD,
+    AIL, ELE, THR, RUD,
+    AIL, THR, ELE, RUD
+};
+
+#endif
+
+bool inputMappingModesUsed()
+{
+#if defined(SURFACE_RADIO)
+  return false;
+#else
+  return true;
+#endif
+}
+
+uint8_t inputMappingGetThrottle()
+{
+#if defined(SURFACE_RADIO)
+  return TH;
+#else
+  return THR;
+#endif
+}
+
+uint8_t inputMappingConvertMode(uint8_t mode, uint8_t ch)
+{
+#if !defined(SURFACE_RADIO)
+  if (ch < adcGetMaxInputs(ADC_INPUT_MAIN)) {
+    mode = min(mode, uint8_t(MAX_INPUT_MODES - 1));
+    return _input_mode_lut[mode * MAX_STICKS + ch];
+  }
+#endif
+  return ch;
+}
+
+uint8_t inputMappingConvertMode(uint8_t ch)
+{
+  return inputMappingConvertMode(g_eeGeneral.stickMode, ch);
+}
 
 uint8_t inputMappingChannelOrder(uint8_t order, uint8_t ch)
 {

@@ -29,6 +29,7 @@
 #include "opentx_types.h"
 #include "globals.h"
 #include "serial.h"
+#include "input_mapping.h"
 
 #if defined(PCBTARANIS)
   #define N_TARANIS_FIELD(x)
@@ -700,30 +701,26 @@ PACK(struct ModelData {
 
   uint8_t getThrottleStickTrimSource() const
   {
-    // The order here is TERA, so that 0 (default) means Throttle
-    switch (thrTrimSw) {
-      case 0:
-        return MIXSRC_TrimThr;
-      case 2:
-        return MIXSRC_TrimRud;
-      default:
-        return thrTrimSw + MIXSRC_FIRST_TRIM;
+    // Makes Throttle the default (=0)
+    auto thr = inputMappingGetThrottle();
+    if (thrTrimSw == 0) {
+      return MIXSRC_FIRST_TRIM + thr;
+    } else if (thrTrimSw == thr) {
+      return MIXSRC_FIRST_TRIM;
+    } else {
+      return MIXSRC_FIRST_TRIM + thrTrimSw;
     }
   }
 
   void setThrottleStickTrimSource(int16_t src)
   {
-    // The order here is TERA, so that 0 (default) means Throttle
-    switch (src) {
-      case MIXSRC_TrimThr:
-        thrTrimSw = 0;
-        break;
-      case MIXSRC_TrimRud:
-        thrTrimSw = 2;
-        break;
-      default:
-        thrTrimSw = src - MIXSRC_FIRST_TRIM;
-        break;
+    auto thr = inputMappingGetThrottle();
+    if (src == MIXSRC_FIRST_TRIM + thr) {
+      thrTrimSw = 0;
+    } else if (src == MIXSRC_FIRST_TRIM) {
+      thrTrimSw = thr;
+    } else {
+      thrTrimSw = src - MIXSRC_FIRST_TRIM;
     }
   }
 });

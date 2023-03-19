@@ -161,7 +161,7 @@ void menuModelExpoOne(event_t event)
             if (ed->srcRaw >= MIXSRC_FIRST_STICK && ed->srcRaw <= MIXSRC_LAST_STICK) {
               min = -TRIM_OFF;
             }
-            ed->trimSource = -checkIncDecModel(event, -ed->trimSource, min, -TRIM_LAST);
+            ed->trimSource = -checkIncDecModel(event, -ed->trimSource, min, keysGetMaxTrims());
           }
         }
         break;
