@@ -162,15 +162,18 @@ inline bool IS_PREVIOUS_EVENT(event_t evt)
 }
 
 void pushEvent(event_t evt);
+event_t getEvent();
 
 void pauseEvents(event_t event);
 void killEvents(event_t event);
 void killAllEvents();
 bool waitKeysReleased();
-event_t getEvent();
-event_t getTrimEvent();
 bool isEvent();
 bool keyDown();
+
+event_t getTrimEvent();
+void pauseTrimEvents(event_t event);
+void killTrimEvents(event_t event);
 
 uint8_t keysGetState(uint8_t key);
 uint8_t keysGetTrimState(uint8_t trim);

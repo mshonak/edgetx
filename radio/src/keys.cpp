@@ -214,6 +214,12 @@ void pauseEvents(event_t event)
   if (event < (int)DIM(keys)) keys[event].pauseEvents();
 }
 
+void pauseTrimEvents(event_t event)
+{
+  event = EVT_KEY_MASK(event);
+  if (event < (int)DIM(trim_keys)) trim_keys[event].pauseEvents();
+}
+
 // Disables any further event generation (BREAK and REPEAT) for this key,
 // until the key is released
 void killEvents(event_t event)
@@ -221,6 +227,14 @@ void killEvents(event_t event)
   event = EVT_KEY_MASK(event);
   if (event < (int)DIM(keys)) {
     keys[event].killEvents();
+  }
+}
+
+void killTrimEvents(event_t event)
+{
+  event = EVT_KEY_MASK(event);
+  if (event < (int)DIM(trim_keys)) {
+    trim_keys[event].killEvents();
   }
 }
 

@@ -917,7 +917,7 @@ void checkTrims()
       after = 0;
       beepTrim = true;
       AUDIO_TRIM_MIDDLE();
-      pauseEvents(event);
+      pauseTrimEvents(event);
     }
 
 #if defined(GVARS)
@@ -929,13 +929,13 @@ void checkTrims()
         after = vmin;
         beepTrim = false;
         AUDIO_TRIM_MIN();
-        killEvents(event);
+        killTrimEvents(event);
       }
       else if (after > vmax) {
         after = vmax;
         beepTrim = false;
         AUDIO_TRIM_MAX();
-        killEvents(event);
+        killTrimEvents(event);
       }
 
       SET_GVAR_VALUE(gvar, phase, after);
@@ -951,12 +951,12 @@ void checkTrims()
       if (before >= tMin && after <= tMin) {
         beepTrim = false;
         AUDIO_TRIM_MIN();
-        killEvents(event);
+        killTrimEvents(event);
       }
       else if (before <= tMax && after >= tMax) {
         beepTrim = false;
         AUDIO_TRIM_MAX();
-        killEvents(event);
+        killTrimEvents(event);
       }
 
       // If the new value is outside the limit, set it to the limit. This could have
