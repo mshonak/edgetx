@@ -456,7 +456,7 @@ void menuRadioHardware(event_t event)
           // Pots & sliders
           int idx = k - ITEM_RADIO_HARDWARE_POT;
           uint8_t shift = (POT_CFG_BITS * idx);
-          uint8_t mask = POT_CONFIG_MASK(idx);
+          potconfig_t mask = POT_CONFIG_MASK(idx);
 
           // draw hw name
           LcdFlags flags = menuHorizontalPosition < 0 ? attr : 0;
