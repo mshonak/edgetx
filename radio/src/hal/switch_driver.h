@@ -53,7 +53,7 @@ uint8_t getSwitchCount();
 // returns the highest row for a specified column
 uint8_t switchGetMaxRow(uint8_t col);
 
-// returns the maximu number of function switches supported in hardware
+// returns the maximum number of function switches supported in hardware
 uint8_t switchGetMaxFctSwitches();
 
 struct switch_display_pos_t {

@@ -101,7 +101,7 @@
   #define FSWITCH_CONFIG(x)           (bfGet<swconfig_t>(g_model.functionSwitchConfig, FSW_CFG_BITS * (x), FSW_CFG_BITS))
   #define FSWITCH_GROUP(x)            (bfGet<swconfig_t>(g_model.functionSwitchGroup,  FSW_CFG_BITS * (x), FSW_CFG_BITS))
   #define IS_FSWITCH_GROUP_ON(x)      (bfGet<swconfig_t>(g_model.functionSwitchGroup,  FSW_CFG_BITS * NUM_FUNCTIONS_SWITCHES + x, 1))
-  #define IS_SWITCH_FS(x)             (x >= switchGetMaxSwitches())
+  #define IS_SWITCH_FS(x)             (x >= switchGetMaxSwitches() && x < (switchGetMaxSwitches() + switchGetMaxFctSwitches()))
   #define SWITCH_EXISTS(x)            (IS_SWITCH_FS(x)  ? true : (SWITCH_CONFIG(x) != SWITCH_NONE))
   #define IS_CONFIG_3POS(x)           (IS_SWITCH_FS(x)  ? (FSWITCH_CONFIG(x - switchGetMaxSwitches()) == SWITCH_3POS) : (SWITCH_CONFIG(x) == SWITCH_3POS))
   #define IS_CONFIG_TOGGLE(x)         (IS_SWITCH_FS(x)  ? (FSWITCH_CONFIG(x - switchGetMaxSwitches()) == SWITCH_TOGGLE) : (SWITCH_CONFIG(x) == SWITCH_TOGGLE))
