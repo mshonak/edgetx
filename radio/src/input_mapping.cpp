@@ -25,7 +25,7 @@
 #include "opentx.h"
 
 #define _CHANNEL_ORDER(a,b,c,d) \
-  (((a) & 0x3) | (((b) & 0x3) << 2) | (((c) & 0x3) << 4) | (((c) & 0x3) << 6))
+  (((a) & 0x3) | (((b) & 0x3) << 2) | (((c) & 0x3) << 4) | (((d) & 0x3) << 6))
 
 #if defined(SURFACE_RADIO)
 
