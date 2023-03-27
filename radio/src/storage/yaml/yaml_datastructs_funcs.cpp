@@ -809,12 +809,19 @@ static uint32_t r_swtchSrc(const YamlNode* node, const char* val, uint8_t val_le
         val_len--;
     }
 
-    // TODO: check function switches
-    if (val_len > 2 && val[0] == 'S'
+    if (val_len > 3 && val[0] == 'S' && val[1] >= 'W'
+        && val[2] >= '0' && val[2] <= '9'
+        && val[3] >= '0' && val[2] <= '2') {
+
+      ival = switchLookupIdx(val, val_len - 1) * 3;
+      ival += yaml_str2int(val + 3, val_len - 2);
+      ival += SWSRC_FIRST_SWITCH;
+      
+    } else if (val_len > 2 && val[0] == 'S'
         && val[1] >= 'A' && val[1] <= 'Z'
         && val[2] >= '0' && val[2] <= '2') {
 
-      ival = switchLookupIdx(val, 2) * 3;
+      ival = switchLookupIdx(val, val_len - 1) * 3;
       ival += yaml_str2int(val + 2, val_len - 2);
       ival += SWSRC_FIRST_SWITCH;
       
@@ -880,6 +887,7 @@ static bool w_swtchSrc_unquoted(const YamlNode* node, uint32_t val,
 
       auto sw_info = switchInfo(sval);
       str = switchGetCanonicalName(sw_info.quot);
+      if (!str) return true;
       wf(opaque, str, strlen(str));
       str = yaml_unsigned2str(sw_info.rem);
       return wf(opaque, str, strlen(str));

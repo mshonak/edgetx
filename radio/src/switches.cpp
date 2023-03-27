@@ -185,7 +185,8 @@ int switchLookupIdx(char c)
       idx = 2; // SWx
   }
 
-  for (unsigned i = 0; i < switchGetMaxSwitches(); i++) {
+  auto max_switches = switchGetMaxSwitches() + switchGetMaxFctSwitches();
+  for (unsigned i = 0; i < max_switches; i++) {
     const char *name = switchGetName(i);
     if (name[idx] == c) return i;
   }
@@ -200,7 +201,8 @@ int switchLookupIdx(const char* name, size_t len)
   uint8_t idx = 1; // Sx
   if (len > 2) idx = 2; // SWx
 
-  for (unsigned i = 0; i < switchGetMaxSwitches(); i++) {
+  auto max_switches = switchGetMaxSwitches() + switchGetMaxFctSwitches();
+  for (unsigned i = 0; i < max_switches; i++) {
     const char *sw_name = switchGetName(i);
     if (sw_name[idx] == name[idx]) return i;
   }
@@ -242,7 +244,7 @@ bool switchHasCustomName(uint8_t idx)
 
 const char* switchGetCanonicalName(uint8_t idx)
 {
-  if (idx >= switchGetMaxSwitches())
+  if (idx >= switchGetMaxSwitches() + switchGetMaxFctSwitches())
     return nullptr;
 
   return switchGetName(idx);
