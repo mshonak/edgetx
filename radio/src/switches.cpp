@@ -106,9 +106,14 @@ void setFSStartupPosition()
   }
 }
 
+uint8_t getFSLogicalState()
+{
+  return g_model.functionSwitchLogicalState;
+}
+
 uint8_t getFSLogicalState(uint8_t index)
 {
-  return (uint8_t )(bfSingleBitGet(g_model.functionSwitchLogicalState, index) >> (index));
+  return (uint8_t )(bfSingleBitGet(getFSLogicalState(), index) >> (index));
 }
 
 uint8_t getFSPhysicalState(uint8_t index)
@@ -620,6 +625,7 @@ uint8_t getXPotPosition(uint8_t idx)
   return potsPos[idx] & 0x0F;
 }
 
+
 /**
   @brief Calculates new state of logical switches for mixerCurrentFlightMode
 */
@@ -640,8 +646,20 @@ void evalLogicalSwitches(bool isCurrentFlightmode)
   }
 }
 
+static inline uint8_t _bits_set(uint8_t val, uint8_t bits)
+{
+  uint8_t bits_set = 0;
+  do {
+    if (val & 1) ++bits_set;
+    val >>= 1;
+  } while (--bits);
+
+  return bits_set;
+}
+
 swarnstate_t switches_states = 0;
 uint8_t fsswitches_states = 0;
+
 swsrc_t getMovedSwitch()
 {
   static tmr10ms_t s_move_last_time = 0;
@@ -663,16 +681,22 @@ swsrc_t getMovedSwitch()
   }
 
 #if defined(FUNCTION_SWITCHES)
-  auto max_fct_switches = switchGetMaxFctSwitches();
-  for (uint8_t i = 0; i < max_fct_switches; i++) {
-    if (FSWITCH_CONFIG(i) != SWITCH_NONE) {
-      auto prev = (uint8_t )(bfSingleBitGet(fsswitches_states, i) >> (i));
-      uint8_t next = getFSLogicalState(i);
-      if (prev != next) {
-        fsswitches_states = (fsswitches_states & ~(1 << i)) | (next << i);
-        result = (max_reg_switches + i) * 3 + (next ? 2 : 0);
-      }
+  auto fsswitches_cur_state = getFSLogicalState();
+  auto fsswitches_xor = fsswitches_cur_state ^ fsswitches_states;
+  fsswitches_states = fsswitches_cur_state;
+
+  if (fsswitches_xor) {
+    // we have some change...
+    if (_bits_set(fsswitches_xor, switchGetMaxFctSwitches()) > 1) {
+      // multiple bits change: use the one that turned ON
+      fsswitches_xor &= fsswitches_cur_state;
+    } else {
+      // only one bit changed: use the one that changed
     }
+
+    auto sw = __builtin_ctz(fsswitches_xor);
+    auto pos = (fsswitches_cur_state & fsswitches_xor) ? 2 : 0;
+    result = (max_reg_switches + sw) * 3 + pos + SWSRC_FIRST_SWITCH;
   }
 #endif
 
