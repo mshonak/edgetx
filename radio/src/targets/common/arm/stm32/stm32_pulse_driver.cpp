@@ -170,6 +170,25 @@ void stm32_pulse_deinit(const stm32_pulse_timer_t* tim)
   LL_GPIO_Init(tim->GPIOx, &pinInit);
 }
 
+static inline bool _is_complementary_channel(uint32_t channel)
+{
+  return (channel == LL_TIM_CHANNEL_CH1N) || (channel == LL_TIM_CHANNEL_CH2N) ||
+         (channel == LL_TIM_CHANNEL_CH3N);
+}
+
+static const uint32_t _base_channel[] = {
+  LL_TIM_CHANNEL_CH1, LL_TIM_CHANNEL_CH1,
+  LL_TIM_CHANNEL_CH2, LL_TIM_CHANNEL_CH2,
+  LL_TIM_CHANNEL_CH3, LL_TIM_CHANNEL_CH3,
+  LL_TIM_CHANNEL_CH4
+};
+
+static inline uint32_t _get_base_channel(uint32_t channel)
+{
+  auto idx = TIM_GET_CHANNEL_INDEX(channel);
+  return _base_channel[idx];
+}
+
 void stm32_pulse_config_output(const stm32_pulse_timer_t* tim, bool polarity,
                                uint32_t ocmode, uint32_t cmp_val)
 {
@@ -179,14 +198,14 @@ void stm32_pulse_config_output(const stm32_pulse_timer_t* tim, bool polarity,
   ocInit.OCMode = ocmode;
   ocInit.CompareValue = cmp_val;
 
-  uint32_t channel = tim->TIM_Channel;
-  if (tim->TIM_Channel != LL_TIM_CHANNEL_CH1N) {
+  uint32_t channel = _get_base_channel(tim->TIM_Channel);
+  bool comp_ch = _is_complementary_channel(tim->TIM_Channel);
+  if (!comp_ch) {
     ocInit.OCState = LL_TIM_OCSTATE_ENABLE;
     ocInit.OCNState = LL_TIM_OCSTATE_DISABLE;
   } else {
     ocInit.OCState = LL_TIM_OCSTATE_DISABLE;
     ocInit.OCNState = LL_TIM_OCSTATE_ENABLE;
-    channel = LL_TIM_CHANNEL_CH1;
   }
 
   uint32_t ll_polarity;
@@ -196,7 +215,7 @@ void stm32_pulse_config_output(const stm32_pulse_timer_t* tim, bool polarity,
     ll_polarity = LL_TIM_OCPOLARITY_LOW;
   }
 
-  if (tim->TIM_Channel != LL_TIM_CHANNEL_CH1N) {
+  if (!comp_ch) {
     ocInit.OCPolarity = ll_polarity;
   } else {
     ocInit.OCNPolarity = ll_polarity;
@@ -242,9 +261,8 @@ bool stm32_pulse_if_not_running_disable(const stm32_pulse_timer_t* tim)
 
 static void set_compare_reg(const stm32_pulse_timer_t* tim, uint32_t val)
 {
-  switch(tim->TIM_Channel){
+  switch(_get_base_channel(tim->TIM_Channel)){
   case LL_TIM_CHANNEL_CH1:
-  case LL_TIM_CHANNEL_CH1N:
     LL_TIM_OC_SetCompareCH1(tim->TIMx, val);
     break;
   case LL_TIM_CHANNEL_CH2:
@@ -281,29 +299,20 @@ void stm32_pulse_stop(const stm32_pulse_timer_t* tim)
 
 static void set_oc_mode(const stm32_pulse_timer_t* tim, uint32_t ocmode)
 {
-  uint32_t channel = tim->TIM_Channel;
-  if (channel == LL_TIM_CHANNEL_CH1N)
-    channel = LL_TIM_CHANNEL_CH1;
-
+  uint32_t channel = _get_base_channel(tim->TIM_Channel);
   LL_TIM_OC_SetMode(tim->TIMx, channel, ocmode);
 }
 
 void stm32_pulse_wait_for_completed(const stm32_pulse_timer_t* tim)
 {
-  uint32_t channel = tim->TIM_Channel;
-  if (channel == LL_TIM_CHANNEL_CH1N)
-    channel = LL_TIM_CHANNEL_CH1;
-
+  uint32_t channel = _get_base_channel(tim->TIM_Channel);
   while(LL_TIM_IsEnabledCounter(tim->TIMx) &&
         LL_TIM_OC_GetMode(tim->TIMx, channel) != LL_TIM_OCMODE_FORCED_INACTIVE);
 }
 
 static void force_start_level(const stm32_pulse_timer_t* tim)
 {
-  uint32_t channel = tim->TIM_Channel;
-  if (channel == LL_TIM_CHANNEL_CH1N)
-    channel = LL_TIM_CHANNEL_CH1;
-
+  uint32_t channel = _get_base_channel(tim->TIM_Channel);
   uint32_t mode = LL_TIM_OC_GetMode(tim->TIMx, channel);
   LL_TIM_OC_SetMode(tim->TIMx, channel, LL_TIM_OCMODE_FORCED_ACTIVE);
   LL_TIM_OC_SetMode(tim->TIMx, channel, mode);
