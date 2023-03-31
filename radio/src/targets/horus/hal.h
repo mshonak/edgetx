@@ -446,6 +446,23 @@
   #endif
 #else
   #define AUX_SERIAL_RCC_AHB1Periph           0
+  #if defined(RADIO_TX16S)
+    #define LED_STRIP_LENGTH                  8
+    #define LED_STRIP_GPIO                    GPIOB
+    #define LED_STRIP_GPIO_PIN_DATA           LL_GPIO_PIN_10 // PB.10 / TIM2_CH3
+    #define LED_STRIP_GPIO_PIN_AF             LL_GPIO_AF_1   // TIM1 / TIM2
+    #define LED_STRIP_TIMER                   TIM2
+    #define LED_STRIP_TIMER_FREQ             (PERI1_FREQUENCY * TIMER_MULT_APB1)
+    #define LED_STRIP_TIMER_CHANNEL           LL_TIM_CHANNEL_CH3
+    #define LED_STRIP_TIMER_DMA               DMA1
+    #define LED_STRIP_TIMER_DMA_CHANNEL       LL_DMA_CHANNEL_3
+    #define LED_STRIP_TIMER_DMA_STREAM        LL_DMA_STREAM_1
+    #define LED_STRIP_TIMER_DMA_IRQn          DMA1_Stream1_IRQn
+    #define LED_STRIP_TIMER_DMA_IRQHandler    DMA1_Stream1_IRQHandler
+    // Debug pin
+    #define LED_STRIP_DEBUG_GPIO              GPIOB
+    #define LED_STRIP_DEBUG_GPIO_PIN          LL_GPIO_PIN_11
+  #endif
 #endif
 
 #if defined(AUX2_SERIAL)

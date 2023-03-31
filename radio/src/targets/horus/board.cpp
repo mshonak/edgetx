@@ -19,9 +19,12 @@
  * GNU General Public License for more details.
  */
 
+#include "stm32_ws2812.h"
+
 #include "board.h"
 #include "boards/generic_stm32/module_ports.h"
 #include "boards/generic_stm32/intmodule_heartbeat.h"
+#include "boards/generic_stm32/rgb_leds.h"
 
 #include "hal/adc_driver.h"
 #include "hal/trainer_driver.h"
@@ -183,6 +186,22 @@ void boardInit()
 #endif
 
   ledInit();
+
+#if defined(LED_STRIP_GPIO)
+  // ws2812_init(&_led_timer, LED_STRIP_LENGTH);
+  // for (uint8_t i = 0; i < LED_STRIP_LENGTH; i++) {
+  //   ws2812_set_color(i, 0, 0, 50);
+  // }
+  // ws2812_update(&_led_timer);
+
+  stm32_pulse_init(&_led_timer, 1000000); // 1 MHz
+  stm32_pulse_set_period(&_led_timer, 20000); // 20ms
+  stm32_pulse_config_output(&_led_timer, true, LL_TIM_OCMODE_PWM1, 1500); // 1500us
+  stm32_pulse_start(&_led_timer);
+
+  // stm32_pulse_set_cmp_val(&_led_timer, 998); // 998us
+  
+#endif
 
 #if defined(USB_CHARGER)
   usbChargerInit();

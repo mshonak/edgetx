@@ -49,6 +49,39 @@ static void enable_tim_clock(TIM_TypeDef* TIMx)
   }
 }
 
+static void init_dma_arr_mode(const stm32_pulse_timer_t* tim)
+{
+  // re-init DMA stream
+  LL_DMA_DeInit(tim->DMAx, tim->DMA_Stream);
+
+  LL_DMA_InitTypeDef dmaInit;
+  LL_DMA_StructInit(&dmaInit);
+
+  // Direction
+  dmaInit.Direction = LL_DMA_DIRECTION_MEMORY_TO_PERIPH;
+  
+  // Source
+  dmaInit.MemoryOrM2MDstIncMode = LL_DMA_MEMORY_INCREMENT;
+
+  // Destination
+  dmaInit.PeriphOrM2MSrcAddress = CONVERT_PTR_UINT(&tim->TIMx->ARR);
+  dmaInit.PeriphOrM2MSrcIncMode = LL_DMA_PERIPH_NOINCREMENT;
+
+  // Data width
+  if (IS_TIM_32B_COUNTER_INSTANCE(tim->TIMx)) {
+    dmaInit.MemoryOrM2MDstDataSize = LL_DMA_MDATAALIGN_WORD;
+    dmaInit.PeriphOrM2MSrcDataSize = LL_DMA_PDATAALIGN_WORD;
+  } else {
+    dmaInit.MemoryOrM2MDstDataSize = LL_DMA_MDATAALIGN_HALFWORD;
+    dmaInit.PeriphOrM2MSrcDataSize = LL_DMA_PDATAALIGN_HALFWORD;
+  }
+
+  dmaInit.Channel = tim->DMA_Channel;
+  dmaInit.Priority = LL_DMA_PRIORITY_VERYHIGH;
+
+  LL_DMA_Init(tim->DMAx, tim->DMA_Stream, &dmaInit);  
+}
+
 void stm32_pulse_init(const stm32_pulse_timer_t* tim, uint32_t freq)
 {
   if (tim->DMA_TC_CallbackPtr) {
@@ -79,15 +112,16 @@ void stm32_pulse_init(const stm32_pulse_timer_t* tim, uint32_t freq)
   enable_tim_clock(tim->TIMx);
   LL_TIM_Init(tim->TIMx, &timInit);
 
-  if (tim->DMAx) {
-    // Enable DMA IRQ
+  if (tim->DMAx && (int32_t)tim->DMA_IRQn >= 0) {
+    init_dma_arr_mode(tim);
     NVIC_EnableIRQ(tim->DMA_IRQn);
     NVIC_SetPriority(tim->DMA_IRQn, 7);
   }
 
-  // Enable timer IRQ
-  NVIC_EnableIRQ(tim->TIM_IRQn);
-  NVIC_SetPriority(tim->TIM_IRQn, 7);
+  if ((int32_t)tim->TIM_IRQn >= 0) {
+    NVIC_EnableIRQ(tim->TIM_IRQn);
+    NVIC_SetPriority(tim->TIM_IRQn, 7);
+  }
 }
 
 static void disable_tim_clock(TIM_TypeDef* TIMx)
@@ -108,10 +142,13 @@ static void disable_tim_clock(TIM_TypeDef* TIMx)
 void stm32_pulse_deinit(const stm32_pulse_timer_t* tim)
 {
   // Disable IRQs
-  if (tim->DMAx) {
+  if ((int32_t)tim->DMA_IRQn >= 0) {
     NVIC_DisableIRQ(tim->DMA_IRQn);
   }
-  NVIC_DisableIRQ(tim->TIM_IRQn);
+
+  if ((int32_t)tim->TIM_IRQn >= 0) {
+    NVIC_DisableIRQ(tim->TIM_IRQn);
+  }
 
   if (tim->DMAx) {
     LL_DMA_DeInit(tim->DMAx, tim->DMA_Stream);
@@ -171,7 +208,6 @@ void stm32_pulse_config_output(const stm32_pulse_timer_t* tim, bool polarity,
   if (IS_TIM_BREAK_INSTANCE(tim->TIMx)) {
     LL_TIM_EnableAllOutputs(tim->TIMx);
   }
-
 }
 
 void stm32_pulse_set_polarity(const stm32_pulse_timer_t* tim, bool polarity)
@@ -223,9 +259,24 @@ static void set_compare_reg(const stm32_pulse_timer_t* tim, uint32_t val)
   }
 }
 
+void stm32_pulse_set_period(const stm32_pulse_timer_t* tim, uint32_t period)
+{
+  LL_TIM_SetAutoReload(tim->TIMx, period - 1);
+}
+
 void stm32_pulse_set_cmp_val(const stm32_pulse_timer_t* tim, uint32_t cmp_val)
 {
   set_compare_reg(tim, cmp_val);
+}
+
+void stm32_pulse_start(const stm32_pulse_timer_t* tim)
+{
+  LL_TIM_EnableCounter(tim->TIMx);
+}
+
+void stm32_pulse_stop(const stm32_pulse_timer_t* tim)
+{
+  LL_TIM_DisableCounter(tim->TIMx);
 }
 
 static void set_oc_mode(const stm32_pulse_timer_t* tim, uint32_t ocmode)
@@ -265,40 +316,10 @@ void stm32_pulse_start_dma_req(const stm32_pulse_timer_t* tim,
   // Re-configure timer output
   set_compare_reg(tim, cmp_val);
   set_oc_mode(tim, ocmode);
+
+  LL_DMA_SetDataLength(tim->DMAx, tim->DMA_Stream, length);
+  LL_DMA_SetMemoryAddress(tim->DMAx, tim->DMA_Stream, (uint32_t)pulses);
   
-  // re-init DMA stream
-  LL_DMA_DeInit(tim->DMAx, tim->DMA_Stream);
-
-  LL_DMA_InitTypeDef dmaInit;
-  LL_DMA_StructInit(&dmaInit);
-
-  // Direction
-  dmaInit.Direction = LL_DMA_DIRECTION_MEMORY_TO_PERIPH;
-  
-  // Source
-  dmaInit.MemoryOrM2MDstAddress = CONVERT_PTR_UINT(pulses);
-  dmaInit.MemoryOrM2MDstIncMode = LL_DMA_MEMORY_INCREMENT;
-
-  // Destination
-  dmaInit.PeriphOrM2MSrcAddress = CONVERT_PTR_UINT(&tim->TIMx->ARR);
-  dmaInit.PeriphOrM2MSrcIncMode = LL_DMA_PERIPH_NOINCREMENT;
-
-  // Data width
-  if (IS_TIM_32B_COUNTER_INSTANCE(tim->TIMx)) {
-    // TODO: try using 16-bit source as well
-    dmaInit.MemoryOrM2MDstDataSize = LL_DMA_MDATAALIGN_WORD;
-    dmaInit.PeriphOrM2MSrcDataSize = LL_DMA_PDATAALIGN_WORD;
-  } else {
-    dmaInit.MemoryOrM2MDstDataSize = LL_DMA_MDATAALIGN_HALFWORD;
-    dmaInit.PeriphOrM2MSrcDataSize = LL_DMA_PDATAALIGN_HALFWORD;
-  }
-
-  dmaInit.NbData = length;
-  dmaInit.Channel = tim->DMA_Channel;
-  dmaInit.Priority = LL_DMA_PRIORITY_VERYHIGH;
-
-  LL_DMA_Init(tim->DMAx, tim->DMA_Stream, &dmaInit);
-
   // Enable TC IRQ
   LL_DMA_EnableIT_TC(tim->DMAx, tim->DMA_Stream);
 

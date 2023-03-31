@@ -62,7 +62,12 @@ void stm32_pulse_set_polarity(const stm32_pulse_timer_t* tim, bool polarity);
 
 bool stm32_pulse_get_polarity(const stm32_pulse_timer_t* tim);
 
+void stm32_pulse_set_period(const stm32_pulse_timer_t* tim, uint32_t period);
+
 void stm32_pulse_set_cmp_val(const stm32_pulse_timer_t* tim, uint32_t cmp_val);
+
+void stm32_pulse_start(const stm32_pulse_timer_t* tim);
+void stm32_pulse_stop(const stm32_pulse_timer_t* tim);
 
 void stm32_pulse_wait_for_completed(const stm32_pulse_timer_t* tim);
 

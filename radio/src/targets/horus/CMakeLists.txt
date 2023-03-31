@@ -106,6 +106,7 @@ if (PCB STREQUAL X10)
     set(USB_CHARGER YES)
     set(DEFAULT_THEME "DARKBLUE")
     add_definitions(-DMANUFACTURER_RADIOMASTER)
+    set(AUX_SERIAL OFF) # WS2812
     if (NOT BLUETOOTH)
       set(AUX2_SERIAL ON)
     endif()
@@ -269,6 +270,7 @@ set(FIRMWARE_SRC
   boards/generic_stm32/aux_ports.cpp
   boards/generic_stm32/sport_update.cpp
   boards/generic_stm32/intmodule_heartbeat.cpp
+  boards/generic_stm32/rgb_leds.cpp
   targets/common/arm/stm32/stm32_exti_driver.cpp
   targets/common/arm/stm32/mixer_scheduler_driver.cpp
   targets/common/arm/stm32/timers_driver.cpp
@@ -279,6 +281,7 @@ set(FIRMWARE_SRC
   targets/common/arm/stm32/pwr_driver.cpp
   targets/common/arm/stm32/heartbeat_driver.cpp
   targets/common/arm/stm32/trainer_driver.cpp
+  targets/common/arm/stm32/stm32_ws2812.cpp
   targets/common/arm/stm32/sdio_sd.c
   )
 
