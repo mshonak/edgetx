@@ -63,7 +63,7 @@ void enableVBatBridge()
   LL_ADC_SetCommonPathInternalCh(ADC_COMMON, LL_ADC_PATH_INTERNAL_VBAT);
 
   auto channel = adcGetInputOffset(ADC_INPUT_RTC_BAT);
-  _adc_inhibit_mask |= (1 << channel);
+  _adc_inhibit_mask &= ~(1 << channel);
 }
 
 void disableVBatBridge()
@@ -71,7 +71,7 @@ void disableVBatBridge()
   if (adcGetMaxInputs(ADC_INPUT_RTC_BAT) < 1) return;
 
   auto channel = adcGetInputOffset(ADC_INPUT_RTC_BAT);
-  _adc_inhibit_mask &= ~(1 << channel);
+  _adc_inhibit_mask |= (1 << channel);
 
   // Set internal measurement path to none
   LL_ADC_SetCommonPathInternalCh(ADC_COMMON, LL_ADC_PATH_INTERNAL_NONE);
