@@ -203,9 +203,13 @@ uint16_t getRTCBatteryVoltage()
 {
   // anaIn() outputs value divided by (1 << ANALOG_SCALE)
   if (adcGetMaxInputs(ADC_INPUT_RTC_BAT) < 1) return 0;
-
+#if defined(STM32F413xx)
+  return (anaIn(adcGetInputOffset(ADC_INPUT_RTC_BAT)) * ADC_VREF_PREC2) /
+         (1024 >> ANALOG_SCALE);
+#else
   return (anaIn(adcGetInputOffset(ADC_INPUT_RTC_BAT)) * ADC_VREF_PREC2) /
          (2048 >> ANALOG_SCALE);
+#endif
 }
 
 uint16_t getAnalogValue(uint8_t index)

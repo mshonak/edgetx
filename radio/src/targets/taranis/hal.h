@@ -22,19 +22,25 @@
 #ifndef _HAL_H_
 #define _HAL_H_
 
-#if defined(STM32F4)
+#if defined(STM32F413xx)
+  #define CPU_FREQ            100000000
+  #define PERI1_FREQUENCY     50000000
+  #define PERI2_FREQUENCY     100000000
+  #define TIMER_MULT_APB1     1
+  #define TIMER_MULT_APB2     1
+#elif defined(STM32F4)
   #define CPU_FREQ            168000000
   #define PERI1_FREQUENCY     42000000
   #define PERI2_FREQUENCY     84000000
+  #define TIMER_MULT_APB1     2
+  #define TIMER_MULT_APB2     2
 #else
   #define CPU_FREQ            120000000
   #define PERI1_FREQUENCY     30000000
   #define PERI2_FREQUENCY     60000000
+  #define TIMER_MULT_APB1     2
+  #define TIMER_MULT_APB2     2
 #endif
-
-#define TIMER_MULT_APB1                 2
-#define TIMER_MULT_APB2                 2
-
 // Keys
 #if defined(PCBX9E)
   #define KEYS_GPIO_REG_MENU            GPIOD

@@ -66,6 +66,10 @@ if(CPU_TYPE_FULL STREQUAL STM32F429xI)
     ${STM32_STDPERIPH_DIR}/src/stm32f4xx_dma2d.c
     ${STM32_STDPERIPH_DIR}/src/stm32f4xx_sdio.c
     )
+elseif (CPU_TYPE_FULL STREQUAL STM32F413xG)
+  set(STM32_STDPERIPH_SRC ${STM32_STDPERIPH_SRC}
+    targets/${TARGET_DIR}/startup_stm32f413vgtx.s
+  )
 else()
   set(STM32_STDPERIPH_SRC ${STM32_STDPERIPH_SRC}
     targets/${TARGET_DIR}/startup_stm32f40_41xxx.s
