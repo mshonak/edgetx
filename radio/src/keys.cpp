@@ -286,7 +286,7 @@ uint8_t keysGetState(uint8_t key)
 
 uint8_t keysGetTrimState(uint8_t trim)
 {
-  if (trim >= MAX_TRIMS) return 0;
+  if (trim >= keysGetMaxTrims() * 2) return 0;
   return trim_keys[trim].pressed();
 }
 

@@ -83,7 +83,7 @@ mode4 ail thr ele rud
 
 const uint8_t _input_mode_lut[]  = {
     RUD, ELE, THR, AIL,
-    RUD, THR, ELE, RUD,
+    RUD, THR, ELE, AIL,
     AIL, ELE, THR, RUD,
     AIL, THR, ELE, RUD
 };
