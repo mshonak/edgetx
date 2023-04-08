@@ -214,8 +214,8 @@ bool isSourceAvailable(int source)
     return false;
 #endif
 
-  if (source >= MIXSRC_FIRST_CH && source <= MIXSRC_LAST_CH) {
-    return isChannelUsed(source - MIXSRC_FIRST_CH);
+  if (source >= MIXSRC_FIRST_TRIM && source <= MIXSRC_LAST_TRIM) {
+    return (source - MIXSRC_FIRST_TRIM) < keysGetMaxTrims();
   }
 
   if (source >= MIXSRC_FIRST_LOGICAL_SWITCH && source <= MIXSRC_LAST_LOGICAL_SWITCH) {
@@ -223,13 +223,24 @@ bool isSourceAvailable(int source)
     return (cs->func != LS_FUNC_NONE);
   }
 
+  if (source >= MIXSRC_FIRST_TRAINER && source <= MIXSRC_LAST_TRAINER)
+    return g_model.trainerData.mode > 0;
+
+  if (source >= MIXSRC_FIRST_CH && source <= MIXSRC_LAST_CH) {
+    return isChannelUsed(source - MIXSRC_FIRST_CH);
+  }
+
 #if !defined(GVARS)
   if (source >= MIXSRC_GVAR1 && source <= MIXSRC_LAST_GVAR)
     return false;
 #endif
 
-  if (source >= MIXSRC_FIRST_TRAINER && source <= MIXSRC_LAST_TRAINER)
-    return g_model.trainerData.mode > 0;
+  // TX VOLTAGE, TIME and GPS are always true
+
+  if (source >= MIXSRC_FIRST_TIMER && source <= MIXSRC_LAST_TIMER) {
+    TimerData *timer = &g_model.timers[source - MIXSRC_FIRST_TIMER];
+    return timer->mode != 0;
+  }
 
   if (source >= MIXSRC_FIRST_TELEM && source <= MIXSRC_LAST_TELEM) {
     div_t qr = div(source - MIXSRC_FIRST_TELEM, 3);
