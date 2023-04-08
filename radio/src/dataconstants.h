@@ -574,7 +574,9 @@ enum Functions {
   FUNC_PLAY_SOUND = FUNC_FIRST_WITHOUT_ENABLE,
   FUNC_PLAY_TRACK,
   FUNC_PLAY_VALUE,
+  FUNC_RESERVE4,
   FUNC_PLAY_SCRIPT,
+  FUNC_RESERVE5,
   FUNC_BACKGND_MUSIC,
   FUNC_BACKGND_MUSIC_PAUSE,
   FUNC_VARIO,
@@ -583,10 +585,8 @@ enum Functions {
   FUNC_BACKLIGHT,
   FUNC_SCREENSHOT,
   FUNC_RACING_MODE,
-#if defined(COLORLCD)
   FUNC_DISABLE_TOUCH,
   FUNC_SET_SCREEN,
-#endif
 #if defined(DEBUG)
   FUNC_TEST,  // should remain the last before MAX as not added in Companion
 #endif

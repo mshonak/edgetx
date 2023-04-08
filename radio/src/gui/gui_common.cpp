@@ -561,6 +561,7 @@ bool isAssignableFunctionAvailable(int function, CustomFunctionData * functions)
 #if !defined(HAPTIC)
     case FUNC_HAPTIC:
 #endif
+    case FUNC_RESERVE4:
 #if !defined(DANGEROUS_MODULE_FUNCTIONS)
     case FUNC_RANGECHECK:
     case FUNC_BIND:
@@ -568,8 +569,14 @@ bool isAssignableFunctionAvailable(int function, CustomFunctionData * functions)
 #if !defined(LUA)
     case FUNC_PLAY_SCRIPT:
 #endif
-    case FUNC_MAX:
+    case FUNC_RESERVE5:
       return false;
+
+#if !defined(COLORLCD)
+    case FUNC_DISABLE_TOUCH:
+    case FUNC_SET_SCREEN:
+      return false;
+#endif
 
     default:
       return true;
