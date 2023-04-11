@@ -730,6 +730,8 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
     idx -= MIXSRC_FIRST_GVAR;
     strAppendStringWithIndex(dest, STR_GV, idx + 1);
   } else if (idx < MIXSRC_FIRST_TIMER) {
+    idx -= MIXSRC_TX_VOLTAGE;
+
     // Built-in sources: TX Voltage, Time, GPS (+ reserved)
     const char* src_str;
     switch(idx) {
@@ -740,7 +742,7 @@ char *getSourceString(char (&dest)[L], mixsrc_t idx)
       src_str = STR_SRC_TIME;
       break;
     case MIXSRC_TX_GPS:
-      src_str = STR_SRC_GPS;
+      src_str = STR_SRC_BATT;
       break;
     default:
       src_str = "";

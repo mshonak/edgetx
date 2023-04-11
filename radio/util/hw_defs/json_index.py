@@ -53,7 +53,7 @@ def build_switch_gpio_port_index(switches):
     for switch in switches:
         sw_type = switch['type']
 
-        if sw_type == '2POS':
+        if sw_type == '2POS' or sw_type == 'FSWITCH':
             append_to_index(gpios, switch['gpio'], switch['pin'])
 
         elif sw_type == '3POS':

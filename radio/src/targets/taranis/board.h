@@ -133,7 +133,7 @@ uint32_t isBootloaderStart(const uint8_t * buffer);
   #define TRAINER_CONNECTED()           true
 #endif
 
-#if defined(RADIO_TPRO)
+#if defined(FUNCTION_SWITCHES)
 
 #define NUM_FUNCTIONS_SWITCHES 6
 
@@ -161,8 +161,11 @@ uint32_t isBootloaderStart(const uint8_t * buffer);
 extern uint8_t fsPreviousState;
 void evalFunctionSwitches();
 void setFSStartupPosition();
+void fsLedOff(uint8_t);
+void fsLedOn(uint8_t);
 uint8_t getFSLogicalState(uint8_t index);
 uint8_t getFSPhysicalState(uint8_t index);
+bool getFSLedState(uint8_t index);
 #endif
 
 PACK(typedef struct {
@@ -362,10 +365,6 @@ void ledOff();
 void ledRed();
 void ledGreen();
 void ledBlue();
-#if defined(FUNCTION_SWITCHES)
-void fsLedOff(uint8_t);
-void fsLedOn(uint8_t);
-#endif
 
 // LCD driver
 #if defined(PCBX9D) || defined(PCBX9DP) || defined(PCBX9E)

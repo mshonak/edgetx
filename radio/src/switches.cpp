@@ -186,7 +186,7 @@ int switchLookupIdx(char c)
   }
 
   auto max_switches = switchGetMaxSwitches() + switchGetMaxFctSwitches();
-  for (unsigned i = 0; i < max_switches; i++) {
+  for (int i = 0; i < max_switches; i++) {
     const char *name = switchGetName(i);
     if (name[idx] == c) return i;
   }
@@ -202,7 +202,7 @@ int switchLookupIdx(const char* name, size_t len)
   if (len > 2) idx = 2; // SWx
 
   auto max_switches = switchGetMaxSwitches() + switchGetMaxFctSwitches();
-  for (unsigned i = 0; i < max_switches; i++) {
+  for (int i = 0; i < max_switches; i++) {
     const char *sw_name = switchGetName(i);
     if (sw_name[idx] == name[idx]) return i;
   }

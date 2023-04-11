@@ -85,7 +85,7 @@ void watchdogInit(unsigned int duration)
 
 #if !defined(BOOT)
 
-#if defined(RADIO_TPRO)
+#if defined(FUNCTION_SWITCHES)
 #include "storage/storage.h"
 #endif
 
@@ -168,9 +168,7 @@ void boardInit()
 
 #if defined(STATUS_LEDS)
   ledInit();
-#if defined(RADIO_T8) || defined(RADIO_COMMANDO8) || defined(RADIO_TLITE) || \
-    defined(RADIO_TPRO) || defined(RADIO_TX12) || defined(RADIO_TX12MK2) ||  \
-    defined(RADIO_ZORRO) || defined(RADIO_BOXER)
+#if defined(MANUFACTURER_RADIOMASTER) || defined(MANUFACTURER_JUMPER) || defined(RADIO_COMMANDO8)
   ledBlue();
 #else
   ledGreen();
@@ -178,7 +176,7 @@ void boardInit()
 #endif
 
 // Support for FS Led to indicate battery charge level
-#if defined(RADIO_TPRO)
+#if defined(FUNCTION_SWITCHES)
   // This is needed to prevent radio from starting when usb is plugged to charge
   usbInit();
   // prime debounce state...

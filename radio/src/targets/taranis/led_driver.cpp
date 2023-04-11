@@ -69,6 +69,11 @@ void fsLedOn(uint8_t index)
 {
   GPIO_FSLED_GPIO_ON(FSLED_GPIO, fsLeds[index]);
 }
+
+bool getFSLedState(uint8_t index)
+{
+  return (FSLED_GPIO->ODR & fsLeds[index]);
+}
 #endif
 
 void ledOff()

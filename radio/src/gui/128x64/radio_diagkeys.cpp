@@ -23,6 +23,7 @@
 #include "hal/rotary_encoder.h"
 #include "hal/switch_driver.h"
 #include "hal/key_driver.h"
+#include "switches.h"
 
 void displayKeyState(uint8_t x, uint8_t y, uint8_t key)
 {
@@ -49,6 +50,28 @@ static EnumKeys get_ith_key(uint8_t i)
   // we assume: i < keysGetMaxKeys()
   return (EnumKeys)0;
 }
+
+#if defined(FUNCTION_SWITCHES)
+void menuRadioDiagFS(event_t event)
+{
+  constexpr coord_t FS_1ST_COLUMN = 40;
+  constexpr coord_t FS_2ND_COLUMN = 70;
+  constexpr coord_t FS_3RD_COLUMN = 100;
+  SIMPLE_SUBMENU(STR_MENU_FSWITCH, 1);
+  lcdDrawText(FS_1ST_COLUMN, MENU_HEADER_HEIGHT + 1, "Phys");
+  lcdDrawText(FS_2ND_COLUMN, MENU_HEADER_HEIGHT + 1, "Log");
+  lcdDrawText(FS_3RD_COLUMN, MENU_HEADER_HEIGHT + 1, "Led");
+
+  for(uint8_t i=0; i < NUM_FUNCTIONS_SWITCHES; i++) {
+    coord_t y = 2*FH + i*FH;
+    lcdDrawText(INDENT_WIDTH, y, STR_CHAR_SWITCH, 0);
+    lcdDrawText(lcdNextPos, y, switchGetName(i+switchGetMaxSwitches()), 0);
+    lcdDrawNumber(FS_1ST_COLUMN + 2, y, getFSPhysicalState(i));
+    lcdDrawNumber(FS_2ND_COLUMN + 5, y, getFSLogicalState(i));
+    lcdDrawNumber(FS_3RD_COLUMN + 5, y, getFSLedState(i));
+  }
+}
+#endif
 
 void menuRadioDiagKeys(event_t event)
 {
@@ -90,14 +113,11 @@ void menuRadioDiagKeys(event_t event)
     }
   }
 
-#if defined(FUNCTION_SWITCHES) && defined(DEBUG)
-  lcdDrawText(LCD_W / 2 , LCD_H - 2 * FH, "Phys");
-  lcdDrawText(LCD_W / 2 , LCD_H - 1 * FH, "Log");
-
-  for (uint8_t i = 0; i < NUM_FUNCTIONS_SWITCHES; i++) {
-    lcdDrawNumber(LCD_W / 2 + 20 + (i + 1) * FW , LCD_H - 2 * FH, getFSPhysicalState(i));
-    lcdDrawNumber(LCD_W / 2 + 20 + (i + 1) * FW , LCD_H - 1 * FH, getFSLogicalState(i));
-  }
+#if defined(AUTOSWITCH)
+  lcdDrawText(13*FW+FWNUM, LCD_H - FH + 1,"Last");
+  swsrc_t swtch = getMovedSwitch();
+  if (swtch)
+    drawSwitch(17*FW+FWNUM+2, LCD_H - FH + 1, swtch, 0);
 #endif
 
 #if defined(ROTARY_ENCODER_NAVIGATION)
