@@ -262,7 +262,7 @@ LEGACY_NAMES = [
                 "lua": "s3",
                 "label": "S3",
                 "short_label": "3",
-                "description": "Potentiometer 3"
+                "description": "6 pos"
             }
         }
     },
