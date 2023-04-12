@@ -714,7 +714,7 @@
 #define TR_TIME                         "Tid"
 #define TR_BAUDRATE                     "Baudrate"
 #define TR_MAXBAUDRATE                  "Max bauds"
-#define TR_SAMPLE_MODE                  TR("Sample mod.", "Sample Mode")
+#define TR_SAMPLE_MODE                  TR("Sampling","Sample Mode")
 #define TR_SAMPLE_MODES                 "Normal","OneBit"
 #define TR_LOADING                      "Laddar..."
 #define TR_DELETE_THEME                 "Radera tema?"

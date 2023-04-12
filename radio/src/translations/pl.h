@@ -690,7 +690,7 @@
 #define TR_TIME                "Czas"
 #define TR_MAXBAUDRATE         "Max bauds"
 #define TR_BAUDRATE            "Baudrate"
-#define TR_SAMPLE_MODE         "Sample Mode"
+#define TR_SAMPLE_MODE         TR("Sampling","Sample Mode")
 #define TR_SAMPLE_MODES        "Normal","OneBit"
 #define TR_LOADING             "Ładowanie..."
 #define TR_DELETE_THEME        "Usunąć motyw?"
