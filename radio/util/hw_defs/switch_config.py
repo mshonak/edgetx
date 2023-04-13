@@ -83,11 +83,11 @@ SWITCH_CONFIG = {
     "tx12": {
         # left side
         "SA": { "default": "TOGGLE", "display": [ 0, 0 ] },
-        "SC": { "default": "3POS",   "display": [ 0, 1 ] },
+        "SB": { "default": "3POS",   "display": [ 0, 1 ] },
         "SE": { "default": "3POS",   "display": [ 0, 2 ] },
         "SG": { "default": "NONE",   "display": [ 0, 3 ] },
         # right side
-        "SB": { "default": "3POS",   "display": [ 1, 0 ] },
+        "SC": { "default": "3POS",   "display": [ 1, 0 ] },
         "SD": { "default": "TOGGLE", "display": [ 1, 1 ] },
         "SF": { "default": "3POS",   "display": [ 1, 2 ] },
         "SH": { "default": "NONE",   "display": [ 1, 3 ] }
