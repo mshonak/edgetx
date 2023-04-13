@@ -105,10 +105,10 @@ SWITCH_CONFIG = {
     "tx12mk2": {
         # left side
         "SA": { "default": "TOGGLE", "display": [ 0, 0 ] },
-        "SC": { "default": "3POS",   "display": [ 0, 1 ] },
+        "SB": { "default": "3POS",   "display": [ 0, 1 ] },
         "SE": { "default": "3POS",   "display": [ 0, 2 ] },
         # right side
-        "SB": { "default": "3POS",   "display": [ 1, 0 ] },
+        "SC": { "default": "3POS",   "display": [ 1, 0 ] },
         "SD": { "default": "TOGGLE", "display": [ 1, 1 ] },
         "SF": { "default": "3POS",   "display": [ 1, 2 ] },
     },
@@ -253,12 +253,12 @@ SWITCH_CONFIG = {
     },
     "zorro": {
         # left side
-        "SA": { "default": "TOGGLE", "display": [ 0, 0 ] },
-        "SC": { "default": "3POS",   "display": [ 0, 1 ] },
+        "SB": { "default": "3POS",   "display": [ 0, 0 ] },
+        "SA": { "default": "TOGGLE", "display": [ 0, 1 ] },
         "SE": { "default": "2POS",   "display": [ 0, 2 ] },
         "SG": { "default": "TOGGLE", "display": [ 0, 3 ] },
         # right side
-        "SB": { "default": "3POS",   "display": [ 1, 0 ] },
+        "SC": { "default": "3POS",   "display": [ 1, 0 ] },
         "SD": { "default": "TOGGLE", "display": [ 1, 1 ] },
         "SF": { "default": "2POS",   "display": [ 1, 2 ] },
         "SH": { "default": "TOGGLE", "display": [ 1, 3 ] },
