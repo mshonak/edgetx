@@ -42,14 +42,12 @@ void rotaryEncoderCheck();
 #endif
 
 #if defined(STM32F413xx)
-#define FLASHSIZE                       0x80000
-#define BOOTLOADER_SIZE                 0x8000
-#define FIRMWARE_ADDRESS                0x08000000
+#define FLASHSIZE                       0x100000 // 1M
 #else
-#define FLASHSIZE                       0x180000
+#define FLASHSIZE                       0x80000  // 512k
+#endif
 #define BOOTLOADER_SIZE                 0x8000
 #define FIRMWARE_ADDRESS                0x08000000
-#endif
 
 #define LUA_MEM_MAX                     (0)    // max allowed memory usage for complete Lua  (in bytes), 0 means unlimited
 
